@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.example.application.data.entity.Company;
-import com.example.application.data.entity.Contact;
+import com.example.application.data.entity.User;
 import com.example.application.data.entity.Status;
 import com.example.application.data.repository.CompanyRepository;
-import com.example.application.data.repository.ContactRepository;
+import com.example.application.data.repository.UserRepository;
 import com.example.application.data.repository.StatusRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 
@@ -25,8 +25,8 @@ import org.vaadin.artur.exampledata.ExampleDataGenerator;
 public class DataGenerator {
 
     @Bean
-    public CommandLineRunner loadData(ContactRepository contactRepository, CompanyRepository companyRepository,
-            StatusRepository statusRepository) {
+    public CommandLineRunner loadData(UserRepository contactRepository, CompanyRepository companyRepository,
+                                      StatusRepository statusRepository) {
 
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
@@ -46,20 +46,20 @@ public class DataGenerator {
                     .saveAll(Stream.of("Imported lead", "Not contacted", "Contacted", "Customer", "Closed (lost)")
                             .map(Status::new).collect(Collectors.toList()));
 
-            logger.info("... generating 50 Contact entities...");
-            ExampleDataGenerator<Contact> contactGenerator = new ExampleDataGenerator<>(Contact.class,
+            logger.info("... generating 50 User entities...");
+            ExampleDataGenerator<User> contactGenerator = new ExampleDataGenerator<>(User.class,
                     LocalDateTime.now());
-            contactGenerator.setData(Contact::setFirstName, DataType.FIRST_NAME);
-            contactGenerator.setData(Contact::setLastName, DataType.LAST_NAME);
-            contactGenerator.setData(Contact::setEmail, DataType.EMAIL);
+            contactGenerator.setData(User::setFirstName, DataType.FIRST_NAME);
+            contactGenerator.setData(User::setLastName, DataType.LAST_NAME);
+            contactGenerator.setData(User::setEmail, DataType.EMAIL);
 
             Random r = new Random(seed);
-            List<Contact> contacts = contactGenerator.create(50, seed).stream().peek(contact -> {
+            List<User> users = contactGenerator.create(50, seed).stream().peek(contact -> {
                 contact.setCompany(companies.get(r.nextInt(companies.size())));
                 contact.setStatus(statuses.get(r.nextInt(statuses.size())));
             }).collect(Collectors.toList());
 
-            contactRepository.saveAll(contacts);
+            contactRepository.saveAll(users);
 
             logger.info("Generated demo data");
         };

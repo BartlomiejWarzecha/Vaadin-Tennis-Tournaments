@@ -1,6 +1,6 @@
 package com.example.application.views.list;
 
-import com.example.application.data.entity.Contact;
+import com.example.application.data.entity.User;
 import com.example.application.data.service.CrmService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
@@ -23,9 +23,9 @@ import javax.annotation.security.PermitAll;
 @PageTitle("Contacts | Vaadin CRM")
 @PermitAll
 public class ListView extends VerticalLayout {
-    Grid<Contact> grid = new Grid<>(Contact.class);
+    Grid<User> grid = new Grid<>(User.class);
     TextField filterText = new TextField();
-    ContactForm form;
+    UserForm form;
     CrmService service;
 
     public ListView(CrmService service) {
@@ -50,11 +50,11 @@ public class ListView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new ContactForm(service.findAllCompanies(), service.findAllStatuses());
+    form = new UserForm(service.findAllCompanies(), service.findAllStatuses());
     form.setWidth("25em");
-    form.addListener(ContactForm.SaveEvent.class, this::saveContact);
-    form.addListener(ContactForm.DeleteEvent.class, this::deleteContact);
-    form.addListener(ContactForm.CloseEvent.class, e -> closeEditor());
+    form.addListener(UserForm.SaveEvent.class, this::saveContact);
+    form.addListener(UserForm.DeleteEvent.class, this::deleteContact);
+    form.addListener(UserForm.CloseEvent.class, e -> closeEditor());
 }
 
     private void configureGrid() {
@@ -82,23 +82,23 @@ private void configureForm() {
         return toolbar;
     }
 
-    private void saveContact(ContactForm.SaveEvent event) {
+    private void saveContact(UserForm.SaveEvent event) {
         service.saveContact(event.getContact());
         updateList();
         closeEditor();
     }
 
-    private void deleteContact(ContactForm.DeleteEvent event) {
+    private void deleteContact(UserForm.DeleteEvent event) {
         service.deleteContact(event.getContact());
         updateList();
         closeEditor();
     }
 
-    public void editContact(Contact contact) {
-        if (contact == null) {
+    public void editContact(User user) {
+        if (user == null) {
             closeEditor();
         } else {
-            form.setContact(contact);
+            form.setContact(user);
             form.setVisible(true);
             addClassName("editing");
         }
@@ -106,7 +106,7 @@ private void configureForm() {
 
     private void addContact() {
         grid.asSingleSelect().clear();
-        editContact(new Contact());
+        editContact(new User());
     }
 
     private void closeEditor() {

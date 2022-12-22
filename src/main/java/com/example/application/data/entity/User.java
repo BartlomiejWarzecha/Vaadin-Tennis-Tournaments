@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.example.application.data.AbstractEntity;
 
 @Entity
-public class Contact extends AbstractEntity {
+public class User extends AbstractEntity {
 
     @NotEmpty
     private String firstName = "";

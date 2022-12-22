@@ -1,10 +1,10 @@
 package com.example.application.data.service;
 
 import com.example.application.data.entity.Company;
-import com.example.application.data.entity.Contact;
+import com.example.application.data.entity.User;
 import com.example.application.data.entity.Status;
 import com.example.application.data.repository.CompanyRepository;
-import com.example.application.data.repository.ContactRepository;
+import com.example.application.data.repository.UserRepository;
 import com.example.application.data.repository.StatusRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +13,11 @@ import java.util.List;
 @Service
 public class CrmService {
 
-    private final ContactRepository contactRepository;
+    private final UserRepository contactRepository;
     private final CompanyRepository companyRepository;
     private final StatusRepository statusRepository;
 
-    public CrmService(ContactRepository contactRepository,
+    public CrmService(UserRepository contactRepository,
                       CompanyRepository companyRepository,
                       StatusRepository statusRepository) {
         this.contactRepository = contactRepository;
@@ -25,7 +25,7 @@ public class CrmService {
         this.statusRepository = statusRepository;
     }
 
-    public List<Contact> findAllContacts(String stringFilter) {
+    public List<User> findAllContacts(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return contactRepository.findAll();
         } else {
@@ -37,16 +37,16 @@ public class CrmService {
         return contactRepository.count();
     }
 
-    public void deleteContact(Contact contact) {
-        contactRepository.delete(contact);
+    public void deleteContact(User user) {
+        contactRepository.delete(user);
     }
 
-    public void saveContact(Contact contact) {
-        if (contact == null) {
-            System.err.println("Contact is null. Are you sure you have connected your form to the application?");
+    public void saveContact(User user) {
+        if (user == null) {
+            System.err.println("User is null. Are you sure you have connected your form to the application?");
             return;
         }
-        contactRepository.save(contact);
+        contactRepository.save(user);
     }
 
     public List<Company> findAllCompanies() {

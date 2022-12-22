@@ -1,6 +1,6 @@
 package com.example.application.views.list;
 
-import com.example.application.data.entity.Contact;
+import com.example.application.data.entity.User;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.junit.Assert;
@@ -19,17 +19,17 @@ public class ListViewTest {
 
     @Test
     public void formShownWhenContactSelected() {
-        Grid<Contact> grid = listView.grid;
-        Contact firstContact = getFirstItem(grid);
+        Grid<User> grid = listView.grid;
+        User firstUser = getFirstItem(grid);
 
-        ContactForm form = listView.form;
+        UserForm form = listView.form;
 
         Assert.assertFalse(form.isVisible());
-        grid.asSingleSelect().setValue(firstContact);
+        grid.asSingleSelect().setValue(firstUser);
         Assert.assertTrue(form.isVisible());
-        Assert.assertEquals(firstContact.getFirstName(), form.firstName.getValue());
+        Assert.assertEquals(firstUser.getFirstName(), form.firstName.getValue());
     }
-    private Contact getFirstItem(Grid<Contact> grid) {
-        return( (ListDataProvider<Contact>) grid.getDataProvider()).getItems().iterator().next();
+    private User getFirstItem(Grid<User> grid) {
+        return( (ListDataProvider<User>) grid.getDataProvider()).getItems().iterator().next();
     }
 }
