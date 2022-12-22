@@ -27,7 +27,7 @@ public class ListViewTest {
         Assert.assertFalse(form.isVisible());
         grid.asSingleSelect().setValue(firstUser);
         Assert.assertTrue(form.isVisible());
-        Assert.assertEquals(firstUser.getFirstName(), form.firstName.getValue());
+        Assert.assertEquals(firstUser.getNickname(), form.nickname.getValue());
     }
     private User getFirstItem(Grid<User> grid) {
         return( (ListDataProvider<User>) grid.getDataProvider()).getItems().iterator().next();

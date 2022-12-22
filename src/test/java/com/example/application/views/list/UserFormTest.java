@@ -39,34 +39,32 @@ public class UserFormTest {
         statuses.add(status2);
 
         marcUsher = new User();
-        marcUsher.setFirstName("Marc");
-        marcUsher.setLastName("Usher");
+        marcUsher.setNickname("Marc");
         marcUsher.setEmail("marc@usher.com");
-        marcUsher.setStatus(status1);
         marcUsher.setCompany(company2);
     }
 
 @Test
 public void formFieldsPopulated() {
-    UserForm form = new UserForm(companies, statuses);
+    UserForm form = new UserForm(companies);
     form.setContact(marcUsher);
-    Assert.assertEquals("Marc", form.firstName.getValue());
-    Assert.assertEquals("Usher", form.lastName.getValue());
+    Assert.assertEquals("Marc", form.nickname.getValue());
+
     Assert.assertEquals("marc@usher.com", form.email.getValue());
     Assert.assertEquals(company2, form.company.getValue());
-    Assert.assertEquals(status1, form.status.getValue());
+
 }
 
 @Test
 public void saveEventHasCorrectValues() {
-    UserForm form = new UserForm(companies, statuses);
+    UserForm form = new UserForm(companies);
     User user = new User();
     form.setContact(user);
-    form.firstName.setValue("John");
-    form.lastName.setValue("Doe");
+    form.nickname.setValue("John");
+
     form.company.setValue(company1);
     form.email.setValue("john@doe.com");
-    form.status.setValue(status2);
+
 
     AtomicReference<User> savedContactRef = new AtomicReference<>(null);
     form.addListener(UserForm.SaveEvent.class, e -> {
@@ -75,10 +73,9 @@ public void saveEventHasCorrectValues() {
     form.save.click();
     User savedUser = savedContactRef.get();
 
-    Assert.assertEquals("John", savedUser.getFirstName());
-    Assert.assertEquals("Doe", savedUser.getLastName());
+    Assert.assertEquals("John", savedUser.getNickname());
     Assert.assertEquals("john@doe.com", savedUser.getEmail());
     Assert.assertEquals(company1, savedUser.getCompany());
-    Assert.assertEquals(status2, savedUser.getStatus());
+
 }
 }

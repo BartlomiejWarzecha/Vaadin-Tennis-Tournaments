@@ -11,7 +11,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select c from User c " +
-        "where lower(c.firstName) like lower(concat('%', :searchTerm, '%')) " +
-        "or lower(c.lastName) like lower(concat('%', :searchTerm, '%'))")
+        "where lower(c.Nickname) like lower(concat('%', :searchTerm, '%')) ")
     List<User> search(@Param("searchTerm") String searchTerm);
 }

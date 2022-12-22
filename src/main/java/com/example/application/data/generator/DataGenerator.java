@@ -49,14 +49,12 @@ public class DataGenerator {
             logger.info("... generating 50 User entities...");
             ExampleDataGenerator<User> contactGenerator = new ExampleDataGenerator<>(User.class,
                     LocalDateTime.now());
-            contactGenerator.setData(User::setFirstName, DataType.FIRST_NAME);
-            contactGenerator.setData(User::setLastName, DataType.LAST_NAME);
+            contactGenerator.setData(User::setNickname, DataType.FIRST_NAME);
             contactGenerator.setData(User::setEmail, DataType.EMAIL);
 
             Random r = new Random(seed);
             List<User> users = contactGenerator.create(50, seed).stream().peek(contact -> {
                 contact.setCompany(companies.get(r.nextInt(companies.size())));
-                contact.setStatus(statuses.get(r.nextInt(statuses.size())));
             }).collect(Collectors.toList());
 
             contactRepository.saveAll(users);

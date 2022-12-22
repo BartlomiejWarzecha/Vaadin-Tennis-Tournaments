@@ -23,10 +23,9 @@ import java.util.List;
 public class UserForm extends FormLayout {
   private User user;
 
-  TextField firstName = new TextField("First name");
-  TextField lastName = new TextField("Last name");
+  TextField nickname = new TextField("NickName");
+
   EmailField email = new EmailField("Email");
-  ComboBox<Status> status = new ComboBox<>("Status");
   ComboBox<Company> company = new ComboBox<>("Company");
   Binder<User> binder = new BeanValidationBinder<>(User.class);
 
@@ -34,19 +33,15 @@ public class UserForm extends FormLayout {
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public UserForm(List<Company> companies, List<Status> statuses) {
+  public UserForm(List<Company> companies) {
     addClassName("user-form");
     binder.bindInstanceFields(this);
 
     company.setItems(companies);
     company.setItemLabelGenerator(Company::getName);
-    status.setItems(statuses);
-    status.setItemLabelGenerator(Status::getName);
-    add(firstName,
-        lastName,
+    add(nickname,
         email,
         company,
-        status,
         createButtonsLayout()); 
   }
 

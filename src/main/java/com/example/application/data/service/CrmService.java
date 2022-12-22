@@ -15,14 +15,13 @@ public class CrmService {
 
     private final UserRepository contactRepository;
     private final CompanyRepository companyRepository;
-    private final StatusRepository statusRepository;
+
 
     public CrmService(UserRepository contactRepository,
-                      CompanyRepository companyRepository,
-                      StatusRepository statusRepository) {
+                      CompanyRepository companyRepository
+                     ) {
         this.contactRepository = contactRepository;
         this.companyRepository = companyRepository;
-        this.statusRepository = statusRepository;
     }
 
     public List<User> findAllContacts(String stringFilter) {
@@ -53,7 +52,5 @@ public class CrmService {
         return companyRepository.findAll();
     }
 
-    public List<Status> findAllStatuses(){
-        return statusRepository.findAll();
-    }
+
 }

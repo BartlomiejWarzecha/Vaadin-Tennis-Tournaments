@@ -14,10 +14,7 @@ import com.example.application.data.AbstractEntity;
 public class User extends AbstractEntity {
 
     @NotEmpty
-    private String firstName = "";
-
-    @NotEmpty
-    private String lastName = "";
+    private String Nickname = "";
 
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -25,33 +22,21 @@ public class User extends AbstractEntity {
     @JsonIgnoreProperties({"employees"})
     private Company company;
 
-    @NotNull
-    @ManyToOne
-    private Status status;
-
     @Email
     @NotEmpty
     private String email = "";
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return '"' + Nickname + '"';
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getNickname() {
+        return Nickname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setNickname(String nickname) {
+        this.Nickname = nickname;
     }
 
     public Company getCompany() {
@@ -60,14 +45,6 @@ public class User extends AbstractEntity {
 
     public void setCompany(Company company) {
         this.company = company;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public String getEmail() {
