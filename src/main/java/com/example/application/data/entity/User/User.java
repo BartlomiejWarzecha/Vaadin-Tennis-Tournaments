@@ -1,4 +1,4 @@
-package com.example.application.data.entity;
+package com.example.application.data.entity.User;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

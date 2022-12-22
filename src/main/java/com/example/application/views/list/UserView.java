@@ -1,6 +1,8 @@
 package com.example.application.views.list;
 
-import com.example.application.data.entity.User;
+import com.example.application.data.entity.User.Interests;
+import com.example.application.data.entity.User.Status;
+import com.example.application.data.entity.User.User;
 import com.example.application.data.service.CrmService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
@@ -50,7 +52,7 @@ public class UserView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new UserForm(service.findAllCompanies());
+    form = new UserForm(service.findAllInterests());
     form.setWidth("25em");
     form.addListener(UserForm.SaveEvent.class, this::saveContact);
     form.addListener(UserForm.DeleteEvent.class, this::deleteContact);

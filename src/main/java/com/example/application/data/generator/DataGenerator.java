@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.example.application.data.entity.Interests;
-import com.example.application.data.entity.User;
-import com.example.application.data.entity.Status;
+
+import com.example.application.data.entity.User.User;
+import com.example.application.data.entity.User.Interests;
+import com.example.application.data.entity.User.Status;
+
 import com.example.application.data.repository.InterestsRepository;
 import com.example.application.data.repository.UserRepository;
 import com.example.application.data.repository.StatusRepository;

@@ -1,8 +1,8 @@
 package com.example.application.views.list;
 
-import com.example.application.data.entity.Interests;
-import com.example.application.data.entity.User;
-import com.example.application.data.entity.Status;
+import Interests;
+import com.example.application.data.entity.User.User;
+import Status;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

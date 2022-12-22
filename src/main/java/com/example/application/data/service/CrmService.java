@@ -1,7 +1,8 @@
 package com.example.application.data.service;
 
-import com.example.application.data.entity.Interests;
-import com.example.application.data.entity.User;
+import com.example.application.data.entity.User.Interests;
+import com.example.application.data.entity.User.Status;
+import com.example.application.data.entity.User.User;
 import com.example.application.data.repository.InterestsRepository;
 import com.example.application.data.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class CrmService {
         contactRepository.save(user);
     }
 
-    public List<Interests> findAllCompanies() {
+    public List<Interests> findAllInterests() {
         return interestsRepository.findAll();
     }
 

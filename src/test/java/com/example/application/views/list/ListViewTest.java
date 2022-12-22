@@ -1,6 +1,6 @@
 package com.example.application.views.list;
 
-import com.example.application.data.entity.User;
+import com.example.application.data.entity.User.User;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.junit.Assert;
