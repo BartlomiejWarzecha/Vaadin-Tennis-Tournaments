@@ -20,17 +20,17 @@ import javax.annotation.security.PermitAll;
 @Component
 @Scope("prototype")
 @Route(value = "", layout = MainLayout.class)
-@PageTitle("Contacts | Vaadin CRM")
+@PageTitle("Users | Tennis Tournaments")
 @PermitAll
-public class ListView extends VerticalLayout {
+public class UserView extends VerticalLayout {
     Grid<User> grid = new Grid<>(User.class);
     TextField filterText = new TextField();
     UserForm form;
     CrmService service;
 
-    public ListView(CrmService service) {
+    public UserView(CrmService service) {
         this.service = service;
-        addClassName("list-view");
+        addClassName("user-view");
         setSizeFull();
         configureGrid();
         configureForm();
@@ -58,7 +58,7 @@ private void configureForm() {
 }
 
     private void configureGrid() {
-        grid.addClassNames("contact-grid");
+        grid.addClassNames("user-grid");
         grid.setSizeFull();
         grid.setColumns("nickname", "email");
         grid.addColumn(user -> user.getInterest().getName()).setHeader("Interests");
@@ -73,7 +73,7 @@ private void configureForm() {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addContactButton = new Button("Add contact");
+        Button addContactButton = new Button("Add user");
         addContactButton.addClickListener(click -> addContact());
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addContactButton);

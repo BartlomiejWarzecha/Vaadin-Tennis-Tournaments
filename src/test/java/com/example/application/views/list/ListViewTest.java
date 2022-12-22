@@ -15,14 +15,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ListViewTest {
 
     @Autowired
-    private ListView listView;
+    private UserView userView;
 
     @Test
     public void formShownWhenContactSelected() {
-        Grid<User> grid = listView.grid;
+        Grid<User> grid = userView.grid;
         User firstUser = getFirstItem(grid);
 
-        UserForm form = listView.form;
+        UserForm form = userView.form;
 
         Assert.assertFalse(form.isVisible());
         grid.asSingleSelect().setValue(firstUser);
