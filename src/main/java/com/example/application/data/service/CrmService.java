@@ -1,11 +1,9 @@
 package com.example.application.data.service;
 
-import com.example.application.data.entity.Company;
+import com.example.application.data.entity.Interests;
 import com.example.application.data.entity.User;
-import com.example.application.data.entity.Status;
-import com.example.application.data.repository.CompanyRepository;
+import com.example.application.data.repository.InterestsRepository;
 import com.example.application.data.repository.UserRepository;
-import com.example.application.data.repository.StatusRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,14 +12,14 @@ import java.util.List;
 public class CrmService {
 
     private final UserRepository contactRepository;
-    private final CompanyRepository companyRepository;
+    private final InterestsRepository interestsRepository;
 
 
     public CrmService(UserRepository contactRepository,
-                      CompanyRepository companyRepository
+                      InterestsRepository interestsRepository
                      ) {
         this.contactRepository = contactRepository;
-        this.companyRepository = companyRepository;
+        this.interestsRepository = interestsRepository;
     }
 
     public List<User> findAllContacts(String stringFilter) {
@@ -30,10 +28,6 @@ public class CrmService {
         } else {
             return contactRepository.search(stringFilter);
         }
-    }
-
-    public long countContacts() {
-        return contactRepository.count();
     }
 
     public void deleteContact(User user) {
@@ -48,8 +42,8 @@ public class CrmService {
         contactRepository.save(user);
     }
 
-    public List<Company> findAllCompanies() {
-        return companyRepository.findAll();
+    public List<Interests> findAllCompanies() {
+        return interestsRepository.findAll();
     }
 
 

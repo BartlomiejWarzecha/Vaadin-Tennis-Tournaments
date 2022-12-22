@@ -17,10 +17,10 @@ public class User extends AbstractEntity {
     private String Nickname = "";
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "interest_id")
     @NotNull
-    @JsonIgnoreProperties({"employees"})
-    private Company company;
+    @JsonIgnoreProperties({"interests"})
+    private Interests interests;
 
     @Email
     @NotEmpty
@@ -39,12 +39,12 @@ public class User extends AbstractEntity {
         this.Nickname = nickname;
     }
 
-    public Company getCompany() {
-        return company;
+    public Interests getInterest() {
+        return interests;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setInterest(Interests interests) {
+        this.interests = interests;
     }
 
     public String getEmail() {

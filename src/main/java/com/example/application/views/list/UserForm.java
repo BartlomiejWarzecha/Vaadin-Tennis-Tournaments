@@ -1,8 +1,7 @@
 package com.example.application.views.list;
 
-import com.example.application.data.entity.Company;
+import com.example.application.data.entity.Interests;
 import com.example.application.data.entity.User;
-import com.example.application.data.entity.Status;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -23,25 +22,24 @@ import java.util.List;
 public class UserForm extends FormLayout {
   private User user;
 
-  TextField nickname = new TextField("NickName");
-
+  TextField nickname = new TextField("Nickname");
   EmailField email = new EmailField("Email");
-  ComboBox<Company> company = new ComboBox<>("Company");
+  ComboBox<Interests> interest = new ComboBox<>("Interests");
   Binder<User> binder = new BeanValidationBinder<>(User.class);
 
   Button save = new Button("Save");
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public UserForm(List<Company> companies) {
+  public UserForm(List<Interests> interests) {
     addClassName("user-form");
     binder.bindInstanceFields(this);
 
-    company.setItems(companies);
-    company.setItemLabelGenerator(Company::getName);
+    interest.setItems(interests);
+    interest.setItemLabelGenerator(Interests::getName);
     add(nickname,
         email,
-        company,
+            interest,
         createButtonsLayout()); 
   }
 

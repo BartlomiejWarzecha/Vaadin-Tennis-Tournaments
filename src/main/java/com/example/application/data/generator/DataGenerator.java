@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.example.application.data.entity.Company;
+import com.example.application.data.entity.Interests;
 import com.example.application.data.entity.User;
 import com.example.application.data.entity.Status;
-import com.example.application.data.repository.CompanyRepository;
+import com.example.application.data.repository.InterestsRepository;
 import com.example.application.data.repository.UserRepository;
 import com.example.application.data.repository.StatusRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -25,7 +25,7 @@ import org.vaadin.artur.exampledata.ExampleDataGenerator;
 public class DataGenerator {
 
     @Bean
-    public CommandLineRunner loadData(UserRepository contactRepository, CompanyRepository companyRepository,
+    public CommandLineRunner loadData(UserRepository contactRepository, InterestsRepository interestsRepository,
                                       StatusRepository statusRepository) {
 
         return args -> {
@@ -37,10 +37,9 @@ public class DataGenerator {
             int seed = 123;
 
             logger.info("Generating demo data");
-            ExampleDataGenerator<Company> companyGenerator = new ExampleDataGenerator<>(Company.class,
-                    LocalDateTime.now());
-            companyGenerator.setData(Company::setName, DataType.COMPANY_NAME);
-            List<Company> companies = companyRepository.saveAll(companyGenerator.create(5, seed));
+
+            List<Interests> interests = interestsRepository.saveAll(Stream.of("ATP", "WTA", "ATP/WTA")
+                    .map(Interests::new).collect(Collectors.toList()));
 
             List<Status> statuses = statusRepository
                     .saveAll(Stream.of("Imported lead", "Not contacted", "Contacted", "Customer", "Closed (lost)")
@@ -53,8 +52,8 @@ public class DataGenerator {
             contactGenerator.setData(User::setEmail, DataType.EMAIL);
 
             Random r = new Random(seed);
-            List<User> users = contactGenerator.create(50, seed).stream().peek(contact -> {
-                contact.setCompany(companies.get(r.nextInt(companies.size())));
+            List<User> users = contactGenerator.create(1, seed).stream().peek(contact -> {
+                contact.setInterest(interests.get(r.nextInt(interests.size())));
             }).collect(Collectors.toList());
 
             contactRepository.saveAll(users);

@@ -61,7 +61,7 @@ private void configureForm() {
         grid.addClassNames("contact-grid");
         grid.setSizeFull();
         grid.setColumns("nickname", "email");
-        grid.addColumn(contact -> contact.getCompany().getName()).setHeader("Company");
+        grid.addColumn(user -> user.getInterest().getName()).setHeader("Interests");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editContact(event.getValue()));

@@ -1,6 +1,6 @@
 package com.example.application.views.list;
 
-import com.example.application.data.entity.Company;
+import com.example.application.data.entity.Interests;
 import com.example.application.data.entity.User;
 import com.example.application.data.entity.Status;
 import org.junit.Assert;
@@ -12,23 +12,23 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class UserFormTest {
-    private List<Company> companies;
+    private List<Interests> companies;
     private List<Status> statuses;
     private User marcUsher;
-    private Company company1;
-    private Company company2;
+    private Interests interests1;
+    private Interests interests2;
     private Status status1;
     private Status status2;
 
     @Before
     public void setupData() {
         companies = new ArrayList<>();
-        company1 = new Company();
-        company1.setName("Vaadin Ltd");
-        company2 = new Company();
-        company2.setName("IT Mill");
-        companies.add(company1);
-        companies.add(company2);
+        interests1 = new Interests();
+        interests1.setName("Vaadin Ltd");
+        interests2 = new Interests();
+        interests2.setName("IT Mill");
+        companies.add(interests1);
+        companies.add(interests2);
 
         statuses = new ArrayList<>();
         status1 = new Status();
@@ -41,7 +41,7 @@ public class UserFormTest {
         marcUsher = new User();
         marcUsher.setNickname("Marc");
         marcUsher.setEmail("marc@usher.com");
-        marcUsher.setCompany(company2);
+        marcUsher.setInterest(interests2);
     }
 
 @Test
@@ -51,7 +51,7 @@ public void formFieldsPopulated() {
     Assert.assertEquals("Marc", form.nickname.getValue());
 
     Assert.assertEquals("marc@usher.com", form.email.getValue());
-    Assert.assertEquals(company2, form.company.getValue());
+    Assert.assertEquals(interests2, form.interest.getValue());
 
 }
 
@@ -62,9 +62,8 @@ public void saveEventHasCorrectValues() {
     form.setContact(user);
     form.nickname.setValue("John");
 
-    form.company.setValue(company1);
+    form.interest.setValue(interests1);
     form.email.setValue("john@doe.com");
-
 
     AtomicReference<User> savedContactRef = new AtomicReference<>(null);
     form.addListener(UserForm.SaveEvent.class, e -> {
@@ -75,7 +74,7 @@ public void saveEventHasCorrectValues() {
 
     Assert.assertEquals("John", savedUser.getNickname());
     Assert.assertEquals("john@doe.com", savedUser.getEmail());
-    Assert.assertEquals(company1, savedUser.getCompany());
+    Assert.assertEquals(interests1, savedUser.getInterest());
 
 }
 }
