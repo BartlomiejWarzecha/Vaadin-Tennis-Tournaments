@@ -9,11 +9,11 @@ import java.util.stream.Stream;
 
 import com.example.application.data.entity.User.User;
 import com.example.application.data.entity.User.Interests;
-import com.example.application.data.entity.User.Status;
 
+import com.example.application.data.entity.WTA.Stage;
 import com.example.application.data.repository.InterestsRepository;
 import com.example.application.data.repository.UserRepository;
-import com.example.application.data.repository.StatusRepository;
+import com.example.application.data.repository.StageRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 
 import org.slf4j.Logger;
@@ -24,11 +24,10 @@ import org.vaadin.artur.exampledata.DataType;
 import org.vaadin.artur.exampledata.ExampleDataGenerator;
 
 @SpringComponent
-public class DataGenerator {
+public class UserDataGenerator {
 
     @Bean
-    public CommandLineRunner loadData(UserRepository contactRepository, InterestsRepository interestsRepository,
-                                      StatusRepository statusRepository) {
+    public CommandLineRunner loadUserData(UserRepository contactRepository, InterestsRepository interestsRepository) {
 
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
@@ -42,10 +41,6 @@ public class DataGenerator {
 
             List<Interests> interests = interestsRepository.saveAll(Stream.of("ATP", "WTA", "ATP/WTA")
                     .map(Interests::new).collect(Collectors.toList()));
-
-            List<Status> statuses = statusRepository
-                    .saveAll(Stream.of("Imported lead", "Not contacted", "Contacted", "Customer", "Closed (lost)")
-                            .map(Status::new).collect(Collectors.toList()));
 
             logger.info("... generating 50 User entities...");
             ExampleDataGenerator<User> contactGenerator = new ExampleDataGenerator<>(User.class,

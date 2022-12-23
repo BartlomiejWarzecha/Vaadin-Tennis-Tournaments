@@ -1,5 +1,6 @@
 package com.example.application.views.list;
-
+import com.example.application.data.entity.WTA.WTA;
+import com.example.application.data.entity.WTA.Stage;
 import com.example.application.data.entity.User.User;
 import com.example.application.data.service.CrmService;
 import com.example.application.views.MainLayout;
@@ -19,18 +20,18 @@ import javax.annotation.security.PermitAll;
 
 @Component
 @Scope("prototype")
-@Route(value = "", layout = MainLayout.class)
-@PageTitle("Users | Tennis Tournaments")
+@Route(value = "WTA", layout = MainLayout.class)
+@PageTitle("WTA | Tennis Tournaments")
 @PermitAll
-public class UserView extends VerticalLayout {
-    Grid<User> grid = new Grid<>(User.class);
+public class WTAView extends VerticalLayout {
+    Grid<WTA> grid = new Grid<>(WTA.class);
     TextField filterText = new TextField();
-    UserForm form;
+    WTAForm form;
     CrmService service;
 
-    public UserView(CrmService service) {
+    public WTAView(CrmService service) {
         this.service = service;
-        addClassName("user-view");
+        addClassName("wta-view");
         setSizeFull();
         configureGrid();
         configureForm();
@@ -50,71 +51,71 @@ public class UserView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new UserForm(service.findAllInterests());
+    form = new WTAForm(service.findAllStages());
     form.setWidth("25em");
-    form.addListener(UserForm.SaveEvent.class, this::saveContact);
-    form.addListener(UserForm.DeleteEvent.class, this::deleteContact);
-    form.addListener(UserForm.CloseEvent.class, e -> closeEditor());
+    form.addListener(WTAForm.SaveEvent.class, this::saveWTA);
+    form.addListener(WTAForm.DeleteEvent.class, this::deleteWTA);
+    form.addListener(WTAForm.CloseEvent.class, e -> closeEditor());
 }
 
     private void configureGrid() {
-        grid.addClassNames("user-grid");
+        grid.addClassNames("wta-grid");
         grid.setSizeFull();
-        grid.setColumns("nickname", "email");
-        grid.addColumn(user -> user.getInterest().getName()).setHeader("Interests");
+        grid.setColumns("nickname", "WTATournament", "player");
+        grid.addColumn(wta-> wta.getStage().getName()).setHeader("Stages");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
-            editContact(event.getValue()));
+            editWTA(event.getValue()));
     }
 
     private HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by name...");
+        filterText.setPlaceholder("Filter data...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addContactButton = new Button("Add user");
-        addContactButton.addClickListener(click -> addContact());
+        Button addPredicionButton = new Button("Add prediction");
+        addPredicionButton.addClickListener(click -> addWTA());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContactButton);
-        toolbar.addClassName("toolbar");
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton);
+        toolbar.addClassName("toolbar-WTA");
         return toolbar;
     }
 
-    private void saveContact(UserForm.SaveEvent event) {
-        service.saveUser(event.getUser());
+    private void saveWTA(WTAForm.SaveEvent event) {
+        service.saveWTA(event.getWTA());
         updateList();
         closeEditor();
     }
 
-    private void deleteContact(UserForm.DeleteEvent event) {
-        service.deleteUser(event.getUser());
+    private void deleteWTA(WTAForm.DeleteEvent event) {
+        service.deleteWTA(event.getWTA());
         updateList();
         closeEditor();
     }
 
-    public void editContact(User user) {
-        if (user == null) {
+    public void editWTA(WTA wta) {
+        if (wta == null) {
             closeEditor();
         } else {
-            form.setUser(user);
+            form.setWTA(wta);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
-    private void addContact() {
+    private void addWTA() {
         grid.asSingleSelect().clear();
-        editContact(new User());
+        editWTA(new WTA());
     }
 
     private void closeEditor() {
-        form.setUser(null);
+        form.setWTA(null);
         form.setVisible(false);
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(service.findAllUsers(filterText.getValue()));
+        grid.setItems(service.findAllWTA(filterText.getValue()));
     }
 }

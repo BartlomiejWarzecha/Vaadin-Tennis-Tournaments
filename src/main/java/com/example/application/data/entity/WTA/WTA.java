@@ -15,6 +15,10 @@ public class WTA extends AbstractEntity {
     @NotEmpty
     private String Nickname = "";
 
+    @NotEmpty
+    private String Player = "";
+
+    @NotEmpty
     private String WTATournament;
 
     @ManyToOne
@@ -34,6 +38,13 @@ public class WTA extends AbstractEntity {
 
     public void setNickname(String nickname) {
         this.Nickname = nickname;
+    }
+    public String getPlayer() {
+        return Player;
+    }
+
+    public void setPlayer(String player) {
+        Player = player;
     }
 
     public Stage getStage() {

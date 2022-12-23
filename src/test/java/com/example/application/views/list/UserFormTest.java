@@ -1,8 +1,10 @@
 package com.example.application.views.list;
 
-import Interests;
+import com.example.application.data.entity.User.Interests;
+import com.example.application.data.entity.WTA.Stage;
+
 import com.example.application.data.entity.User.User;
-import Status;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,12 +15,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class UserFormTest {
     private List<Interests> companies;
-    private List<Status> statuses;
+    private List<Stage> statuses;
     private User marcUsher;
     private Interests interests1;
     private Interests interests2;
-    private Status status1;
-    private Status status2;
+    private Stage status1;
+    private Stage status2;
 
     @Before
     public void setupData() {
@@ -31,9 +33,9 @@ public class UserFormTest {
         companies.add(interests2);
 
         statuses = new ArrayList<>();
-        status1 = new Status();
+        status1 = new Stage();
         status1.setName("Status 1");
-        status2 = new Status();
+        status2 = new Stage();
         status2.setName("Status 2");
         statuses.add(status1);
         statuses.add(status2);
@@ -47,7 +49,7 @@ public class UserFormTest {
 @Test
 public void formFieldsPopulated() {
     UserForm form = new UserForm(companies);
-    form.setContact(marcUsher);
+    form.setUser(marcUsher);
     Assert.assertEquals("Marc", form.nickname.getValue());
 
     Assert.assertEquals("marc@usher.com", form.email.getValue());
@@ -59,7 +61,7 @@ public void formFieldsPopulated() {
 public void saveEventHasCorrectValues() {
     UserForm form = new UserForm(companies);
     User user = new User();
-    form.setContact(user);
+    form.setUser(user);
     form.nickname.setValue("John");
 
     form.interest.setValue(interests1);
@@ -67,7 +69,7 @@ public void saveEventHasCorrectValues() {
 
     AtomicReference<User> savedContactRef = new AtomicReference<>(null);
     form.addListener(UserForm.SaveEvent.class, e -> {
-        savedContactRef.set(e.getContact());
+        savedContactRef.set(e.getUser());
     });
     form.save.click();
     User savedUser = savedContactRef.get();

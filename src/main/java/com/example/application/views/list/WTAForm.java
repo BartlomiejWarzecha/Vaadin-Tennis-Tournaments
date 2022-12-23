@@ -1,6 +1,7 @@
 package com.example.application.views.list;
 
-import com.example.application.data.entity.User.Interests;
+import com.example.application.data.entity.WTA.WTA;
+import com.example.application.data.entity.WTA.Stage;
 import com.example.application.data.entity.User.User;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -19,27 +20,28 @@ import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
 
-public class UserForm extends FormLayout {
-  private User user;
+public class WTAForm extends FormLayout {
+  private WTA wta;
 
   TextField nickname = new TextField("Nickname");
-  EmailField email = new EmailField("Email");
-  ComboBox<Interests> interest = new ComboBox<>("Interests");
-  Binder<User> binder = new BeanValidationBinder<>(User.class);
+  TextField WTATournament = new TextField("WTATournament");
+  TextField player  = new TextField("Player");
+  ComboBox<Stage> stage = new ComboBox<>("Stages");
+  Binder<WTA> binder = new BeanValidationBinder<>(WTA.class);
 
   Button save = new Button("Save");
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public UserForm(List<Interests> interests) {
-    addClassName("user-form");
+  public WTAForm(List<Stage> stages) {
+    addClassName("wta-form");
     binder.bindInstanceFields(this);
-
-    interest.setItems(interests);
-    interest.setItemLabelGenerator(Interests::getName);
+    stage.setItems(stages);
+    stage.setItemLabelGenerator(Stage::getName);
     add(nickname,
-        email,
-            interest,
+          WTATournament,
+            player,
+          stage,
         createButtonsLayout()); 
   }
 
@@ -52,58 +54,57 @@ public class UserForm extends FormLayout {
     close.addClickShortcut(Key.ESCAPE);
 
     save.addClickListener(event -> validateAndSave());
-    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, user)));
+    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, wta)));
     close.addClickListener(event -> fireEvent(new CloseEvent(this)));
-
 
     binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
 
     return new HorizontalLayout(save, delete, close); 
   }
 
-  public void setUser(User user) {
-    this.user = user;
-    binder.readBean(user);
+  public void setWTA(WTA wta) {
+    this.wta = wta;
+    binder.readBean(wta);
   }
 
   private void validateAndSave() {
     try {
-      binder.writeBean(user);
-      fireEvent(new SaveEvent(this, user));
+      binder.writeBean(wta);
+      fireEvent(new SaveEvent(this, wta));
     } catch (ValidationException e) {
       e.printStackTrace();
     }
   }
 
   // Events
-  public static abstract class UserFormEvent extends ComponentEvent<UserForm> {
-    private User user;
+  public static abstract class WTAFormEvent extends ComponentEvent<WTAForm> {
+    private WTA wta;
 
-    protected UserFormEvent(UserForm source, User user) {
+    protected WTAFormEvent(WTAForm source, WTA wta) {
       super(source, false);
-      this.user = user;
+      this.wta = wta;
     }
 
-    public User getUser() {
-      return user;
-    }
-  }
-
-  public static class SaveEvent extends UserFormEvent {
-    SaveEvent(UserForm source, User user) {
-      super(source, user);
+    public WTA getWTA() {
+      return wta;
     }
   }
 
-  public static class DeleteEvent extends UserFormEvent {
-    DeleteEvent(UserForm source, User user) {
-      super(source, user);
+  public static class SaveEvent extends WTAFormEvent {
+    SaveEvent(WTAForm source, WTA wta) {
+      super(source, wta);
+    }
+  }
+
+  public static class DeleteEvent extends WTAFormEvent {
+    DeleteEvent(WTAForm source, WTA wta) {
+      super(source, wta);
     }
 
   }
 
-  public static class CloseEvent extends UserFormEvent {
-    CloseEvent(UserForm source) {
+  public static class CloseEvent extends WTAFormEvent {
+    CloseEvent(WTAForm source) {
       super(source, null);
     }
   }
