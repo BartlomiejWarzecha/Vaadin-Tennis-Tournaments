@@ -1,5 +1,5 @@
 package com.example.application.views.list;
-import com.example.application.data.entity.WTA.WTA;
+import com.example.application.data.entity.ATP.ATP;
 import com.example.application.data.service.CrmService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
@@ -18,18 +18,18 @@ import javax.annotation.security.PermitAll;
 
 @Component
 @Scope("prototype")
-@Route(value = "WTA", layout = MainLayout.class)
-@PageTitle("WTA | Tennis Tournaments")
+@Route(value = "ATP", layout = MainLayout.class)
+@PageTitle("ATP | Tennis Tournaments")
 @PermitAll
-public class WTAView extends VerticalLayout {
-    Grid<WTA> grid = new Grid<>(WTA.class);
+public class ATPView extends VerticalLayout {
+    Grid<ATP> grid = new Grid<>(ATP.class);
     TextField filterText = new TextField();
-    WTAForm form;
+    ATPForm form;
     CrmService service;
 
-    public WTAView(CrmService service) {
+    public ATPView(CrmService service) {
         this.service = service;
-        addClassName("wta-view");
+        addClassName("atp-view");
         setSizeFull();
         configureGrid();
         configureForm();
@@ -49,21 +49,21 @@ public class WTAView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new WTAForm(service.findAllStages());
+    form = new ATPForm(service.findAllStages());
     form.setWidth("25em");
-    form.addListener(WTAForm.SaveEvent.class, this::saveWTA);
-    form.addListener(WTAForm.DeleteEvent.class, this::deleteWTA);
-    form.addListener(WTAForm.CloseEvent.class, e -> closeEditor());
+    form.addListener(ATPForm.SaveEvent.class, this::saveATP);
+    form.addListener(ATPForm.DeleteEvent.class, this::deleteATP);
+    form.addListener(ATPForm.CloseEvent.class, e -> closeEditor());
 }
 
     private void configureGrid() {
-        grid.addClassNames("wta-grid");
+        grid.addClassNames("atp-grid");
         grid.setSizeFull();
-        grid.setColumns("nickname", "WTATournament", "player");
-        grid.addColumn(wta-> wta.getStage().getName()).setHeader("Stages");
+        grid.setColumns("nickname", "ATPTournament", "player");
+        grid.addColumn(atp-> atp.getStage().getName()).setHeader("Stages");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
-            editWTA(event.getValue()));
+            editATP(event.getValue()));
     }
 
     private HorizontalLayout getToolbar() {
@@ -73,47 +73,48 @@ private void configureForm() {
         filterText.addValueChangeListener(e -> updateList());
 
         Button addPredicionButton = new Button("Add prediction");
-        addPredicionButton.addClickListener(click -> addWTA());
+        addPredicionButton.addClickListener(click -> addATP());
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton);
-        toolbar.addClassName("toolbar-WTA");
+        toolbar.addClassName("toolbar-ATP");
         return toolbar;
     }
 
-    private void saveWTA(WTAForm.SaveEvent event) {
-        service.saveWTA(event.getWTA());
+    private void saveATP(ATPForm.SaveEvent event) {
+        service.saveATP(event.getATP());
         updateList();
         closeEditor();
     }
 
-    private void deleteWTA(WTAForm.DeleteEvent event) {
-        service.deleteWTA(event.getWTA());
+    private void deleteATP(ATPForm.DeleteEvent event) {
+        service.deleteATP(event.getATP());
+
         updateList();
         closeEditor();
     }
 
-    public void editWTA(WTA wta) {
-        if (wta == null) {
+    public void editATP(ATP atp) {
+        if (atp == null) {
             closeEditor();
         } else {
-            form.setWTA(wta);
+            form.setATP(atp);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
-    private void addWTA() {
+    private void addATP() {
         grid.asSingleSelect().clear();
-        editWTA(new WTA());
+        editATP(new ATP());
     }
 
     private void closeEditor() {
-        form.setWTA(null);
+        form.setATP(null);
         form.setVisible(false);
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(service.findAllWTA(filterText.getValue()));
+        grid.setItems(service.findAllATP(filterText.getValue()));
     }
 }

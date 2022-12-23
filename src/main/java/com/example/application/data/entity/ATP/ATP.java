@@ -1,4 +1,4 @@
-package com.example.application.data.entity.WTA;
+package com.example.application.data.entity.ATP;
 
 import com.example.application.data.AbstractEntity;
 import com.example.application.data.entity.Stage;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class WTA extends AbstractEntity {
+public class ATP extends AbstractEntity {
 
     @NotEmpty
     private String Nickname = "";
@@ -20,7 +20,7 @@ public class WTA extends AbstractEntity {
     private String Player = "";
 
     @NotEmpty
-    private String WTATournament;
+    private String ATPTournament;
 
     @ManyToOne
     @JoinColumn(name = "stage_id")
@@ -56,11 +56,11 @@ public class WTA extends AbstractEntity {
         this.stage = stage;
     }
 
-    public String getWTATournament() {
-        return WTATournament;
+    public String getATPTournament() {
+        return ATPTournament;
     }
 
-    public void setWTATournament(String WTATournament) {
-        this.WTATournament = WTATournament;
+    public void setATPTournament(String ATPTournament) {
+        this.ATPTournament = ATPTournament;
     }
 }

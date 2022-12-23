@@ -1,4 +1,4 @@
-package com.example.application.data.entity.WTA;
+package com.example.application.data.entity;
 
 import com.example.application.data.AbstractEntity;
 

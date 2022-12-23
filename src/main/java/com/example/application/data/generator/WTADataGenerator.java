@@ -1,12 +1,8 @@
 package com.example.application.data.generator;
 
-import com.example.application.data.entity.User.Interests;
-import com.example.application.data.entity.User.User;
-import com.example.application.data.entity.WTA.Stage;
+import com.example.application.data.entity.Stage;
 import com.example.application.data.entity.WTA.WTA;
-import com.example.application.data.repository.InterestsRepository;
 import com.example.application.data.repository.StageRepository;
-import com.example.application.data.repository.UserRepository;
 import com.example.application.data.repository.WTARepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.slf4j.Logger;

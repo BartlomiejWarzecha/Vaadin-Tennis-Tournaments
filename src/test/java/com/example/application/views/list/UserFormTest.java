@@ -1,7 +1,7 @@
 package com.example.application.views.list;
 
 import com.example.application.data.entity.User.Interests;
-import com.example.application.data.entity.WTA.Stage;
+import com.example.application.data.entity.Stage;
 
 import com.example.application.data.entity.User.User;
 

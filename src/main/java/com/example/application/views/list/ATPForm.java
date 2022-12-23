@@ -1,7 +1,7 @@
 package com.example.application.views.list;
 
-import com.example.application.data.entity.WTA.WTA;
 import com.example.application.data.entity.Stage;
+import com.example.application.data.entity.ATP.ATP;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -18,26 +18,25 @@ import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
 
-public class WTAForm extends FormLayout {
-  private WTA wta;
-
+public class ATPForm extends FormLayout {
+  private ATP atp;
   TextField nickname = new TextField("Nickname");
-  TextField WTATournament = new TextField("WTATournament");
+  TextField ATPTournament = new TextField("ATPTournament");
   TextField player  = new TextField("Player");
   ComboBox<Stage> stage = new ComboBox<>("Stages");
-  Binder<WTA> binder = new BeanValidationBinder<>(WTA.class);
+  Binder<ATP> binder = new BeanValidationBinder<>(ATP.class);
 
   Button save = new Button("Save");
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public WTAForm(List<Stage> stages) {
-    addClassName("wta-form");
+  public ATPForm(List<Stage> stages) {
+    addClassName("atp-form");
     binder.bindInstanceFields(this);
     stage.setItems(stages);
     stage.setItemLabelGenerator(Stage::getName);
     add(nickname,
-          WTATournament,
+          ATPTournament,
             player,
           stage,
         createButtonsLayout()); 
@@ -52,7 +51,7 @@ public class WTAForm extends FormLayout {
     close.addClickShortcut(Key.ESCAPE);
 
     save.addClickListener(event -> validateAndSave());
-    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, wta)));
+    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, atp)));
     close.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
     binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
@@ -60,49 +59,49 @@ public class WTAForm extends FormLayout {
     return new HorizontalLayout(save, delete, close); 
   }
 
-  public void setWTA(WTA wta) {
-    this.wta = wta;
-    binder.readBean(wta);
+  public void setATP(ATP atp) {
+    this.atp = atp;
+    binder.readBean(atp);
   }
 
   private void validateAndSave() {
     try {
-      binder.writeBean(wta);
-      fireEvent(new SaveEvent(this, wta));
+      binder.writeBean(atp);
+      fireEvent(new SaveEvent(this, atp));
     } catch (ValidationException e) {
       e.printStackTrace();
     }
   }
 
   // Events
-  public static abstract class WTAFormEvent extends ComponentEvent<WTAForm> {
-    private WTA wta;
+  public static abstract class ATPFormEvent extends ComponentEvent<ATPForm> {
+    private ATP atp;
 
-    protected WTAFormEvent(WTAForm source, WTA wta) {
+    protected ATPFormEvent(ATPForm source, ATP atp) {
       super(source, false);
-      this.wta = wta;
+      this.atp = atp;
     }
 
-    public WTA getWTA() {
-      return wta;
-    }
-  }
-
-  public static class SaveEvent extends WTAFormEvent {
-    SaveEvent(WTAForm source, WTA wta) {
-      super(source, wta);
+    public ATP getATP() {
+      return atp;
     }
   }
 
-  public static class DeleteEvent extends WTAFormEvent {
-    DeleteEvent(WTAForm source, WTA wta) {
-      super(source, wta);
+  public static class SaveEvent extends ATPFormEvent {
+    SaveEvent(ATPForm source, ATP atp) {
+      super(source, atp);
+    }
+  }
+
+  public static class DeleteEvent extends ATPFormEvent {
+    DeleteEvent(ATPForm source, ATP atp) {
+      super(source, atp);
     }
 
   }
 
-  public static class CloseEvent extends WTAFormEvent {
-    CloseEvent(WTAForm source) {
+  public static class CloseEvent extends ATPFormEvent {
+    CloseEvent(ATPForm source) {
       super(source, null);
     }
   }
