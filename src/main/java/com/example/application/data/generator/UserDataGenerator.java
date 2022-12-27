@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 
 import com.example.application.data.entity.User.User;
-import com.example.application.data.entity.User.Interests;
+import com.example.application.data.entity.Interests;
 
 import com.example.application.data.repository.InterestsRepository;
 import com.example.application.data.repository.UserRepository;

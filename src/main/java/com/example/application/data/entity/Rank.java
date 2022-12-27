@@ -1,18 +1,18 @@
-package com.example.application.data.entity.User;
+package com.example.application.data.entity;
+
+import com.example.application.data.AbstractEntity;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 
-import com.example.application.data.AbstractEntity;
-
 @Entity
-public class Interests extends AbstractEntity {
+public class Rank extends AbstractEntity {
     @NotBlank
     private String name;
 
-    public Interests() { }
+    public Rank() { }
 
-    public Interests(String name) {
+    public Rank(String name) {
         this.name = name;
     }
 

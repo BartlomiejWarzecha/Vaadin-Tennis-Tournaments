@@ -1,0 +1,18 @@
+package com.example.application.data.repository;
+
+import com.example.application.data.entity.Result.Result;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+public interface ResultRepository extends JpaRepository<Result, Integer> {
+
+    @Query("select r from Result r " +
+        " where lower(r.Name) like lower(concat('%', :searchTerm, '%')) " +
+            "or lower(r.Winner) like lower(concat('%', :searchTerm, '%'))" +
+            "or lower(r.rank) like lower(concat('%', :searchTerm, '%'))" +
+            "or lower(r.interest) like lower(concat('%', :searchTerm, '%'))")
+    List<Result> search(@Param("searchTerm") String searchTerm);
+}

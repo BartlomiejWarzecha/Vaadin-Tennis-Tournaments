@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.example.application.data.entity.Interests;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.example.application.data.AbstractEntity;
 
