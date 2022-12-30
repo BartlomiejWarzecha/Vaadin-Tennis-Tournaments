@@ -1,6 +1,7 @@
 package com.example.application.views;
 
 import com.example.application.security.SecurityService;
+import com.example.application.views.list.ResultView;
 import com.example.application.views.list.UserView;
 import com.example.application.views.list.ATPView;
 import com.example.application.views.list.WTAView;
@@ -46,17 +47,17 @@ public class MainLayout extends AppLayout {
         header.addClassNames("py-0", "px-m");
 
         addToNavbar(header);
-
     }
 
     private void createDrawer() {
-        RouterLink listLink = new RouterLink("Users", UserView.class);
-        RouterLink secondlistlink = new RouterLink("WTA", WTAView.class);
-        RouterLink thirdlistlink = new RouterLink("ATP", ATPView.class);
-        listLink.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink linkUsers = new RouterLink("Users", UserView.class);
+        RouterLink listWTA = new RouterLink("WTA", WTAView.class);
+        RouterLink listATP = new RouterLink("ATP", ATPView.class);
+        RouterLink listResults = new RouterLink("Result", ResultView.class);
+        linkUsers.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(
-            listLink, secondlistlink, thirdlistlink
+            linkUsers, listWTA, listATP, listResults
         ));
     }
 }

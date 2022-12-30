@@ -7,10 +7,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
+import com.example.application.data.entity.Rank;
 import com.example.application.data.entity.User.User;
 import com.example.application.data.entity.Interests;
 
 import com.example.application.data.repository.InterestsRepository;
+import com.example.application.data.repository.RankRepository;
+import com.example.application.data.repository.ResultRepository;
 import com.example.application.data.repository.UserRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 
@@ -25,11 +28,12 @@ import org.vaadin.artur.exampledata.ExampleDataGenerator;
 public class UserDataGenerator {
 
     @Bean
-    public CommandLineRunner loadUserData(UserRepository contactRepository, InterestsRepository interestsRepository) {
+    public CommandLineRunner loadUserData(UserRepository userRepository, InterestsRepository interestsRepository,
+                                          RankRepository rankRepository) {
 
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
-            if (contactRepository.count() != 0L) {
+            if (userRepository.count() != 0L) {
                 logger.info("Using existing database");
                 return;
             }
@@ -47,11 +51,11 @@ public class UserDataGenerator {
             contactGenerator.setData(User::setEmail, DataType.EMAIL);
 
             Random r = new Random(seed);
-            List<User> users = contactGenerator.create(1, seed).stream().peek(contact -> {
-                contact.setInterest(interests.get(r.nextInt(interests.size())));
+            List<User> users = contactGenerator.create(1, seed).stream().peek(user -> {
+                user.setInterest(interests.get(r.nextInt(interests.size())));
             }).collect(Collectors.toList());
 
-            contactRepository.saveAll(users);
+            userRepository.saveAll(users);
 
             logger.info("Generated demo data");
         };
