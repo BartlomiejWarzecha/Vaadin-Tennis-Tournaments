@@ -2,8 +2,10 @@ package com.example.application.data.generator;
 
 import com.example.application.data.entity.Stage;
 import com.example.application.data.entity.ATP.ATP;
+import com.example.application.data.entity.WTA.WTA;
 import com.example.application.data.repository.ATPRepository;
 import com.example.application.data.repository.StageRepository;
+import com.example.application.data.repository.WTARepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,41 +21,47 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SpringComponent
-public class ATPDataGenerator {
+public class ATPWTADataGenerator {
 
     @Bean
-    public CommandLineRunner loadATPData(ATPRepository atpRepository, StageRepository stageRepository) {
+    public CommandLineRunner loadATPWTAData(ATPRepository atpRepository, StageRepository stageRepository, WTARepository wtaRepository) {
 
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
-            if (atpRepository.count() != 0L) {
+            if (atpRepository.count() != 0L || wtaRepository.count() != 0L) {
                 logger.info("Using existing database");
                 return;
             }
             int seed = 123;
 
-            logger.info("Generating demo data");
-
             List<Stage> stages = stageRepository
                     .saveAll(Stream.of("Imported lead", "Not contacted", "Contacted", "Customer", "Closed (lost)")
                             .map(Stage::new).collect(Collectors.toList()));
 
-            logger.info("... generating 50 User entities...");
-            ExampleDataGenerator<ATP> wtaGenerator = new ExampleDataGenerator<>(ATP.class,
+            ExampleDataGenerator<ATP> atpTournamentGenerator = new ExampleDataGenerator<>(ATP.class,
                     LocalDateTime.now());
-            wtaGenerator.setData(ATP::setNickname, DataType.BOOK_TITLE);
-            wtaGenerator.setData(ATP::setAtpTournament, DataType.BOOK_GENRE);
-            wtaGenerator.setData(ATP::setPlayer, DataType.LAST_NAME);
+            atpTournamentGenerator.setData(ATP::setNickname, DataType.BOOK_TITLE);
+            atpTournamentGenerator.setData(ATP::setAtpTournament, DataType.BOOK_GENRE);
+            atpTournamentGenerator.setData(ATP::setPlayer, DataType.LAST_NAME);
 
+            ExampleDataGenerator<WTA> wtaTournamentGenerator = new ExampleDataGenerator<>(WTA.class,
+                    LocalDateTime.now());
+            wtaTournamentGenerator.setData(WTA::setNickname, DataType.BOOK_TITLE);
+            wtaTournamentGenerator.setData(WTA::setWtaTournament, DataType.BOOK_GENRE);
+            wtaTournamentGenerator.setData(WTA::setPlayer, DataType.LAST_NAME);
 
             Random r = new Random(seed);
-            List<ATP> atps = wtaGenerator.create(1, seed).stream().peek(wta -> {
+            List<ATP> atps = atpTournamentGenerator.create(1, seed).stream().peek(atp -> {
+                atp.setStage(stages.get(r.nextInt(stages.size())));
+            }).collect(Collectors.toList());
+
+            List<WTA> wtas = wtaTournamentGenerator.create(1, seed).stream().peek(wta -> {
                 wta.setStage(stages.get(r.nextInt(stages.size())));
             }).collect(Collectors.toList());
 
             atpRepository.saveAll(atps);
+            wtaRepository.saveAll(wtas);
 
-            logger.info("Generated demo data");
         };
     }
 

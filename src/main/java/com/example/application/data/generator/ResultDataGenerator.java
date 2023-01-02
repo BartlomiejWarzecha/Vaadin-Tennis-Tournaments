@@ -25,7 +25,7 @@ public class ResultDataGenerator {
 
     @Bean
     public CommandLineRunner loadResultData( ResultRepository resultRepository,
-                                          RankRepository rankRepository, InterestsRepository interestsRepository) {
+                                          RankRepository rankRepository) {
 
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
@@ -35,12 +35,8 @@ public class ResultDataGenerator {
             }
             int seed = 123;
 
-            logger.info("Generating demo data");
-
             List<Rank> ranks = rankRepository.saveAll(Stream.of("Grand Slam", "100", "500", "250", "Challenger")
                     .map(Rank::new).collect(Collectors.toList()));
-
-            logger.info("Generated demo data");
         };
     }
 
