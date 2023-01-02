@@ -11,8 +11,8 @@ import java.util.List;
 public interface ATPRepository extends JpaRepository<ATP, Integer> {
 
     @Query("select a from ATP a " +
-        " where lower(a.Nickname) like lower(concat('%', :searchTerm, '%')) " +
-            "or lower(a.ATPTournament) like lower(concat('%', :searchTerm, '%'))" +
-            "or lower(a.Player) like lower(concat('%', :searchTerm, '%'))")
+        " where lower(a.nickname) like lower(concat('%', :searchTerm, '%')) " +
+            "or lower(a.atpTournament) like lower(concat('%', :searchTerm, '%'))" +
+            "or lower(a.player) like lower(concat('%', :searchTerm, '%'))")
     List<ATP> search(@Param("searchTerm") String searchTerm);
 }

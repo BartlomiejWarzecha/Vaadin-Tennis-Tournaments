@@ -59,8 +59,8 @@ private void configureForm() {
     private void configureGrid() {
         grid.addClassNames("wta-grid");
         grid.setSizeFull();
-        grid.setColumns("nickname", "WTATournament", "player");
-        grid.addColumn(wta-> wta.getStage().getName()).setHeader("Stages");
+        grid.setColumns("nickname", "wtaTournament", "player");
+        grid.addColumn(wta-> wta.getStage().getName()).setHeader("Stage");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editWTA(event.getValue()));

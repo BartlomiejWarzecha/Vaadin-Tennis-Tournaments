@@ -59,8 +59,8 @@ private void configureForm() {
     private void configureGrid() {
         grid.addClassNames("atp-grid");
         grid.setSizeFull();
-        grid.setColumns("nickname", "ATPTournament", "player");
-        grid.addColumn(atp-> atp.getStage().getName()).setHeader("Stages");
+        grid.setColumns("nickname", "atpTournament", "player");
+        grid.addColumn(atp-> atp.getStage().getName()).setHeader("Stage");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editATP(event.getValue()));

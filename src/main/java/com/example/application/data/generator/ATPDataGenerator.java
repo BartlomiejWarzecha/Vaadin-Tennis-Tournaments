@@ -42,7 +42,7 @@ public class ATPDataGenerator {
             ExampleDataGenerator<ATP> wtaGenerator = new ExampleDataGenerator<>(ATP.class,
                     LocalDateTime.now());
             wtaGenerator.setData(ATP::setNickname, DataType.BOOK_TITLE);
-            wtaGenerator.setData(ATP::setATPTournament, DataType.BOOK_GENRE);
+            wtaGenerator.setData(ATP::setAtpTournament, DataType.BOOK_GENRE);
             wtaGenerator.setData(ATP::setPlayer, DataType.LAST_NAME);
 
 

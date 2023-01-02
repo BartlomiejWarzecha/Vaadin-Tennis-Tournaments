@@ -15,7 +15,7 @@ import com.example.application.data.AbstractEntity;
 public class User extends AbstractEntity {
 
     @NotEmpty
-    private String Nickname = "";
+    private String nickname = "";
 
     @ManyToOne
     @JoinColumn(name = "interest_id")
@@ -29,15 +29,15 @@ public class User extends AbstractEntity {
 
     @Override
     public String toString() {
-        return '"' + Nickname + '"';
+        return '"' + nickname + '"';
     }
 
     public String getNickname() {
-        return Nickname;
+        return nickname;
     }
 
     public void setNickname(String nickname) {
-        this.Nickname = nickname;
+        this.nickname = nickname;
     }
 
     public Interests getInterest() {

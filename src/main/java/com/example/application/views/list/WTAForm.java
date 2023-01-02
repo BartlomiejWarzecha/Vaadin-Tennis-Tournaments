@@ -22,9 +22,9 @@ public class WTAForm extends FormLayout {
   private WTA wta;
 
   TextField nickname = new TextField("Nickname");
-  TextField WTATournament = new TextField("WTATournament");
+  TextField wtaTournament = new TextField("Wta Tournament");
   TextField player  = new TextField("Player");
-  ComboBox<Stage> stage = new ComboBox<>("Stages");
+  ComboBox<Stage> stage = new ComboBox<>("Stage");
   Binder<WTA> binder = new BeanValidationBinder<>(WTA.class);
 
   Button save = new Button("Save");
@@ -37,7 +37,7 @@ public class WTAForm extends FormLayout {
     stage.setItems(stages);
     stage.setItemLabelGenerator(Stage::getName);
     add(nickname,
-          WTATournament,
+            wtaTournament,
             player,
           stage,
         createButtonsLayout()); 

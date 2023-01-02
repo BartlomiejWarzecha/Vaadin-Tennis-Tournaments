@@ -20,8 +20,8 @@ import java.util.List;
 
 public class ResultForm extends FormLayout {
   private Result result;
-  TextField name = new TextField("name");
-  TextField winner = new TextField("winner");
+  TextField tournament = new TextField("Tournament");
+  TextField winner = new TextField("Winner");
   ComboBox<Interests> interest = new ComboBox<>("Type");
   ComboBox<Rank> rank = new ComboBox<>("Rank");
   Binder<Result> binder = new BeanValidationBinder<>(Result.class);
@@ -39,7 +39,7 @@ public class ResultForm extends FormLayout {
     rank.setItems(ranks);
     rank.setItemLabelGenerator(Rank::getName);
 
-    add(name,
+    add(tournament,
           winner,
           interest,
           rank,

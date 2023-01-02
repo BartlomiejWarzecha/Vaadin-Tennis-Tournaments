@@ -15,10 +15,10 @@ import javax.validation.constraints.NotNull;
 public class Result extends AbstractEntity {
 
     @NotEmpty
-    private String Name = "";
+    private String tournament = "";
 
     @NotEmpty
-    private String Winner = "";
+    private String winner = "";
 
     @ManyToOne
     @JoinColumn(name = "interest_id")
@@ -34,20 +34,20 @@ public class Result extends AbstractEntity {
 
     @Override
     public String toString() {
-        return '"' + Name + '"';
+        return '"' + tournament + '"';
     }
-    public String getName() {
-        return Name;
+    public String getTournament() {
+        return tournament;
     }
-    public void setName(String name) {
-        this.Name = name;
+    public void setTournament(String Name) {
+        this.tournament = Name;
     }
 
     public String getWinner() {
-        return Winner;
+        return winner;
     }
-    public void setWinner(String winner) {
-        Winner = winner;
+    public void setWinner(String Winner) {
+        Winner = Winner;
     }
     public Interests getInterest() {
         return interest;

@@ -60,7 +60,7 @@ private void configureForm() {
         grid.addClassNames("result-grid");
         grid.setSizeFull();
 
-        grid.setColumns("name", "winner");
+        grid.setColumns("tournament", "winner");
         grid.addColumn(result-> result.getInterest().getName()).setHeader("Type");
         grid.addColumn(result-> result.getRank().getName()).setHeader("Rank");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));

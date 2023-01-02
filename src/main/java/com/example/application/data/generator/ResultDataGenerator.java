@@ -37,9 +37,6 @@ public class ResultDataGenerator {
 
             logger.info("Generating demo data");
 
-            List<Interests> interests = interestsRepository.saveAll(Stream.of("ATP", "WTA", "ATP/WTA")
-                    .map(Interests::new).collect(Collectors.toList()));
-
             List<Rank> ranks = rankRepository.saveAll(Stream.of("Grand Slam", "100", "500", "250", "Challenger")
                     .map(Rank::new).collect(Collectors.toList()));
 

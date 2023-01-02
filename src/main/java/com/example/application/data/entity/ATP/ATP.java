@@ -14,13 +14,13 @@ import javax.validation.constraints.NotNull;
 public class ATP extends AbstractEntity {
 
     @NotEmpty
-    private String Nickname = "";
+    private String nickname = "";
 
     @NotEmpty
-    private String Player = "";
+    private String player = "";
 
     @NotEmpty
-    private String ATPTournament;
+    private String atpTournament;
 
     @ManyToOne
     @JoinColumn(name = "stage_id")
@@ -30,22 +30,22 @@ public class ATP extends AbstractEntity {
 
     @Override
     public String toString() {
-        return '"' + Nickname + '"';
+        return '"' + nickname + '"';
     }
 
     public String getNickname() {
-        return Nickname;
+        return nickname;
     }
 
     public void setNickname(String nickname) {
-        this.Nickname = nickname;
+        this.nickname = nickname;
     }
     public String getPlayer() {
-        return Player;
+        return player;
     }
 
     public void setPlayer(String player) {
-        Player = player;
+        this.player = player;
     }
 
     public Stage getStage() {
@@ -56,11 +56,11 @@ public class ATP extends AbstractEntity {
         this.stage = stage;
     }
 
-    public String getATPTournament() {
-        return ATPTournament;
+    public String getAtpTournament() {
+        return atpTournament;
     }
 
-    public void setATPTournament(String ATPTournament) {
-        this.ATPTournament = ATPTournament;
+    public void setAtpTournament(String atpTournament) {
+        this.atpTournament = atpTournament;
     }
 }

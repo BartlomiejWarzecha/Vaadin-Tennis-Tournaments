@@ -28,8 +28,8 @@ import org.vaadin.artur.exampledata.ExampleDataGenerator;
 public class UserDataGenerator {
 
     @Bean
-    public CommandLineRunner loadUserData(UserRepository userRepository, InterestsRepository interestsRepository,
-                                          RankRepository rankRepository) {
+    public CommandLineRunner loadUserData(UserRepository userRepository, InterestsRepository interestsRepository
+                                          ) {
 
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());

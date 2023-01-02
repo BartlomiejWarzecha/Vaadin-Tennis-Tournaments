@@ -21,9 +21,9 @@ import java.util.List;
 public class ATPForm extends FormLayout {
   private ATP atp;
   TextField nickname = new TextField("Nickname");
-  TextField ATPTournament = new TextField("ATPTournament");
+  TextField atpTournament = new TextField("Atp Tournament");
   TextField player  = new TextField("Player");
-  ComboBox<Stage> stage = new ComboBox<>("Stages");
+  ComboBox<Stage> stage = new ComboBox<>("Stage");
   Binder<ATP> binder = new BeanValidationBinder<>(ATP.class);
 
   Button save = new Button("Save");
@@ -36,7 +36,7 @@ public class ATPForm extends FormLayout {
     stage.setItems(stages);
     stage.setItemLabelGenerator(Stage::getName);
     add(nickname,
-          ATPTournament,
+            atpTournament,
             player,
           stage,
         createButtonsLayout()); 
