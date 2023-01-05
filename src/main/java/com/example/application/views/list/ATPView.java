@@ -1,6 +1,6 @@
 package com.example.application.views.list;
 import com.example.application.data.entity.ATP.ATP;
-import com.example.application.data.service.CrmService;
+import com.example.application.data.service.MainService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,16 +19,16 @@ import javax.annotation.security.PermitAll;
 @Component
 @Scope("prototype")
 @Route(value = "ATP", layout = MainLayout.class)
-@PageTitle("ATP | Tennis Tournaments")
+@PageTitle("ATP | Vaadin Tennis Tournaments")
 @PermitAll
 public class ATPView extends VerticalLayout {
     Grid<ATP> grid = new Grid<>(ATP.class);
     TextField filterText = new TextField();
     ATPForm form;
-    CrmService service;
+    MainService mainService;
 
-    public ATPView(CrmService service) {
-        this.service = service;
+    public ATPView(MainService mainService) {
+        this.mainService = mainService;
         addClassName("atp-view");
         setSizeFull();
         configureGrid();
@@ -49,7 +49,7 @@ public class ATPView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new ATPForm(service.findAllStages());
+    form = new ATPForm(mainService.findAllStages());
     form.setWidth("25em");
     form.addListener(ATPForm.SaveEvent.class, this::saveATP);
     form.addListener(ATPForm.DeleteEvent.class, this::deleteATP);
@@ -81,13 +81,13 @@ private void configureForm() {
     }
 
     private void saveATP(ATPForm.SaveEvent event) {
-        service.saveATP(event.getATP());
+        mainService.saveATP(event.getATP());
         updateList();
         closeEditor();
     }
 
     private void deleteATP(ATPForm.DeleteEvent event) {
-        service.deleteATP(event.getATP());
+        mainService.deleteATP(event.getATP());
 
         updateList();
         closeEditor();
@@ -115,6 +115,6 @@ private void configureForm() {
     }
 
     private void updateList() {
-        grid.setItems(service.findAllATP(filterText.getValue()));
+        grid.setItems(mainService.findAllATP(filterText.getValue()));
     }
 }

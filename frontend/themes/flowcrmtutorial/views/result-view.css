@@ -1,0 +1,7 @@
+
+@media all and (max-width: 1100px) {
+  .result-view.editing .toolbar,
+  .result-view.editing .result-grid{
+    display: none;
+  }
+}

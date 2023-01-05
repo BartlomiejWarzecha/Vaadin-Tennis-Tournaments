@@ -14,12 +14,11 @@ import com.example.application.data.repository.RankRepository;
 import com.example.application.data.repository.UserRepository;
 import com.example.application.data.repository.WTARepository;
 import com.example.application.data.repository.ATPRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class CrmService {
+@org.springframework.stereotype.Service
+public class MainService {
 
     private final UserRepository userRepository;
     private final WTARepository wtaRepository;
@@ -29,8 +28,8 @@ public class CrmService {
     private final StageRepository stageRepository;
     private final RankRepository rankRepository;
 
-    public CrmService(UserRepository userRepository, WTARepository wtaRepository, ATPRepository atpRepository, ResultRepository resultRepository,
-                      InterestsRepository interestsRepository, StageRepository stageRepository, RankRepository rankRepository
+    public MainService(UserRepository userRepository, WTARepository wtaRepository, ATPRepository atpRepository, ResultRepository resultRepository,
+                       InterestsRepository interestsRepository, StageRepository stageRepository, RankRepository rankRepository
     ) {
         this.userRepository = userRepository;
         this.wtaRepository = wtaRepository;

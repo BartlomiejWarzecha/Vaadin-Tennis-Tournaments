@@ -1,7 +1,7 @@
 package com.example.application.views.list;
 
 import com.example.application.data.entity.User.User;
-import com.example.application.data.service.CrmService;
+import com.example.application.data.service.MainService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -20,16 +20,16 @@ import javax.annotation.security.PermitAll;
 @Component
 @Scope("prototype")
 @Route(value = "", layout = MainLayout.class)
-@PageTitle("Users | Tennis Tournaments")
+@PageTitle("Users | Vaadin Tennis Tournaments")
 @PermitAll
 public class UserView extends VerticalLayout {
     Grid<User> grid = new Grid<>(User.class);
     TextField filterText = new TextField();
     UserForm form;
-    CrmService service;
+    MainService mainService;
 
-    public UserView(CrmService service) {
-        this.service = service;
+    public UserView(MainService mainService) {
+        this.mainService = mainService;
         addClassName("user-view");
         setSizeFull();
         configureGrid();
@@ -50,7 +50,7 @@ public class UserView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new UserForm(service.findAllInterests());
+    form = new UserForm(mainService.findAllInterests());
     form.setWidth("25em");
     form.addListener(UserForm.SaveEvent.class, this::saveContact);
     form.addListener(UserForm.DeleteEvent.class, this::deleteContact);
@@ -82,13 +82,13 @@ private void configureForm() {
     }
 
     private void saveContact(UserForm.SaveEvent event) {
-        service.saveUser(event.getUser());
+        mainService.saveUser(event.getUser());
         updateList();
         closeEditor();
     }
 
     private void deleteContact(UserForm.DeleteEvent event) {
-        service.deleteUser(event.getUser());
+        mainService.deleteUser(event.getUser());
         updateList();
         closeEditor();
     }
@@ -115,6 +115,6 @@ private void configureForm() {
     }
 
     private void updateList() {
-        grid.setItems(service.findAllUsers(filterText.getValue()));
+        grid.setItems(mainService.findAllUsers(filterText.getValue()));
     }
 }

@@ -1,6 +1,6 @@
 package com.example.application.views.list;
 import com.example.application.data.entity.Result.Result;
-import com.example.application.data.service.CrmService;
+import com.example.application.data.service.MainService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,16 +19,16 @@ import javax.annotation.security.PermitAll;
 @Component
 @Scope("prototype")
 @Route(value = "Result", layout = MainLayout.class)
-@PageTitle("Results | Tennis Tournaments")
+@PageTitle("Results | Vaadin Tennis Tournaments")
 @PermitAll
 public class ResultView extends VerticalLayout {
     Grid<Result> grid = new Grid<>(Result.class);
     TextField filterText = new TextField();
     ResultForm form;
-    CrmService service;
+    MainService mainService;
 
-    public ResultView(CrmService service) {
-        this.service = service;
+    public ResultView(MainService mainService) {
+        this.mainService = mainService;
         addClassName("result-view");
         setSizeFull();
         configureGrid();
@@ -49,7 +49,7 @@ public class ResultView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new ResultForm(service.findAllInterests(), service.findAllRanks());
+    form = new ResultForm(mainService.findAllInterests(), mainService.findAllRanks());
     form.setWidth("25em");
     form.addListener(ResultForm.SaveEvent.class, this::saveResult);
     form.addListener(ResultForm.DeleteEvent.class, this::deleteResult);
@@ -82,13 +82,13 @@ private void configureForm() {
     }
 
     private void saveResult(ResultForm.SaveEvent event) {
-        service.saveResult(event.getResult());
+        mainService.saveResult(event.getResult());
         updateList();
         closeEditor();
     }
 
     private void deleteResult(ResultForm.DeleteEvent event) {
-        service.deleteResult(event.getResult());
+        mainService.deleteResult(event.getResult());
 
         updateList();
         closeEditor();
@@ -116,6 +116,6 @@ private void configureForm() {
     }
 
     private void updateList() {
-        grid.setItems(service.findAllResult(filterText.getValue()));
+        grid.setItems(mainService.findAllResult(filterText.getValue()));
     }
 }

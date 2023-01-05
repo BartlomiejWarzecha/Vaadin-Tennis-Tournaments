@@ -1,0 +1,7 @@
+
+@media all and (max-width: 1100px) {
+  .atp-view.editing .toolbar,
+  .atp-view.editing .atp-grid {
+    display: none;
+  }
+}

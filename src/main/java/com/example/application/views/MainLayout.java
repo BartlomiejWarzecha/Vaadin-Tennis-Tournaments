@@ -19,8 +19,8 @@ import com.vaadin.flow.theme.Theme;
 
 @Theme(themeFolder = "flowcrmtutorial")
 @PWA(
-    name = "VaadinCRM",
-    shortName = "CRM",
+    name = "Tenis Tournament",
+    shortName = "TT",
     offlinePath="offline.html",
     offlineResources = { "./images/offline.png"}
 )
@@ -34,7 +34,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void createHeader() {
-        H1 logo = new H1("Tennis Tournaments");
+        H1 logo = new H1("Vaadin Tennis Tournaments");
         logo.addClassNames("text-l", "m-m");
 
         Button logout = new Button("Log out", e -> securityService.logout());

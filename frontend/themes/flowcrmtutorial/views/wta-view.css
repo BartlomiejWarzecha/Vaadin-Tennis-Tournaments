@@ -1,0 +1,7 @@
+
+@media all and (max-width: 1100px) {
+  .wta-view.editing .toolbar,
+  .wta-view.editing .wta-grid {
+    display: none;
+  }
+}

@@ -1,6 +1,6 @@
 package com.example.application.views.list;
 import com.example.application.data.entity.WTA.WTA;
-import com.example.application.data.service.CrmService;
+import com.example.application.data.service.MainService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,16 +19,16 @@ import javax.annotation.security.PermitAll;
 @Component
 @Scope("prototype")
 @Route(value = "WTA", layout = MainLayout.class)
-@PageTitle("WTA | Tennis Tournaments")
+@PageTitle("WTA | Vaadin Tennis Tournaments")
 @PermitAll
 public class WTAView extends VerticalLayout {
     Grid<WTA> grid = new Grid<>(WTA.class);
     TextField filterText = new TextField();
     WTAForm form;
-    CrmService service;
+    MainService mainService;
 
-    public WTAView(CrmService service) {
-        this.service = service;
+    public WTAView(MainService mainService) {
+        this.mainService = mainService;
         addClassName("wta-view");
         setSizeFull();
         configureGrid();
@@ -49,7 +49,7 @@ public class WTAView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new WTAForm(service.findAllStages());
+    form = new WTAForm(mainService.findAllStages());
     form.setWidth("25em");
     form.addListener(WTAForm.SaveEvent.class, this::saveWTA);
     form.addListener(WTAForm.DeleteEvent.class, this::deleteWTA);
@@ -81,13 +81,13 @@ private void configureForm() {
     }
 
     private void saveWTA(WTAForm.SaveEvent event) {
-        service.saveWTA(event.getWTA());
+        mainService.saveWTA(event.getWTA());
         updateList();
         closeEditor();
     }
 
     private void deleteWTA(WTAForm.DeleteEvent event) {
-        service.deleteWTA(event.getWTA());
+        mainService.deleteWTA(event.getWTA());
         updateList();
         closeEditor();
     }
@@ -114,6 +114,6 @@ private void configureForm() {
     }
 
     private void updateList() {
-        grid.setItems(service.findAllWTA(filterText.getValue()));
+        grid.setItems(mainService.findAllWTA(filterText.getValue()));
     }
 }
