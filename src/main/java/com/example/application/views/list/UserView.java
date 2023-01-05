@@ -4,6 +4,7 @@ import com.example.application.data.entity.User.User;
 import com.example.application.data.service.MainService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -73,10 +74,12 @@ private void configureForm() {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addContactButton = new Button("Add user");
-        addContactButton.addClickListener(click -> addContact());
+        Button addUserButton = new Button("Add user");
+        addUserButton.addClickListener(click -> addContact());
+        addUserButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContactButton);
+
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }

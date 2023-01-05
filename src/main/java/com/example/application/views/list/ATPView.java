@@ -3,6 +3,7 @@ import com.example.application.data.entity.ATP.ATP;
 import com.example.application.data.service.MainService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -73,6 +74,7 @@ private void configureForm() {
         filterText.addValueChangeListener(e -> updateList());
 
         Button addPredicionButton = new Button("Add prediction");
+        addPredicionButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         addPredicionButton.addClickListener(click -> addATP());
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton);
