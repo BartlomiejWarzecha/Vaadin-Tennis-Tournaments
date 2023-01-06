@@ -53,6 +53,7 @@ public class UserView extends VerticalLayout {
 private void configureForm() {
     form = new UserForm(mainService.findAllInterests());
     form.setWidth("25em");
+    form.setHeight("40em");
     form.addListener(UserForm.SaveEvent.class, this::saveContact);
     form.addListener(UserForm.DeleteEvent.class, this::deleteContact);
     form.addListener(UserForm.CloseEvent.class, e -> closeEditor());

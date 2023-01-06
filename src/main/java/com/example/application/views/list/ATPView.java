@@ -52,6 +52,7 @@ public class ATPView extends VerticalLayout {
 private void configureForm() {
     form = new ATPForm(mainService.findAllStages());
     form.setWidth("25em");
+    form.setHeight("40em");
     form.addListener(ATPForm.SaveEvent.class, this::saveATP);
     form.addListener(ATPForm.DeleteEvent.class, this::deleteATP);
     form.addListener(ATPForm.CloseEvent.class, e -> closeEditor());

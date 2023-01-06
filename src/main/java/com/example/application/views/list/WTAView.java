@@ -52,6 +52,7 @@ public class WTAView extends VerticalLayout {
 private void configureForm() {
     form = new WTAForm(mainService.findAllStages());
     form.setWidth("25em");
+    form.setHeight("40em");
     form.addListener(WTAForm.SaveEvent.class, this::saveWTA);
     form.addListener(WTAForm.DeleteEvent.class, this::deleteWTA);
     form.addListener(WTAForm.CloseEvent.class, e -> closeEditor());

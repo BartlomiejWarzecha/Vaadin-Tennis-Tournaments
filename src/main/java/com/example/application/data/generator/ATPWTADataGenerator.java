@@ -55,7 +55,7 @@ public class ATPWTADataGenerator {
                 atp.setStage(stages.get(r.nextInt(stages.size())));
             }).collect(Collectors.toList());
 
-            List<WTA> wtas = wtaTournamentGenerator.create(1, seed).stream().peek(wta -> {
+            List<WTA> wtas = wtaTournamentGenerator.create(50, seed).stream().peek(wta -> {
                 wta.setStage(stages.get(r.nextInt(stages.size())));
             }).collect(Collectors.toList());
 

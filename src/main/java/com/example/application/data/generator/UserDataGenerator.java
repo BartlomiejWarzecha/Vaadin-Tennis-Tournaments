@@ -49,7 +49,7 @@ public class UserDataGenerator {
             contactGenerator.setData(User::setEmail, DataType.EMAIL);
 
             Random r = new Random(seed);
-            List<User> users = contactGenerator.create(5, seed).stream().peek(user -> {
+            List<User> users = contactGenerator.create(50, seed).stream().peek(user -> {
                 user.setInterest(interests.get(r.nextInt(interests.size())));
             }).collect(Collectors.toList());
 

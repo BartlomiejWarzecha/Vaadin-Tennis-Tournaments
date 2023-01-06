@@ -52,6 +52,7 @@ public class ResultView extends VerticalLayout {
 private void configureForm() {
     form = new ResultForm(mainService.findAllInterests(), mainService.findAllRanks());
     form.setWidth("25em");
+    form.setHeight("40em");
     form.addListener(ResultForm.SaveEvent.class, this::saveResult);
     form.addListener(ResultForm.DeleteEvent.class, this::deleteResult);
     form.addListener(ResultForm.CloseEvent.class, e -> closeEditor());
