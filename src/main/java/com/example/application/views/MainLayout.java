@@ -17,10 +17,10 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 
-@Theme(themeFolder = "flowcrmtutorial")
+@Theme(themeFolder = "vaadinTennisTournament")
 @PWA(
-    name = "Tenis Tournament",
-    shortName = "TT",
+    name = "Vaadin Tennis Tournament",
+    shortName = "Vaadin TT",
     offlinePath="offline.html",
     offlineResources = { "./images/offline.png"}
 )
