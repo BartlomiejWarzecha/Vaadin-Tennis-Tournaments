@@ -1,9 +1,9 @@
 package com.example.application.data.service;
 
 import com.example.application.data.entity.Interests;
+import com.example.application.data.entity.Stage;
 import com.example.application.data.entity.User.User;
 import com.example.application.data.entity.ATP.ATP;
-import com.example.application.data.entity.Stage;
 import com.example.application.data.entity.Rank;
 import com.example.application.data.entity.WTA.WTA;
 import com.example.application.data.entity.Result.Result;

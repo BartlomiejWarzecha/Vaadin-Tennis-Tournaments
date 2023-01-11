@@ -7,13 +7,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-import com.example.application.data.entity.Rank;
 import com.example.application.data.entity.User.User;
 import com.example.application.data.entity.Interests;
 
 import com.example.application.data.repository.InterestsRepository;
-import com.example.application.data.repository.RankRepository;
-import com.example.application.data.repository.ResultRepository;
 import com.example.application.data.repository.UserRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 
