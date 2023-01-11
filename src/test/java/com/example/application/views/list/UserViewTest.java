@@ -18,7 +18,7 @@ public class UserViewTest {
     private UserView userView;
 
     @Test
-    public void formShownWhenContactSelected() {
+    public void formShownWhenUserSelected() {
         Grid<User> grid = userView.grid;
         User firstUser = getFirstItem(grid);
 

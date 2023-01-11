@@ -1,6 +1,6 @@
 package com.example.application.views.list;
 
-import com.example.application.data.entity.WTA.WTA;
+import com.example.application.data.entity.User.User;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.junit.Assert;
@@ -12,24 +12,24 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class WTAViewTest {
+public class ATPViewTest {
 
     @Autowired
-    private WTAView wtaView;
+    private UserView userView;
 
     @Test
-    public void formShownWheUserSelected() {
-        Grid<WTA> grid = wtaView.grid;
-        WTA firstWTA = getFirstItem(grid);
+    public void formShownWhenContactSelected() {
+        Grid<User> grid = userView.grid;
+        User firstUser = getFirstItem(grid);
 
-        WTAForm form = wtaView.form;
+        UserForm form = userView.form;
 
         Assert.assertFalse(form.isVisible());
-        grid.asSingleSelect().setValue(firstWTA);
+        grid.asSingleSelect().setValue(firstUser);
         Assert.assertTrue(form.isVisible());
-        Assert.assertEquals(firstWTA.getNickname(), form.nickname.getValue());
+        Assert.assertEquals(firstUser.getNickname(), form.nickname.getValue());
     }
-    private WTA getFirstItem(Grid<WTA> grid) {
-        return( (ListDataProvider<WTA>) grid.getDataProvider()).getItems().iterator().next();
+    private User getFirstItem(Grid<User> grid) {
+        return( (ListDataProvider<User>) grid.getDataProvider()).getItems().iterator().next();
     }
 }
