@@ -51,11 +51,14 @@ public class ATPWTADataGenerator {
             wtaTournamentGenerator.setData(WTA::setPlayer, DataType.LAST_NAME);
 
             Random r = new Random(seed);
-            List<ATP> atps = atpTournamentGenerator.create(1, seed).stream().peek(atp -> {
+
+            logger.info("... generating 5 ATP/WTA entities...");
+
+            List<ATP> atps = atpTournamentGenerator.create(5, seed).stream().peek(atp -> {
                 atp.setStage(stages.get(r.nextInt(stages.size())));
             }).collect(Collectors.toList());
 
-            List<WTA> wtas = wtaTournamentGenerator.create(50, seed).stream().peek(wta -> {
+            List<WTA> wtas = wtaTournamentGenerator.create(5, seed).stream().peek(wta -> {
                 wta.setStage(stages.get(r.nextInt(stages.size())));
             }).collect(Collectors.toList());
 

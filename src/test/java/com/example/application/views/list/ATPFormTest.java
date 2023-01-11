@@ -1,7 +1,7 @@
 package com.example.application.views.list;
 
 import com.example.application.data.entity.Stage;
-import com.example.application.data.entity.WTA.WTA;
+import com.example.application.data.entity.ATP.ATP;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ATPFormTest {
     private List<Stage> stage;
-    private WTA wta;
+    private ATP atp;
     private Stage stage1;
     private Stage stage2;
 
@@ -29,46 +29,45 @@ public class ATPFormTest {
         stage.add(stage1);
         stage.add(stage2);
 
-        wta = new WTA();
-        wta.setNickname("BW");
-        wta.setWtaTournament("Wimbledon");
-        wta.setPlayer("Iga Świątek");
-        wta.setStage(stage1);
+        atp = new ATP();
+        atp.setNickname("BW");
+        atp.setAtpTournament("Wimbledon");
+        atp.setPlayer("Hubert Hurkacz");
+        atp.setStage(stage1);
     }
 
 @Test
 public void formFieldsPopulated() {
-    WTAForm form = new WTAForm(stage);
-    form.setWTA(wta);
+    ATPForm form = new ATPForm(stage);
+    form.setATP(atp);
 
     Assert.assertEquals("BW", form.nickname.getValue());
-    Assert.assertEquals("Wimbledon", form.wtaTournament.getValue());
-    Assert.assertEquals("Iga Świątek", form.player.getValue());
+    Assert.assertEquals("Wimbledon", form.atpTournament.getValue());
+    Assert.assertEquals("Hubert Hurkacz", form.player.getValue());
     Assert.assertEquals(stage1, form.stage.getValue());
 }
 
 @Test
 public void saveEventHasCorrectValues() {
-    WTAForm form = new WTAForm(stage);
-    WTA wta = new WTA();
-    form.setWTA(wta);
+    ATPForm form = new ATPForm(stage);
+    ATP atp = new ATP();
+    form.setATP(atp);
     form.nickname.setValue("BW");
-
     form.stage.setValue(stage1);
-    form.wtaTournament.setValue("Australian Open");
-    form.player.setValue("Naomi Osaka");
+    form.atpTournament.setValue("Australian Open");
+    form.player.setValue("Rafael Nadal");
 
-    AtomicReference<WTA> savedWTARef = new AtomicReference<>(null);
-    form.addListener(WTAForm.SaveEvent.class, e -> {
-        savedWTARef.set(e.getWTA());
+    AtomicReference<ATP> savedATPRef = new AtomicReference<>(null);
+    form.addListener(ATPForm.SaveEvent.class, e -> {
+        savedATPRef.set(e.getATP());
     });
     form.save.click();
-    WTA savedUser = savedWTARef.get();
+    ATP savedATP = savedATPRef.get();
 
-    Assert.assertEquals("BW", savedUser.getNickname());
-    Assert.assertEquals("Australian Open", form.wtaTournament.getValue());
-    Assert.assertEquals("Naomi Osaka", form.player.getValue());
-    Assert.assertEquals(stage1, form.stage.getValue());
+    Assert.assertEquals("BW", savedATP.getNickname());
+    Assert.assertEquals("Australian Open", savedATP.getAtpTournament());
+    Assert.assertEquals("Rafael Nadal", savedATP.getPlayer());
+    Assert.assertEquals(stage1, savedATP.getStage());
 
 }
 }

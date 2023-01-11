@@ -18,7 +18,7 @@ public class WTAViewTest {
     private WTAView wtaView;
 
     @Test
-    public void formShownWheUserSelected() {
+    public void formShownWhenUserSelected() {
         Grid<WTA> grid = wtaView.grid;
         WTA firstWTA = getFirstItem(grid);
 

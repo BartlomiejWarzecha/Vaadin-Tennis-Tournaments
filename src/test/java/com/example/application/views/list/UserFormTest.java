@@ -15,25 +15,25 @@ import java.util.concurrent.atomic.AtomicReference;
 public class UserFormTest {
     private List<Interests> interests;
     private User user;
-    private Interests interests1;
-    private Interests interests2;
+    private Interests interest1;
+    private Interests interest2;
 
     @Before
     public void setupData() {
         interests = new ArrayList<>();
 
-        interests1 = new Interests();
-        interests1.setName("ATP Test");
-        interests2 = new Interests();
-        interests2.setName("WTA Test");
+        interest1 = new Interests();
+        interest1.setName("ATP Test");
+        interest2 = new Interests();
+        interest2.setName("WTA Test");
 
-        interests.add(interests1);
-        interests.add(interests2);
+        interests.add(interest1);
+        interests.add(interest2);
 
         user = new User();
         user.setNickname("Marc");
         user.setEmail("marc@user.com");
-        user.setInterest(interests2);
+        user.setInterest(interest2);
     }
 
 @Test
@@ -43,7 +43,7 @@ public void formFieldsPopulated() {
 
     Assert.assertEquals("Marc", form.nickname.getValue());
     Assert.assertEquals("marc@user.com", form.email.getValue());
-    Assert.assertEquals(interests2, form.interest.getValue());
+    Assert.assertEquals(interest2, form.interest.getValue());
 
 }
 
@@ -54,7 +54,7 @@ public void saveEventHasCorrectValues() {
     form.setUser(user);
     form.nickname.setValue("John");
 
-    form.interest.setValue(interests1);
+    form.interest.setValue(interest1);
     form.email.setValue("john@doe.com");
 
     AtomicReference<User> savedUserRef = new AtomicReference<>(null);
@@ -66,7 +66,7 @@ public void saveEventHasCorrectValues() {
 
     Assert.assertEquals("John", savedUser.getNickname());
     Assert.assertEquals("john@doe.com", savedUser.getEmail());
-    Assert.assertEquals(interests1, savedUser.getInterest());
+    Assert.assertEquals(interest1, savedUser.getInterest());
 
 }
 }

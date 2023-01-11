@@ -36,17 +36,16 @@ public class UserDataGenerator {
             }
             int seed = 123;
 
-            List<Interests> interests = interestsRepository.saveAll(Stream.of("ATP", "WTA", "ATP/WTA")
-                    .map(Interests::new).collect(Collectors.toList()));
+            List<Interests> interests = interestsRepository.findAll();
 
             logger.info("... generating 5 User entities...");
             ExampleDataGenerator<User> contactGenerator = new ExampleDataGenerator<>(User.class,
                     LocalDateTime.now());
             contactGenerator.setData(User::setNickname, DataType.FIRST_NAME);
-            contactGenerator.setData(User::setEmail, DataType.EMAIL);
+            contactGenerator.setData(User::setEmail, DataType.LAST_NAME);
 
             Random r = new Random(seed);
-            List<User> users = contactGenerator.create(50, seed).stream().peek(user -> {
+            List<User> users = contactGenerator.create(5, seed).stream().peek(user -> {
                 user.setInterest(interests.get(r.nextInt(interests.size())));
             }).collect(Collectors.toList());
 

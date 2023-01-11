@@ -99,7 +99,6 @@ public class MainService {
             return atpRepository.search(stringFilter);
         }
     }
-
     public void deleteATP (ATP atp){
         atpRepository.delete(atp);
     }
@@ -112,7 +111,6 @@ public class MainService {
         atpRepository.save(atp);
     }
 
-
     public List<Result> findAllResult(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return resultRepository.findAll();
@@ -120,7 +118,6 @@ public class MainService {
             return resultRepository.search(stringFilter);
         }
     }
-
     public void deleteResult (Result result){
         resultRepository.delete(result);
     }
@@ -132,8 +129,5 @@ public class MainService {
         }
         resultRepository.save(result);
     }
-
-
-
 
 }

@@ -1,6 +1,6 @@
 package com.example.application.views.list;
 
-import com.example.application.data.entity.User.User;
+import com.example.application.data.entity.ATP.ATP;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.junit.Assert;
@@ -15,21 +15,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ATPViewTest {
 
     @Autowired
-    private UserView userView;
+    private ATPView atpView;
 
     @Test
-    public void formShownWhenContactSelected() {
-        Grid<User> grid = userView.grid;
-        User firstUser = getFirstItem(grid);
+    public void formShownWhenATPSelected() {
+        Grid<ATP> grid = atpView.grid;
+        ATP firstATP = getFirstItem(grid);
 
-        UserForm form = userView.form;
+        ATPForm form = atpView.form;
 
         Assert.assertFalse(form.isVisible());
-        grid.asSingleSelect().setValue(firstUser);
+        grid.asSingleSelect().setValue(firstATP);
         Assert.assertTrue(form.isVisible());
-        Assert.assertEquals(firstUser.getNickname(), form.nickname.getValue());
+        Assert.assertEquals(firstATP.getNickname(), form.nickname.getValue());
     }
-    private User getFirstItem(Grid<User> grid) {
-        return( (ListDataProvider<User>) grid.getDataProvider()).getItems().iterator().next();
+    private ATP getFirstItem(Grid<ATP> grid) {
+        return( (ListDataProvider<ATP>) grid.getDataProvider()).getItems().iterator().next();
     }
 }

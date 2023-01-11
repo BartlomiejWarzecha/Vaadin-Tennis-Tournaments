@@ -63,12 +63,11 @@ public void saveEventHasCorrectValues() {
         savedWTARef.set(e.getWTA());
     });
     form.save.click();
-    WTA savedUser = savedWTARef.get();
+    WTA savedWTA = savedWTARef.get();
 
-    Assert.assertEquals("BW", savedUser.getNickname());
-    Assert.assertEquals("Australian Open", form.wtaTournament.getValue());
-    Assert.assertEquals("Naomi Osaka", form.player.getValue());
-    Assert.assertEquals(stage1, form.stage.getValue());
-
+    Assert.assertEquals("BW", savedWTA.getNickname());
+    Assert.assertEquals("Australian Open", savedWTA.getWtaTournament());
+    Assert.assertEquals("Naomi Osaka", savedWTA.getPlayer());
+    Assert.assertEquals(stage1, savedWTA.getStage());
 }
 }

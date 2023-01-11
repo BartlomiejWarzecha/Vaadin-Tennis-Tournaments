@@ -47,7 +47,7 @@ public class Result extends AbstractEntity {
         return winner;
     }
     public void setWinner(String Winner) {
-        Winner = Winner;
+        this.winner = Winner;
     }
     public Interests getInterest() {
         return interest;
