@@ -42,7 +42,7 @@ public class UserDataGenerator {
             ExampleDataGenerator<User> contactGenerator = new ExampleDataGenerator<>(User.class,
                     LocalDateTime.now());
             contactGenerator.setData(User::setNickname, DataType.FIRST_NAME);
-            contactGenerator.setData(User::setEmail, DataType.LAST_NAME);
+            contactGenerator.setData(User::setEmail, DataType.EMAIL);
 
             Random r = new Random(seed);
             List<User> users = contactGenerator.create(5, seed).stream().peek(user -> {
