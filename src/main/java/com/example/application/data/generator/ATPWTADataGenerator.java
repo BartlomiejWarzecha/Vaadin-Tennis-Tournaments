@@ -35,7 +35,7 @@ public class ATPWTADataGenerator {
             int seed = 123;
 
             List<Stage> stages = stageRepository
-                    .saveAll(Stream.of("Imported lead", "Not contacted", "Contacted", "Customer", "Closed (lost)")
+                    .saveAll(Stream.of("1/256", "1/128", "1/64", "1/32", "1/16", "1/8", "QF", "SF", "F")
                             .map(Stage::new).collect(Collectors.toList()));
 
             ExampleDataGenerator<ATP> atpTournamentGenerator = new ExampleDataGenerator<>(ATP.class,
