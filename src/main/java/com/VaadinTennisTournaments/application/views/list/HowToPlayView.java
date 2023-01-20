@@ -1,17 +1,13 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.Result.Result;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
-import com.vaadin.flow.component.tabs.TabsVariant;
-import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.context.annotation.Scope;
@@ -26,8 +22,6 @@ import javax.annotation.security.PermitAll;
 @PageTitle("How to play | Vaadin Tennis Tournaments")
 @PermitAll
 public class HowToPlayView extends VerticalLayout {
-    Grid<Result> grid = new Grid<>(Result.class);
-    TextField filterText = new TextField();
     MainService mainService;
 
     public HowToPlayView(MainService mainService) {
@@ -46,16 +40,54 @@ public class HowToPlayView extends VerticalLayout {
         Tab atpWta = new Tab(VaadinIcon.SCALE.create(), new Span("ATP/WTA"));
         Tab results = new Tab(VaadinIcon.BAR_CHART.create(), new Span("Results"));
 
+
+        generalRules.add(generateNotEditableText("General Rules"));
+        profile.add(generateNotEditableText("User description"));
+        atpWta.add(generateNotEditableText("ATP/WTA rule explanation"));
+        results.add(generateNotEditableText("Results interpretation explanation"));
+
+        generalRules.add(generateEditableText("Write your own General Rules"));
+        profile.add(generateEditableText("Write your own User description"));
+        atpWta.add(generateEditableText("Write your own ATP/WTA rule explanation"));
+        results.add(generateEditableText("Write your own Results interpretation explanation"));
+
 // Set the icon on top
         for (Tab tab : new Tab[] { generalRules, profile, atpWta, results }) {
             tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
         }
 
         Tabs tabs = new Tabs(generalRules, profile, atpWta, results);
-        tabs.addThemeVariants(TabsVariant.LUMO_CENTERED);
 
+        tabs.setMaxWidth("100%");
+        tabs.setAutoselect(true);
         return tabs;
     }
+
+   private TextArea generateNotEditableText(String text){
+
+        TextArea textArea = new TextArea();
+        textArea.setWidth("400px");
+        textArea.setMinHeight("200px");
+        textArea.setMaxHeight("600px");
+
+        textArea.setReadOnly(true);
+
+        textArea.setValue(text);
+        return textArea;
+
+    }
+
+    private TextArea generateEditableText(String text){
+
+        TextArea textArea = new TextArea();
+        textArea.setWidth("400px");
+        textArea.setMinHeight("200px");
+        textArea.setMaxHeight("600px");
+
+        textArea.setPlaceholder(text);
+        return textArea;
+    }
+
 
 
 }
