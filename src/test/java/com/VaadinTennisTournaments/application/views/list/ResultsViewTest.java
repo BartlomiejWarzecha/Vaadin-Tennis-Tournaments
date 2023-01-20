@@ -12,17 +12,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ResultViewTest {
+public class ResultsViewTest {
 
     @Autowired
-    private ResultView resultView;
+    private ResultsView resultsView;
 
     @Test
     public void formShownWhenResultSelected() {
-        Grid<Result> grid = resultView.grid;
+        Grid<Result> grid = resultsView.grid;
         Result firstResult = getFirstItem(grid);
 
-        ResultForm form = resultView.form;
+        ResultsForm form = resultsView.form;
 
         Assert.assertFalse(form.isVisible());
         grid.asSingleSelect().setValue(firstResult);

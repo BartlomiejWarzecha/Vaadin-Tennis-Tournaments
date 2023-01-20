@@ -18,7 +18,7 @@ import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
 
-public class ResultForm extends FormLayout {
+public class ResultsForm extends FormLayout {
   private Result result;
   TextField tournament = new TextField("Tournament");
   TextField winner = new TextField("Winner");
@@ -30,7 +30,7 @@ public class ResultForm extends FormLayout {
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public ResultForm(List<Interests> interests, List<Rank> ranks) {
+  public ResultsForm(List<Interests> interests, List<Rank> ranks) {
     addClassName("result-form");
     binder.bindInstanceFields(this);
 
@@ -78,10 +78,10 @@ public class ResultForm extends FormLayout {
   }
 
   // Events
-  public static abstract class ResultFormEvent extends ComponentEvent<ResultForm> {
+  public static abstract class ResultFormEvent extends ComponentEvent<ResultsForm> {
     private Result result;
 
-    protected ResultFormEvent(ResultForm source, Result result) {
+    protected ResultFormEvent(ResultsForm source, Result result) {
       super(source, false);
       this.result = result;
     }
@@ -92,20 +92,20 @@ public class ResultForm extends FormLayout {
   }
 
   public static class SaveEvent extends ResultFormEvent {
-    SaveEvent(ResultForm source, Result result) {
+    SaveEvent(ResultsForm source, Result result) {
       super(source, result);
     }
   }
 
   public static class DeleteEvent extends ResultFormEvent {
-    DeleteEvent(ResultForm source, Result result) {
+    DeleteEvent(ResultsForm source, Result result) {
       super(source, result);
     }
 
   }
 
   public static class CloseEvent extends ResultFormEvent {
-    CloseEvent(ResultForm source) {
+    CloseEvent(ResultsForm source) {
       super(source, null);
     }
   }

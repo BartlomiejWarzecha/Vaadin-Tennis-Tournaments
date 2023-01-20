@@ -3,8 +3,14 @@ import com.VaadinTennisTournaments.application.data.entity.Result.Result;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.TabVariant;
+import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -25,34 +31,31 @@ public class HowToPlayView extends VerticalLayout {
     MainService mainService;
 
     public HowToPlayView(MainService mainService) {
+
+
         this.mainService = mainService;
         addClassName("how-to-play-view");
         setSizeFull();
-        configureGrid();
-
-        add(getContent());
+        configureTabs();
+        add(configureTabs());
     }
+    private Tabs configureTabs() {
 
-    private HorizontalLayout getContent() {
-        HorizontalLayout content = new HorizontalLayout(grid);
-        content.setFlexGrow(2, grid);
-        content.addClassNames("content");
-        content.setSizeFull();
-        return content;
+        Tab generalRules = new Tab(VaadinIcon.BOOK.create(), new Span("General Rules"));
+        Tab profile = new Tab(VaadinIcon.USER.create(), new Span("Users"));
+        Tab atpWta = new Tab(VaadinIcon.SCALE.create(), new Span("ATP/WTA"));
+        Tab results = new Tab(VaadinIcon.BAR_CHART.create(), new Span("Results"));
+
+// Set the icon on top
+        for (Tab tab : new Tab[] { generalRules, profile, atpWta, results }) {
+            tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
+        }
+
+        Tabs tabs = new Tabs(generalRules, profile, atpWta, results);
+        tabs.addThemeVariants(TabsVariant.LUMO_CENTERED);
+
+        return tabs;
     }
-
-
-    private void configureGrid() {
-        grid.addClassNames("result-grid");
-        grid.setSizeFull();
-
-        grid.setColumns("tournament", "winner");
-        grid.addColumn(result-> result.getInterest().getName()).setHeader("Type");
-        grid.addColumn(result-> result.getRank().getName()).setHeader("Rank");
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
-    }
-
-
 
 
 }

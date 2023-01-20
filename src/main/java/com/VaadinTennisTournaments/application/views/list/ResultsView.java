@@ -22,13 +22,13 @@ import javax.annotation.security.PermitAll;
 @Route(value = "Result", layout = MainLayout.class)
 @PageTitle("Results | Vaadin Tennis Tournaments")
 @PermitAll
-public class ResultView extends VerticalLayout {
+public class ResultsView extends VerticalLayout {
     Grid<Result> grid = new Grid<>(Result.class);
     TextField filterText = new TextField();
-    ResultForm form;
+    ResultsForm form;
     MainService mainService;
 
-    public ResultView(MainService mainService) {
+    public ResultsView(MainService mainService) {
         this.mainService = mainService;
         addClassName("result-view");
         setSizeFull();
@@ -50,12 +50,12 @@ public class ResultView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new ResultForm(mainService.findAllInterests(), mainService.findAllRanks());
+    form = new ResultsForm(mainService.findAllInterests(), mainService.findAllRanks());
     form.setWidth("25em");
     form.setHeight("40em");
-    form.addListener(ResultForm.SaveEvent.class, this::saveResult);
-    form.addListener(ResultForm.DeleteEvent.class, this::deleteResult);
-    form.addListener(ResultForm.CloseEvent.class, e -> closeEditor());
+    form.addListener(ResultsForm.SaveEvent.class, this::saveResult);
+    form.addListener(ResultsForm.DeleteEvent.class, this::deleteResult);
+    form.addListener(ResultsForm.CloseEvent.class, e -> closeEditor());
 }
 
     private void configureGrid() {
@@ -84,13 +84,13 @@ private void configureForm() {
         return toolbar;
     }
 
-    private void saveResult(ResultForm.SaveEvent event) {
+    private void saveResult(ResultsForm.SaveEvent event) {
         mainService.saveResult(event.getResult());
         updateList();
         closeEditor();
     }
 
-    private void deleteResult(ResultForm.DeleteEvent event) {
+    private void deleteResult(ResultsForm.DeleteEvent event) {
         mainService.deleteResult(event.getResult());
 
         updateList();

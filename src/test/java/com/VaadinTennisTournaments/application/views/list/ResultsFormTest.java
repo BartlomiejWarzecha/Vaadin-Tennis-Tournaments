@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ResultFormTest {
+public class ResultsFormTest {
     private List<Interests> interests;
     private List<Rank> ranks;
     private Result result;
@@ -49,7 +49,7 @@ public class ResultFormTest {
     }
 @Test
 public void formFieldsPopulated() {
-    ResultForm form = new ResultForm(interests, ranks);
+    ResultsForm form = new ResultsForm(interests, ranks);
     form.setResult(result);
 
     Assert.assertEquals("Test Tournament", form.tournament.getValue());
@@ -60,7 +60,7 @@ public void formFieldsPopulated() {
 
 @Test
 public void saveEventHasCorrectValues() {
-    ResultForm form = new ResultForm(interests,ranks);
+    ResultsForm form = new ResultsForm(interests,ranks);
     Result result = new Result();
     form.setResult(result);
 
@@ -70,7 +70,7 @@ public void saveEventHasCorrectValues() {
     form.rank.setValue(rank1);
 
     AtomicReference<Result> savedResultRef = new AtomicReference<>(null);
-    form.addListener(ResultForm.SaveEvent.class, e -> {
+    form.addListener(ResultsForm.SaveEvent.class, e -> {
         savedResultRef.set(e.getResult());
     });
     form.save.click();

@@ -47,15 +47,15 @@ public class MainLayout extends AppLayout {
     }
 
     private void createDrawer() {
+        RouterLink listHowToPlay = new RouterLink("How To Play", HowToPlayView.class);
         RouterLink linkUsers = new RouterLink("Users", UserView.class);
         RouterLink listWTA = new RouterLink("WTA", WTAView.class);
         RouterLink listATP = new RouterLink("ATP", ATPView.class);
-        RouterLink listResults = new RouterLink("Result", ResultView.class);
-        RouterLink listHowToPlay = new RouterLink("How To Play", HowToPlayView.class);
+        RouterLink listResults = new RouterLink("Results", ResultsView.class);
         linkUsers.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(
-            linkUsers, listWTA, listATP, listResults, listHowToPlay
+            listHowToPlay, linkUsers, listWTA, listATP, listResults
         ));
     }
 }
