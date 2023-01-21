@@ -38,7 +38,7 @@ public class WTAView extends VerticalLayout {
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent(), getHrefParagraph("WTA Tennis"));
+        add(getToolbar(), getContent(), getHrefParagraph("wtatennis", "WTA Tour"));
         updateList();
         closeEditor();
     }
@@ -85,13 +85,13 @@ private void configureForm() {
         toolbar.addClassName("toolbar-WTA");
         return toolbar;
     }
-    private Paragraph getHrefParagraph(String value){
+    private Paragraph getHrefParagraph(String hrefValue , String description){
 
-        String pureValue =   value.replaceAll("\\s", "");// value without spaces
+        String pureHrefValue = hrefValue.replaceAll("\\s", "");// value without spaces
 
-        Anchor href = new Anchor("https://www."+pureValue+".com/", "here");
+        Anchor href = new Anchor("https://www."+pureHrefValue+".com/", "here");
 
-        Paragraph paragraph = new Paragraph(new Text("Click "), href, new Text(" to see official details about " + value));
+        Paragraph paragraph = new Paragraph(new Text("Click "), href, new Text(" to see official details about " + description));
 
         return paragraph;
     }

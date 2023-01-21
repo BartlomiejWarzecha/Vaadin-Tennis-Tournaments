@@ -38,7 +38,7 @@ public class ATPView extends VerticalLayout {
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent(), getHrefParagraph("ATP Tour"));
+        add(getToolbar(), getContent(), getHrefParagraph("ATP Tour", "ATP Tour"));
         updateList();
         closeEditor();
     }
@@ -124,13 +124,13 @@ private void configureForm() {
         grid.setItems(mainService.findAllATP(filterText.getValue()));
     }
 
-    private Paragraph getHrefParagraph(String value){
+    private Paragraph getHrefParagraph(String hrefValue , String description){
 
-        String pureValue =   value.replaceAll("\\s", "");// value without spaces
+        String pureHrefValue = hrefValue.replaceAll("\\s", "");// value without spaces
 
-        Anchor href = new Anchor("https://www."+pureValue+".com/", "here");
+        Anchor href = new Anchor("https://www."+pureHrefValue+".com/", "here");
 
-        Paragraph paragraph = new Paragraph(new Text("Click "), href, new Text(" to see official details about " + value));
+        Paragraph paragraph = new Paragraph(new Text("Click "), href, new Text(" to see official details about " + description));
 
         return paragraph;
     }
