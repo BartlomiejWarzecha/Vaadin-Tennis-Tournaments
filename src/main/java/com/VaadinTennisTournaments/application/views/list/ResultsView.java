@@ -2,9 +2,12 @@ package com.VaadinTennisTournaments.application.views.list;
 import com.VaadinTennisTournaments.application.data.entity.Result.Result;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -35,7 +38,7 @@ public class ResultsView extends VerticalLayout {
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent());
+        add(getToolbar(), getContent(), getHrefScoreParagraph("WTA Tennis", "ATP Tour"));
         updateList();
         closeEditor();
     }
@@ -83,7 +86,18 @@ private void configureForm() {
         toolbar.addClassName("toolbar-ATP");
         return toolbar;
     }
+    private Paragraph getHrefScoreParagraph(String value, String secondValue){
 
+        String pureValue =  value.replaceAll("\\s", "");// value without spaces
+        String pureSecondValue =  secondValue.replaceAll("\\s", "");// value without spaces
+
+        Anchor firstHref = new Anchor("https://www."+pureValue+".com/scores",  value);
+        Anchor secondHref = new Anchor("https://www."+pureSecondValue+".com/scores", secondValue);
+
+        Paragraph paragraph = new Paragraph(new Text("See more information about different tournament results from official sites: "), firstHref, new Text(", "), secondHref);
+
+        return paragraph;
+    }
     private void saveResult(ResultsForm.SaveEvent event) {
         mainService.saveResult(event.getResult());
         updateList();

@@ -2,9 +2,12 @@ package com.VaadinTennisTournaments.application.views.list;
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -35,7 +38,7 @@ public class ATPView extends VerticalLayout {
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent());
+        add(getToolbar(), getContent(), getHrefParagraph("ATP Tour"));
         updateList();
         closeEditor();
     }
@@ -120,4 +123,16 @@ private void configureForm() {
     private void updateList() {
         grid.setItems(mainService.findAllATP(filterText.getValue()));
     }
+
+    private Paragraph getHrefParagraph(String value){
+
+        String pureValue =   value.replaceAll("\\s", "");// value without spaces
+
+        Anchor href = new Anchor("https://www."+pureValue+".com/", "here");
+
+        Paragraph paragraph = new Paragraph(new Text("Click "), href, new Text(" to see official details about " + value));
+
+        return paragraph;
+    }
+
 }

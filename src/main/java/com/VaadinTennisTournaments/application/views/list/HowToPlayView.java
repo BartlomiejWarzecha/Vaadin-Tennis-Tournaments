@@ -1,6 +1,9 @@
 package com.VaadinTennisTournaments.application.views.list;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -26,7 +29,6 @@ public class HowToPlayView extends VerticalLayout {
 
     public HowToPlayView(MainService mainService) {
 
-
         this.mainService = mainService;
         addClassName("how-to-play-view");
         setSizeFull();
@@ -40,8 +42,10 @@ public class HowToPlayView extends VerticalLayout {
         Tab atpWta = new Tab(VaadinIcon.SCALE.create(), new Span("ATP/WTA"));
         Tab results = new Tab(VaadinIcon.BAR_CHART.create(), new Span("Results"));
 
+        generalRules.add(generateNotEditableText("General Rules" +
+                "\n"+
+                ""));
 
-        generalRules.add(generateNotEditableText("General Rules"));
         profile.add(generateNotEditableText("User description"));
         atpWta.add(generateNotEditableText("ATP/WTA rule explanation"));
         results.add(generateNotEditableText("Results interpretation explanation"));
@@ -87,6 +91,8 @@ public class HowToPlayView extends VerticalLayout {
         textArea.setPlaceholder(text);
         return textArea;
     }
+
+
 
 
 
