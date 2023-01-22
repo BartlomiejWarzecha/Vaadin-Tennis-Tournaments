@@ -21,7 +21,7 @@ import javax.annotation.security.PermitAll;
 @Component
 @Scope("prototype")
 @Route(value = "", layout = MainLayout.class)
-@PageTitle("Userss | Vaadin Tennis Tournaments")
+@PageTitle("Users | Vaadin Tennis Tournaments")
 @PermitAll
 public class UserView extends VerticalLayout {
     Grid<User> grid = new Grid<>(User.class);
