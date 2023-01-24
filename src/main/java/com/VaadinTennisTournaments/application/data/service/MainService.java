@@ -1,19 +1,14 @@
 package com.VaadinTennisTournaments.application.data.service;
 
 import com.VaadinTennisTournaments.application.data.entity.Interests;
+import com.VaadinTennisTournaments.application.data.entity.Punctation.Punctation;
 import com.VaadinTennisTournaments.application.data.entity.Stage;
 import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
 import com.VaadinTennisTournaments.application.data.entity.Rank;
 import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
 import com.VaadinTennisTournaments.application.data.entity.Result.Result;
-import com.VaadinTennisTournaments.application.data.repository.InterestsRepository;
-import com.VaadinTennisTournaments.application.data.repository.StageRepository;
-import com.VaadinTennisTournaments.application.data.repository.ResultRepository;
-import com.VaadinTennisTournaments.application.data.repository.RankRepository;
-import com.VaadinTennisTournaments.application.data.repository.UserRepository;
-import com.VaadinTennisTournaments.application.data.repository.WTARepository;
-import com.VaadinTennisTournaments.application.data.repository.ATPRepository;
+import com.VaadinTennisTournaments.application.data.repository.*;
 
 import java.util.List;
 
@@ -24,12 +19,14 @@ public class MainService {
     private final WTARepository wtaRepository;
     private final ATPRepository atpRepository;
     private final ResultRepository resultRepository;
+
+    private final PunctationRepository punctationRepository;
     private final InterestsRepository interestsRepository;
     private final StageRepository stageRepository;
     private final RankRepository rankRepository;
 
     public MainService(UserRepository userRepository, WTARepository wtaRepository, ATPRepository atpRepository, ResultRepository resultRepository,
-                       InterestsRepository interestsRepository, StageRepository stageRepository, RankRepository rankRepository
+                       InterestsRepository interestsRepository, StageRepository stageRepository, RankRepository rankRepository, PunctationRepository punctationRepository
     ) {
         this.userRepository = userRepository;
         this.wtaRepository = wtaRepository;
@@ -38,6 +35,7 @@ public class MainService {
         this.interestsRepository = interestsRepository;
         this.stageRepository = stageRepository;
         this.rankRepository = rankRepository;
+        this.punctationRepository = punctationRepository;
 
     }
 
@@ -128,6 +126,25 @@ public class MainService {
             return;
         }
         resultRepository.save(result);
+    }
+
+    public List<Punctation> findAllPunctation(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return punctationRepository.findAll();
+        } else {
+            return punctationRepository.search(stringFilter);
+        }
+    }
+    public void deletePunctation (Punctation punctation){
+        punctationRepository.delete(punctation);
+    }
+
+    public void savePunctation (Punctation punctation){
+        if (punctation == null) {
+            System.err.println("Puncation are null. Are you sure you have connected your form to the application?");
+            return;
+        }
+        punctationRepository.save(punctation);
     }
 
 }

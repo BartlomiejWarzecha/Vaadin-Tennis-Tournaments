@@ -52,10 +52,11 @@ public class MainLayout extends AppLayout {
         RouterLink listWTA = new RouterLink("WTA", WTAView.class);
         RouterLink listATP = new RouterLink("ATP", ATPView.class);
         RouterLink listResults = new RouterLink("Results", ResultsView.class);
+        RouterLink listPunctation = new RouterLink("Punctation", PunctationView.class);
         linkUsers.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(
-            listHowToPlay, linkUsers, listWTA, listATP, listResults
+            listHowToPlay, linkUsers, listWTA, listATP, listResults, listPunctation
         ));
     }
 }

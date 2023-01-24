@@ -65,7 +65,7 @@ public class HowToPlayView extends VerticalLayout {
                 "\n"+
                 "2. Jedna osoba nie moze dodac wiecej niz jednego uzytkownika" +
                 "\n"+
-                "3. Wybrane zainteresowania powinny być zbieżne z udziałem w predykcji, w poszczególnych tabelach"
+                "3. Wybrane zainteresowania powinny być zbieżne ABACUSz udziałem w predykcji, w poszczególnych tabelach"
                 ));
 
         atpWta.add(generateNotEditableText(
@@ -131,7 +131,7 @@ public class HowToPlayView extends VerticalLayout {
                         "\n"+
                         "2. Dodany zawodnik i turniej, powinien być możliwy do identyfikacji przez wyszystkich uczestników" +
                         "\n"+
-                        "3. Usuwaniem wyników oraz tworzeniem punktacji, w widoku punktajci, po danym tuenieju, zajmuje się jedna, wyznaczona do tego zadania osoba"
+                        "3. Usuwaniem wyników oraz tworzeniem punktacji w widoku punktacji, zajmuje sie po danym turnieju się jedna, wyznaczona do tego zadania osoba"
         ));
 
         generalRules.add(generateEditableText("Write your own General Rules"));
