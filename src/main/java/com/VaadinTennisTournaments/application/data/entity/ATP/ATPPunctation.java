@@ -1,9 +1,11 @@
-package com.VaadinTennisTournaments.application.data.entity.Punctation;
+package com.VaadinTennisTournaments.application.data.entity.ATP;
 
 import com.VaadinTennisTournaments.application.data.AbstractEntity;
 import com.VaadinTennisTournaments.application.data.entity.Interests;
 import com.VaadinTennisTournaments.application.data.entity.Rank;
 import com.VaadinTennisTournaments.application.data.entity.Stage;
+import com.VaadinTennisTournaments.application.data.entity.User.User;
+import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
@@ -13,21 +15,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Punctation extends AbstractEntity {
+public class ATPPunctation extends AbstractEntity {
 
-    @NotEmpty
-    private String tournament = "";
-
-    @NotEmpty
-    private String nickname = "";
 
     @NotEmpty
     private String points;
-    @ManyToOne
-    @JoinColumn(name = "interest_id")
-    @NotNull
-    @JsonIgnoreProperties({"interests"})
-    private Interests interest;
 
     @ManyToOne
     @JoinColumn(name = "rank_id")
@@ -40,30 +32,19 @@ public class Punctation extends AbstractEntity {
     @NotNull
     @JsonIgnoreProperties({"stages"})
     private Stage stage;
-    @Override
-    public String toString() {
-        return '"' + tournament + '"';
-    }
-    public String getTournament() {
-        return tournament;
-    }
-    public void setTournament(String Name) {
-        this.tournament = Name;
-    }
 
-    public String getNickname() {
-        return nickname;
-    }
-    public void setNickname(String Nickname) {
-        this.nickname = Nickname;
-    }
-    public Interests getInterest() {
-        return interest;
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @NotNull
+    @JsonIgnoreProperties({"users"})
+    private User user;
 
-    public void setInterest(Interests interest) {
-        this.interest = interest;
-    }
+    @ManyToOne
+    @JoinColumn(name = "atpTournament_id")
+    @NotNull
+    @JsonIgnoreProperties({"atpTournament"})
+    private ATP atpTournament;
+
 
     public Rank getRank() {
         return rank;
@@ -87,5 +68,21 @@ public class Punctation extends AbstractEntity {
 
     public void setPoints(String points) {
         this.points = points;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public ATP getAtpTournament() {
+        return atpTournament;
+    }
+
+    public void setAtpTournament(ATP atpTournament) {
+        this.atpTournament = atpTournament;
     }
 }

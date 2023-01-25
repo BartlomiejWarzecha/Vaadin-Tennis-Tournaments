@@ -1,9 +1,10 @@
 package com.VaadinTennisTournaments.application.views.list;
 import com.VaadinTennisTournaments.application.data.entity.Interests;
-import com.VaadinTennisTournaments.application.data.entity.Punctation.Punctation;
+import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
+import com.VaadinTennisTournaments.application.data.entity.WTA.WTAPunctation;
 import com.VaadinTennisTournaments.application.data.entity.Rank;
-import com.VaadinTennisTournaments.application.data.entity.Result.Result;
 import com.VaadinTennisTournaments.application.data.entity.Stage;
+import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -20,37 +21,39 @@ import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
 
-public class PunctationForm extends FormLayout {
-  private Punctation punctation;
-  TextField tournament = new TextField("Tournament");
-  TextField nickname = new TextField("Nickname");
-  ComboBox<Interests> interest = new ComboBox<>("Type");
+public class WTAPunctationForm extends FormLayout {
+  private WTAPunctation WTAPunctation;
+  TextField points = new TextField("Points");
+  ComboBox<WTA>  wtaTournament = new ComboBox<>("Tournament");
   ComboBox<Rank> rank = new ComboBox<>("Rank");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
-  TextField points = new TextField("Points");
-  Binder<Punctation> binder = new BeanValidationBinder<>(Punctation.class);
+  ComboBox<User> user = new ComboBox<>("User");
+  Binder<WTAPunctation> binder = new BeanValidationBinder<>(WTAPunctation.class);
 
   Button save = new Button("Save");
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public PunctationForm(List<Interests> interests, List<Rank> ranks, List<Stage> stages) {
-    addClassName("punctation-form");
+  public WTAPunctationForm(List<Rank> ranks,
+                           List<Stage> stages, List<User> users, List<WTA> wtaTournaments) {
+    addClassName("WTAPunctation-form");
     binder.bindInstanceFields(this);
 
-    interest.setItems(interests);
-    interest.setItemLabelGenerator(Interests::getName);
     rank.setItems(ranks);
     rank.setItemLabelGenerator(Rank::getName);
     stage.setItems(stages);
     stage.setItemLabelGenerator(Stage::getName);
+    user.setItems(users);
+    user.setItemLabelGenerator(User::getNickname);
 
-    add(tournament,
-            nickname,
-          interest,
+    wtaTournament.setItems(wtaTournaments);
+    wtaTournament.setItemLabelGenerator(WTA::getWtaTournament);
+
+    add(    user,
+            points,
+            wtaTournament,
           rank,
           stage,
-          points,
           createButtonsLayout());
   }
 
@@ -63,7 +66,7 @@ public class PunctationForm extends FormLayout {
     close.addClickShortcut(Key.ESCAPE);
 
     save.addClickListener(event -> validateAndSave());
-    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, punctation)));
+    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, WTAPunctation)));
     close.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
     binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
@@ -71,48 +74,48 @@ public class PunctationForm extends FormLayout {
     return new HorizontalLayout(save, delete, close); 
   }
 
-  public void setPunctation(Punctation punctation) {
-    this.punctation = punctation;
-    binder.readBean(punctation);
+  public void setWTAPunctation(WTAPunctation WTAPunctation) {
+    this.WTAPunctation = WTAPunctation;
+    binder.readBean(WTAPunctation);
   }
   private void validateAndSave() {
     try {
-      binder.writeBean(punctation);
-      fireEvent(new SaveEvent(this, punctation));
+      binder.writeBean(WTAPunctation);
+      fireEvent(new SaveEvent(this, WTAPunctation));
     } catch (ValidationException e) {
       e.printStackTrace();
     }
   }
 
   // Events
-  public static abstract class PunctationFormEvent extends ComponentEvent<PunctationForm> {
-    private Punctation punctation;
+  public static abstract class PunctationFormEvent extends ComponentEvent<WTAPunctationForm> {
+    private WTAPunctation WTAPunctation;
 
-    protected PunctationFormEvent(PunctationForm source, Punctation punctation) {
+    protected PunctationFormEvent(WTAPunctationForm source, WTAPunctation WTAPunctation) {
       super(source, false);
-      this.punctation = punctation;
+      this.WTAPunctation = WTAPunctation;
     }
 
-    public Punctation getPunctation() {
-      return punctation;
+    public WTAPunctation getPunctation() {
+      return WTAPunctation;
     }
   }
 
   public static class SaveEvent extends PunctationFormEvent {
-    SaveEvent(PunctationForm source, Punctation punctation) {
-      super(source, punctation);
+    SaveEvent(WTAPunctationForm source, WTAPunctation WTAPunctation) {
+      super(source, WTAPunctation);
     }
   }
 
   public static class DeleteEvent extends PunctationFormEvent {
-    DeleteEvent(PunctationForm source, Punctation punctation) {
-      super(source, punctation);
+    DeleteEvent(WTAPunctationForm source, WTAPunctation WTAPunctation) {
+      super(source, WTAPunctation);
     }
 
   }
 
   public static class CloseEvent extends PunctationFormEvent {
-    CloseEvent(PunctationForm source) {
+    CloseEvent(WTAPunctationForm source) {
       super(source, null);
     }
   }

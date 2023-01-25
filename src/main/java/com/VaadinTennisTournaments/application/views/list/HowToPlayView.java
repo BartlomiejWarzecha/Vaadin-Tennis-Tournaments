@@ -41,7 +41,7 @@ public class HowToPlayView extends VerticalLayout {
         Tab profile = new Tab(VaadinIcon.USER.create(), new Span("Users"));
         Tab atpWta = new Tab(VaadinIcon.SCALE.create(), new Span("ATP/WTA"));
         Tab results = new Tab(VaadinIcon.ARCHIVE.create(), new Span("Results"));
-        Tab punctation = new Tab(VaadinIcon.ABACUS.create(), new Span("Punctation"));
+        Tab punctation = new Tab(VaadinIcon.ABACUS.create(), new Span("WTAPunctation"));
         Tab ranking = new Tab(VaadinIcon.CHART.create(), new Span("Ranking"));
 
         generalRules.add(generateNotEditableText("Generalne Zasady:" +
@@ -84,7 +84,7 @@ public class HowToPlayView extends VerticalLayout {
         ));
 
         punctation.add(generateNotEditableText(
-                "Wzór: etap wybrania zwycięzcy * poziom rozgrywek"+
+                "Wzór: etap wybrania zwycięzcyy * poziom rozgrywek"+
                         "\n\n"+
                         "Etap: "+
                         "\n"+
@@ -127,7 +127,7 @@ public class HowToPlayView extends VerticalLayout {
                         "Punktacja = 20pkt * 3.0 = 60 pkt"
         ));
         ranking.add(generateNotEditableText(
-                "1. Rezultaty powinny być dodawane po zakończonym turnieju przez osobę, która dodała dany turniej w swojej predykcji" +
+                        "1. Rezultaty powinny być dodawane po zakończonym turnieju przez osobę, która dodała dany turniej w swojej predykcji" +
                         "\n"+
                         "2. Dodany zawodnik i turniej, powinien być możliwy do identyfikacji przez wyszystkich uczestników" +
                         "\n"+

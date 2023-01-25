@@ -1,7 +1,8 @@
 package com.VaadinTennisTournaments.application.data.service;
 
+import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
 import com.VaadinTennisTournaments.application.data.entity.Interests;
-import com.VaadinTennisTournaments.application.data.entity.Punctation.Punctation;
+import com.VaadinTennisTournaments.application.data.entity.WTA.WTAPunctation;
 import com.VaadinTennisTournaments.application.data.entity.Stage;
 import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
@@ -20,13 +21,14 @@ public class MainService {
     private final ATPRepository atpRepository;
     private final ResultRepository resultRepository;
 
-    private final PunctationRepository punctationRepository;
+    private final WTAPunctationRepository wtaPunctationRepository;
+    private final ATPPunctationRepository atpPunctationRepository;
     private final InterestsRepository interestsRepository;
     private final StageRepository stageRepository;
     private final RankRepository rankRepository;
 
-    public MainService(UserRepository userRepository, WTARepository wtaRepository, ATPRepository atpRepository, ResultRepository resultRepository,
-                       InterestsRepository interestsRepository, StageRepository stageRepository, RankRepository rankRepository, PunctationRepository punctationRepository
+    public MainService(UserRepository userRepository, WTARepository wtaRepository, ATPRepository atpRepository, ResultRepository resultRepository, InterestsRepository interestsRepository, StageRepository stageRepository,
+                       RankRepository rankRepository, WTAPunctationRepository wtaPunctationRepository, ATPPunctationRepository atpPunctationRepository
     ) {
         this.userRepository = userRepository;
         this.wtaRepository = wtaRepository;
@@ -35,7 +37,8 @@ public class MainService {
         this.interestsRepository = interestsRepository;
         this.stageRepository = stageRepository;
         this.rankRepository = rankRepository;
-        this.punctationRepository = punctationRepository;
+        this.wtaPunctationRepository = wtaPunctationRepository;
+        this.atpPunctationRepository = atpPunctationRepository;
 
     }
 
@@ -128,23 +131,40 @@ public class MainService {
         resultRepository.save(result);
     }
 
-    public List<Punctation> findAllPunctation(String stringFilter) {
+    public List<WTAPunctation> findAllWTAPunctation(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
-            return punctationRepository.findAll();
+            return wtaPunctationRepository.findAll();
         } else {
-            return punctationRepository.search(stringFilter);
+            return wtaPunctationRepository.search(stringFilter);
         }
     }
-    public void deletePunctation (Punctation punctation){
-        punctationRepository.delete(punctation);
+    public void deleteWTAPunctation(WTAPunctation WTAPunctation){
+        wtaPunctationRepository.delete(WTAPunctation);
     }
 
-    public void savePunctation (Punctation punctation){
-        if (punctation == null) {
+    public void saveWTAPunctation(WTAPunctation WTAPunctation){
+        if (WTAPunctation == null) {
             System.err.println("Puncation are null. Are you sure you have connected your form to the application?");
             return;
         }
-        punctationRepository.save(punctation);
+        wtaPunctationRepository.save(WTAPunctation);
+    }
+    public List<ATPPunctation> findAllATPPunctation(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return atpPunctationRepository.findAll();
+        } else {
+            return atpPunctationRepository.search(stringFilter);
+        }
+    }
+    public void deleteATPPunctation(ATPPunctation atpPunctation){
+        atpPunctationRepository.delete(atpPunctation);
     }
 
+    public void saveATPPunctation(ATPPunctation atpPunctation){
+        if (atpPunctation == null) {
+            System.err.println("Puncation are null. Are you sure you have connected your form to the application?");
+            return;
+        }
+        atpPunctationRepository.save(atpPunctation);
+    }
 }

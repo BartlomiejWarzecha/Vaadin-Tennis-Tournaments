@@ -1,5 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.Punctation.Punctation;
+import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
+import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
+import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
@@ -22,16 +24,16 @@ import javax.annotation.security.PermitAll;
 
 @Component
 @Scope("prototype")
-@Route(value = "Punctation", layout = MainLayout.class)
-@PageTitle("Punctation | Vaadin Tennis Tournaments")
+@Route(value = "ATPPunctation", layout = MainLayout.class)
+@PageTitle("ATP Punctation | Vaadin Tennis Tournaments")
 @PermitAll
-public class PunctationView extends VerticalLayout {
-    Grid<Punctation> grid = new Grid<>(Punctation.class);
+public class ATPPunctationView extends VerticalLayout {
+    Grid<ATPPunctation  > grid = new Grid<>(ATPPunctation.class);
     TextField filterText = new TextField();
-    PunctationForm form;
+    ATPPunctationForm form;
     MainService mainService;
 
-    public PunctationView(MainService mainService) {
+    public ATPPunctationView(MainService mainService) {
         this.mainService = mainService;
         addClassName("puncation-view");
         setSizeFull();
@@ -53,25 +55,27 @@ public class PunctationView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new PunctationForm(mainService.findAllInterests(), mainService.findAllRanks(), mainService.findAllStages());
+    form = new ATPPunctationForm(mainService.findAllRanks(), mainService.findAllStages(),
+    mainService.findAllUsers(""), mainService.findAllATP(""));
     form.setWidth("25em");
     form.setHeight("40em");
-    form.addListener(PunctationForm.SaveEvent.class, this::savePunctation);
-    form.addListener(PunctationForm.DeleteEvent.class, this::deletePunctation);
-    form.addListener(PunctationForm.CloseEvent.class, e -> closeEditor());
+    form.addListener(ATPPunctationForm.SaveEvent.class, this::saveATPPunctation);
+    form.addListener(ATPPunctationForm.DeleteEvent.class, this::deleteATPPunctation);
+    form.addListener(ATPPunctationForm.CloseEvent.class, e -> closeEditor());
 }
     private void configureGrid() {
         grid.addClassNames("punctation-grid");
         grid.setSizeFull();
 
-        grid.setColumns( "points", "nickname", "tournament");
-        grid.addColumn(punctation-> punctation.getInterest().getName()).setHeader("Type");
-        grid.addColumn(punctation-> punctation.getRank().getName()).setHeader("Rank");
-        grid.addColumn(punctation-> punctation.getStage().getName()).setHeader("Stage");
+        grid.setColumns( "points");
+        grid.addColumn(ATPPunctation -> ATPPunctation.getAtpTournament().getAtpTournament()).setHeader("ATP Tournament");
+        grid.addColumn(ATPPunctation -> ATPPunctation.getUser().getNickname()).setHeader("User");
+        grid.addColumn(ATPPunctation -> ATPPunctation.getRank().getName()).setHeader("Rank");
+        grid.addColumn(ATPPunctation -> ATPPunctation.getStage().getName()).setHeader("Stage");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
-            editPunctation(event.getValue()));
+            editATPPunctation(event.getValue()));
     }
     private HorizontalLayout getToolbar() {
         filterText.setPlaceholder("Filter by any data...");
@@ -79,9 +83,9 @@ private void configureForm() {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addPredicionButton = new Button("Add Punctation for user");
+        Button addPredicionButton = new Button("Add user result");
         addPredicionButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
-        addPredicionButton.addClickListener(click -> addPunctation());
+        addPredicionButton.addClickListener(click -> addATPPunctation());
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton);
         toolbar.addClassName("toolbar-ATP");
@@ -99,41 +103,41 @@ private void configureForm() {
 
         return paragraph;
     }
-    private void savePunctation(PunctationForm.SaveEvent event) {
-        mainService.savePunctation(event.getPunctation());
+    private void saveATPPunctation(ATPPunctationForm.SaveEvent event) {
+        mainService.saveATPPunctation(event.getATPPunctation());
         updateList();
         closeEditor();
     }
 
-    private void deletePunctation(PunctationForm.DeleteEvent event) {
-        mainService.deletePunctation(event.getPunctation());
+    private void deleteATPPunctation(ATPPunctationForm.DeleteEvent event) {
+        mainService.deleteATPPunctation(event.getATPPunctation());
 
         updateList();
         closeEditor();
     }
 
-    public void editPunctation(Punctation punctation) {
-        if (punctation == null) {
+    public void editATPPunctation(ATPPunctation atpPunctation) {
+        if (atpPunctation == null) {
             closeEditor();
         } else {
-            form.setPunctation(punctation);
+            form.setATPPunctation(atpPunctation);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
-    private void addPunctation() {
+    private void addATPPunctation() {
         grid.asSingleSelect().clear();
-        editPunctation(new Punctation());
+        editATPPunctation(new ATPPunctation());
     }
 
     private void closeEditor() {
-        form.setPunctation(null);
+        form.setATPPunctation(null);
         form.setVisible(false);
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(mainService.findAllPunctation(filterText.getValue()));
+        grid.setItems(mainService.findAllATPPunctation(filterText.getValue()));
     }
 }
