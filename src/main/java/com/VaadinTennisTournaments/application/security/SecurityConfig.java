@@ -45,11 +45,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Configure the login page.
         .and().formLogin()
         .loginPage(LOGIN_URL).permitAll()
+
         .loginProcessingUrl(LOGIN_PROCESSING_URL)
         .failureUrl(LOGIN_FAILURE_URL)
 
         // Configure logout
         .and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
+
+        // make possibility for registration without login in
+
   }
 
   @Bean
@@ -89,7 +93,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         "/images/**",
         "/styles/**",
 
+
         // (development mode) H2 debugging console
         "/h2-console/**");
   }
+
+
 }

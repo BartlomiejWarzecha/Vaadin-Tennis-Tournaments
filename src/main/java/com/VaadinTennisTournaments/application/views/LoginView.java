@@ -1,12 +1,15 @@
 package com.VaadinTennisTournaments.application.views;
 
+import com.VaadinTennisTournaments.application.data.entity.Register.RegistrationForm;
+import com.VaadinTennisTournaments.application.data.entity.Register.RegistrationFormBinder;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 
 @Route("login")
 @PageTitle("Login | Vaadin Tennis Tournaments")
@@ -20,9 +23,18 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 		setAlignItems(Alignment.CENTER); 
 		setJustifyContentMode(JustifyContentMode.CENTER);
 
-		login.setAction("login");  
+		login.setAction("login");
 
-		add(new H1(" Vaadin Tennis Tournaments!"), login);
+		RegistrationForm registrationForm = new RegistrationForm();
+		// Center the RegistrationForm
+		setHorizontalComponentAlignment(Alignment.CENTER, registrationForm);
+
+		add(registrationForm);
+
+		RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registrationForm);
+		registrationFormBinder.addBindingAndValidation();
+
+		add(new H2("Vaadin Tennis Tournaments!"), login, registrationForm);
 	}
 
 	@Override

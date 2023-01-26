@@ -31,7 +31,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void createHeader() {
-        H1 logo = new H1("Vaadin Tennis Tournaments");
+        H1 logo = new H1("Vaadin Tennis Tournaments!");
         logo.addClassNames("text-l", "m-m");
 
         Button logout = new Button("Log out", e -> securityService.logout());

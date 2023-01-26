@@ -23,10 +23,10 @@ public class MainService {
 
     private final WTAPunctationRepository wtaPunctationRepository;
     private final ATPPunctationRepository atpPunctationRepository;
+
     private final InterestsRepository interestsRepository;
     private final StageRepository stageRepository;
     private final RankRepository rankRepository;
-
     public MainService(UserRepository userRepository, WTARepository wtaRepository, ATPRepository atpRepository, ResultRepository resultRepository, InterestsRepository interestsRepository, StageRepository stageRepository,
                        RankRepository rankRepository, WTAPunctationRepository wtaPunctationRepository, ATPPunctationRepository atpPunctationRepository
     ) {
@@ -41,7 +41,6 @@ public class MainService {
         this.atpPunctationRepository = atpPunctationRepository;
 
     }
-
     public List<User> findAllUsers(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return userRepository.findAll();
@@ -60,19 +59,15 @@ public class MainService {
         }
         userRepository.save(user);
     }
-
     public List<Interests> findAllInterests() {
         return interestsRepository.findAll();
     }
-
     public List<Stage> findAllStages() {
         return stageRepository.findAll();
     }
-
     public List<Rank> findAllRanks() {
         return rankRepository.findAll();
     }
-
     public List<WTA> findAllWTA(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return wtaRepository.findAll();
@@ -80,11 +75,9 @@ public class MainService {
             return wtaRepository.search(stringFilter);
         }
     }
-
         public void deleteWTA (WTA wta){
             wtaRepository.delete(wta);
         }
-
         public void saveWTA (WTA wta){
             if (wta == null) {
                 System.err.println("WTA Tournament is null. Are you sure you have connected your form to the application?");
@@ -92,7 +85,6 @@ public class MainService {
             }
             wtaRepository.save(wta);
         }
-
     public List<ATP> findAllATP(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return atpRepository.findAll();
