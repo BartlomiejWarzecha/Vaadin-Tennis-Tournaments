@@ -33,6 +33,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
 		RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registrationForm);
 		registrationFormBinder.addBindingAndValidation();
+		setHeight("1000px");
 
 		add(new H2("Vaadin Tennis Tournaments!"), login, registrationForm);
 	}
