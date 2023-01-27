@@ -2,6 +2,7 @@ package com.VaadinTennisTournaments.application.views.list;
 
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
 import com.VaadinTennisTournaments.application.data.entity.Stage;
+import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -24,18 +25,23 @@ public class ATPForm extends FormLayout {
   TextField atpTournament = new TextField("Atp Tournament");
   TextField player  = new TextField("Player");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
+  ComboBox<User> user = new ComboBox<>("Nickname");
   Binder<ATP> binder = new BeanValidationBinder<>(ATP.class);
 
   Button save = new Button("Save");
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public ATPForm(List<Stage> stages) {
+  public ATPForm(List<Stage> stages, List<User> users) {
     addClassName("atp-form");
     binder.bindInstanceFields(this);
     stage.setItems(stages);
     stage.setItemLabelGenerator(Stage::getName);
-    add(nickname,
+
+    user.setItems(users);
+    user.setItemLabelGenerator(User::getNickname);
+
+    add(user,
             atpTournament,
             player,
           stage,
