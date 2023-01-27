@@ -50,10 +50,10 @@ public class WTAPunctationForm extends FormLayout {
     wtaTournament.setItemLabelGenerator(WTA::getWtaTournament);
 
     add(    user,
-            points,
             wtaTournament,
           rank,
           stage,
+          points,
           createButtonsLayout());
   }
 

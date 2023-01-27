@@ -53,7 +53,7 @@ public class WTAView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new WTAForm(mainService.findAllStages());
+    form = new WTAForm(mainService.findAllStages(), mainService.findAllUsers(""));
     form.setWidth("25em");
     form.setHeight("45em");
     form.addListener(WTAForm.SaveEvent.class, this::saveWTA);
@@ -64,15 +64,16 @@ private void configureForm() {
     private void configureGrid() {
         grid.addClassNames("wta-grid");
         grid.setSizeFull();
-        grid.setColumns("nickname", "wtaTournament", "player");
+        grid.setColumns( "wtaTournament", "player");
         grid.addColumn(wta-> wta.getStage().getName()).setHeader("Stage");
+        grid.addColumn(wta-> wta.getUser().getNickname()).setHeader("User");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editWTA(event.getValue()));
     }
 
     private HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by any data...");
+        filterText.setPlaceholder("Filter data...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());

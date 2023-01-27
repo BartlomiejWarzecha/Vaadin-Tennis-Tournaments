@@ -27,7 +27,7 @@ public class WTAViewTest {
         Assert.assertFalse(form.isVisible());
         grid.asSingleSelect().setValue(firstWTA);
         Assert.assertTrue(form.isVisible());
-        Assert.assertEquals(firstWTA.getNickname(), form.nickname.getValue());
+        Assert.assertEquals(firstWTA.getNickname(), form.user.getValue());
     }
     private WTA getFirstItem(Grid<WTA> grid) {
         return( (ListDataProvider<WTA>) grid.getDataProvider()).getItems().iterator().next();

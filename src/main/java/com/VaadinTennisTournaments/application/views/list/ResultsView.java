@@ -73,7 +73,7 @@ private void configureForm() {
             editResult(event.getValue()));
     }
     private HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by any data...");
+        filterText.setPlaceholder("Filter data...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());

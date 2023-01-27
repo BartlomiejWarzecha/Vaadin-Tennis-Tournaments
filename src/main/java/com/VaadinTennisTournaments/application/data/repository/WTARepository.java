@@ -10,8 +10,7 @@ import java.util.List;
 public interface WTARepository extends JpaRepository<WTA, Integer> {
 
     @Query("select w from WTA w " +
-        " where lower(w.nickname) like lower(concat('%', :searchTerm, '%')) " +
-            "or lower(w.wtaTournament) like lower(concat('%', :searchTerm, '%'))" +
+        " where (w.wtaTournament) like lower(concat('%', :searchTerm, '%')) " +
             "or lower(w.player) like lower(concat('%', :searchTerm, '%'))")
     List<WTA> search(@Param("searchTerm") String searchTerm);
 }

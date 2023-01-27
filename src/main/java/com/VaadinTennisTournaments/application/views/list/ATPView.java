@@ -53,7 +53,7 @@ public class ATPView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new ATPForm(mainService.findAllStages());
+    form = new ATPForm(mainService.findAllStages(), mainService.findAllUsers(""));
     form.setWidth("25em");
     form.setHeight("40em");
     form.addListener(ATPForm.SaveEvent.class, this::saveATP);
@@ -64,15 +64,16 @@ private void configureForm() {
     private void configureGrid() {
         grid.addClassNames("atp-grid");
         grid.setSizeFull();
-        grid.setColumns("nickname", "atpTournament", "player");
+        grid.setColumns("atpTournament", "player");
         grid.addColumn(atp-> atp.getStage().getName()).setHeader("Stage");
+        grid.addColumn(atp-> atp.getUser().getNickname()).setHeader("User");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editATP(event.getValue()));
     }
 
     private HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by any data...");
+        filterText.setPlaceholder("Filter data...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());

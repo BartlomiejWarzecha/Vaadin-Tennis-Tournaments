@@ -52,11 +52,12 @@ public class ATPPunctationForm extends FormLayout {
     atpTournament.setItems(atpTournaments);
     atpTournament.setItemLabelGenerator(ATP::getAtpTournament);
 
-    add(    points,
+    add(
             user,
             atpTournament,
           rank,
           stage,
+            points,
           createButtonsLayout());
   }
 

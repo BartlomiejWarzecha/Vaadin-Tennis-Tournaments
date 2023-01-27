@@ -2,6 +2,7 @@ package com.VaadinTennisTournaments.application.data.entity.WTA;
 
 import com.VaadinTennisTournaments.application.data.AbstractEntity;
 import com.VaadinTennisTournaments.application.data.entity.Stage;
+import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
@@ -12,9 +13,6 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 public class WTA extends AbstractEntity {
-
-    @NotEmpty
-    private String nickname = "";
 
     @NotEmpty
     private String player = "";
@@ -28,18 +26,13 @@ public class WTA extends AbstractEntity {
     @JsonIgnoreProperties({"stages"})
     private Stage stage;
 
-    @Override
-    public String toString() {
-        return '"' + nickname + '"';
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @NotNull
+    @JsonIgnoreProperties({"users"})
+    private User user;
 
-    public String getNickname() {
-        return nickname;
-    }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
     public String getPlayer() {
         return player;
     }
@@ -62,5 +55,13 @@ public class WTA extends AbstractEntity {
 
     public void setWtaTournament(String WTATournament) {
         this.wtaTournament = WTATournament;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

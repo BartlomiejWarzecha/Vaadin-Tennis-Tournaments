@@ -1,6 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
 
 import com.VaadinTennisTournaments.application.data.entity.Stage;
+import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -21,22 +22,28 @@ import java.util.List;
 public class WTAForm extends FormLayout {
   private WTA wta;
 
-  TextField nickname = new TextField("Nickname");
   TextField wtaTournament = new TextField("Wta Tournament");
   TextField player  = new TextField("Player");
+
+  ComboBox<User> user = new ComboBox<>("Nickname");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
+
   Binder<WTA> binder = new BeanValidationBinder<>(WTA.class);
 
   Button save = new Button("Save");
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public WTAForm(List<Stage> stages) {
+  public WTAForm(List<Stage> stages, List<User> users) {
     addClassName("wta-form");
     binder.bindInstanceFields(this);
+
     stage.setItems(stages);
     stage.setItemLabelGenerator(Stage::getName);
-    add(nickname,
+    user.setItems(users);
+    user.setItemLabelGenerator(User::getNickname);
+
+    add(  user,
             wtaTournament,
             player,
           stage,
@@ -74,7 +81,6 @@ public class WTAForm extends FormLayout {
     }
   }
 
-  // Events
   public static abstract class WTAFormEvent extends ComponentEvent<WTAForm> {
     private WTA wta;
 

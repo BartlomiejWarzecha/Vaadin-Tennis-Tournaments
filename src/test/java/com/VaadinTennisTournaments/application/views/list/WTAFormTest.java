@@ -1,6 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
 
 import com.VaadinTennisTournaments.application.data.entity.Stage;
+import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,6 +20,7 @@ public class WTAFormTest {
     @Before
     public void setupData() {
         stage = new ArrayList<>();
+        user = new ArrayList<>();
 
         stage1 = new Stage();
         stage1.setName("QuaterFinal");
@@ -29,8 +31,19 @@ public class WTAFormTest {
         stage.add(stage1);
         stage.add(stage2);
 
+        user1 = new User();
+        user1.setNickname("BW");
+
+        user2 = new User();
+        user2.setNickName("BMW");
+
+        stage.add(stage1);
+        stage.add(stage2);
+
+        user.add(user1);
+        user.add(user2);
+
         wta = new WTA();
-        wta.setNickname("BW");
         wta.setWtaTournament("Wimbledon");
         wta.setPlayer("Iga Świątek");
         wta.setStage(stage1);
@@ -38,10 +51,10 @@ public class WTAFormTest {
 
 @Test
 public void formFieldsPopulated() {
-    WTAForm form = new WTAForm(stage);
+    WTAForm form = new WTAForm(stage, user);
     form.setWTA(wta);
 
-    Assert.assertEquals("BW", form.nickname.getValue());
+    Assert.assertEquals("BW", form.user.getValue());
     Assert.assertEquals("Wimbledon", form.wtaTournament.getValue());
     Assert.assertEquals("Iga Świątek", form.player.getValue());
     Assert.assertEquals(stage1, form.stage.getValue());
@@ -49,10 +62,10 @@ public void formFieldsPopulated() {
 
 @Test
 public void saveEventHasCorrectValues() {
-    WTAForm form = new WTAForm(stage);
+    WTAForm form = new WTAForm(stage, user);
     WTA wta = new WTA();
     form.setWTA(wta);
-    form.nickname.setValue("BW");
+    form.user.setValue("BW");
 
     form.stage.setValue(stage1);
     form.wtaTournament.setValue("Australian Open");
@@ -65,7 +78,7 @@ public void saveEventHasCorrectValues() {
     form.save.click();
     WTA savedWTA = savedWTARef.get();
 
-    Assert.assertEquals("BW", savedWTA.getNickname());
+    Assert.assertEquals("BW", savedWTA.getUser,getNickname());
     Assert.assertEquals("Australian Open", savedWTA.getWtaTournament());
     Assert.assertEquals("Naomi Osaka", savedWTA.getPlayer());
     Assert.assertEquals(stage1, savedWTA.getStage());

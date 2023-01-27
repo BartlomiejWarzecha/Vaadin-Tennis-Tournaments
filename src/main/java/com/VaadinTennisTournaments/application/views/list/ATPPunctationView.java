@@ -35,7 +35,7 @@ public class ATPPunctationView extends VerticalLayout {
 
     public ATPPunctationView(MainService mainService) {
         this.mainService = mainService;
-        addClassName("puncation-view");
+        addClassName("atp-punctation-view");
         setSizeFull();
         configureGrid();
         configureForm();
@@ -78,7 +78,7 @@ private void configureForm() {
             editATPPunctation(event.getValue()));
     }
     private HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by any data...");
+        filterText.setPlaceholder("Filter data...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
@@ -88,7 +88,7 @@ private void configureForm() {
         addPredicionButton.addClickListener(click -> addATPPunctation());
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton);
-        toolbar.addClassName("toolbar-ATP");
+        toolbar.addClassName("toolbar-ATP-Punctation");
         return toolbar;
     }
     private Paragraph getHrefScoreParagraph(String value, String secondValue){
