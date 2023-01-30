@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.VaadinTennisTournaments.application.data.AbstractEntity;
-import com.VaadinTennisTournaments.application.data.entity.Interests;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity

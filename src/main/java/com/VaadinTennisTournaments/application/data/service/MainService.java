@@ -1,14 +1,15 @@
 package com.VaadinTennisTournaments.application.data.service;
 
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
-import com.VaadinTennisTournaments.application.data.entity.Interests;
+import com.VaadinTennisTournaments.application.data.entity.ATP.ATPResult;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
+import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
 import com.VaadinTennisTournaments.application.data.entity.WTA.WTAPunctation;
-import com.VaadinTennisTournaments.application.data.entity.Stage;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
 import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
-import com.VaadinTennisTournaments.application.data.entity.Rank;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
 import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
-import com.VaadinTennisTournaments.application.data.entity.Result.Result;
 import com.VaadinTennisTournaments.application.data.repository.*;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public class MainService {
     private final UserRepository userRepository;
     private final WTARepository wtaRepository;
     private final ATPRepository atpRepository;
-    private final ResultRepository resultRepository;
+    private final WTAResultRepository wtaResultRepository;
+    private final ATPResultRepository atpResultRepository;
 
     private final WTAPunctationRepository wtaPunctationRepository;
     private final ATPPunctationRepository atpPunctationRepository;
@@ -27,13 +29,15 @@ public class MainService {
     private final InterestsRepository interestsRepository;
     private final StageRepository stageRepository;
     private final RankRepository rankRepository;
-    public MainService(UserRepository userRepository, WTARepository wtaRepository, ATPRepository atpRepository, ResultRepository resultRepository, InterestsRepository interestsRepository, StageRepository stageRepository,
+    public MainService(UserRepository userRepository, WTARepository wtaRepository, ATPRepository atpRepository, WTAResultRepository wtaResultRepository,
+                       ATPResultRepository atpResultRepository, InterestsRepository interestsRepository, StageRepository stageRepository,
                        RankRepository rankRepository, WTAPunctationRepository wtaPunctationRepository, ATPPunctationRepository atpPunctationRepository
     ) {
         this.userRepository = userRepository;
         this.wtaRepository = wtaRepository;
         this.atpRepository = atpRepository;
-        this.resultRepository = resultRepository;
+        this.wtaResultRepository = wtaResultRepository;
+        this.atpResultRepository = atpResultRepository;
         this.interestsRepository = interestsRepository;
         this.stageRepository = stageRepository;
         this.rankRepository = rankRepository;
@@ -104,23 +108,41 @@ public class MainService {
         atpRepository.save(atp);
     }
 
-    public List<Result> findAllResult(String stringFilter) {
+    public List<WTAResult> findAllWTAResults(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
-            return resultRepository.findAll();
+            return wtaResultRepository.findAll();
         } else {
-            return resultRepository.search(stringFilter);
+            return wtaResultRepository.search(stringFilter);
         }
     }
-    public void deleteResult (Result result){
-        resultRepository.delete(result);
+    public void deleteWTAResult(WTAResult wtaResult){
+        wtaResultRepository.delete(wtaResult);
     }
 
-    public void saveResult (Result result){
-        if (result == null) {
+    public void saveWTAResult(WTAResult wtaResult){
+        if (wtaResult == null) {
             System.err.println("Results are null. Are you sure you have connected your form to the application?");
             return;
         }
-        resultRepository.save(result);
+        wtaResultRepository.save(wtaResult);
+    }
+    public List<ATPResult> findAllATPResults(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return atpResultRepository.findAll();
+        } else {
+            return atpResultRepository.search(stringFilter);
+        }
+    }
+    public void deleteATPResult(ATPResult atpResult){
+        atpResultRepository.delete(atpResult);
+    }
+
+    public void saveATPResult(ATPResult atpResult){
+        if (atpResult== null) {
+            System.err.println("Results are null. Are you sure you have connected your form to the application?");
+            return;
+        }
+        atpResultRepository.save(atpResult);
     }
 
     public List<WTAPunctation> findAllWTAPunctation(String stringFilter) {

@@ -1,6 +1,6 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.Stage;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
 import org.junit.Assert;
 import org.junit.Before;

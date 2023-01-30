@@ -1,11 +1,11 @@
 package com.VaadinTennisTournaments.application.data.generator;
 
-import com.VaadinTennisTournaments.application.data.entity.Rank;
-import com.VaadinTennisTournaments.application.data.entity.Result.Result;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
 import com.VaadinTennisTournaments.application.data.repository.InterestsRepository;
 import com.VaadinTennisTournaments.application.data.repository.RankRepository;
-import com.VaadinTennisTournaments.application.data.repository.ResultRepository;
-import com.VaadinTennisTournaments.application.data.entity.Interests;
+import com.VaadinTennisTournaments.application.data.repository.WTAResultRepository;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +24,12 @@ import java.util.stream.Stream;
 public class ResultDataGenerator {
 
     @Bean
-    public CommandLineRunner loadResultData(ResultRepository resultRepository,
+    public CommandLineRunner loadResultData(WTAResultRepository WTAResultRepository,
                                             RankRepository rankRepository, InterestsRepository interestsRepository) {
 
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
-            if (resultRepository.count() != 0L) {
+            if (WTAResultRepository.count() != 0L) {
                 logger.info("Using existing database");
                 return;
             }
@@ -42,19 +42,19 @@ public class ResultDataGenerator {
             List<Interests> interests = interestsRepository.saveAll(Stream.of("ATP", "WTA", "ATP/WTA")
                     .map(Interests::new).collect(Collectors.toList()));
 
-            logger.info("... generating 5 Result entities...");
-            ExampleDataGenerator<Result> resultExampleDataGenerator = new ExampleDataGenerator<>(Result.class,
+            logger.info("... generating 5 WTAResult entities...");
+            ExampleDataGenerator<WTAResult> resultExampleDataGenerator = new ExampleDataGenerator<>(WTAResult.class,
                     LocalDateTime.now());
-            resultExampleDataGenerator.setData(Result::setTournament, DataType.FIRST_NAME);
-            resultExampleDataGenerator.setData(Result::setWinner, DataType.EMAIL);
+            resultExampleDataGenerator.setData(WTAResult::setTournament, DataType.FIRST_NAME);
+            resultExampleDataGenerator.setData(WTAResult::setWinner, DataType.EMAIL);
 
             Random r = new Random(seed);
-            List<Result> results = resultExampleDataGenerator.create(5, seed).stream().peek(result -> {
+            List<WTAResult> WTAResults = resultExampleDataGenerator.create(5, seed).stream().peek(result -> {
                 result.setRank(ranks.get(r.nextInt(ranks.size())));
                 result.setInterest(interests.get(r.nextInt(interests.size())));
             }).collect(Collectors.toList());
 
-            resultRepository.saveAll(results);
+            WTAResultRepository.saveAll(WTAResults);
 
         };
     }

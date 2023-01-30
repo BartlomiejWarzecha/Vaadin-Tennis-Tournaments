@@ -1,11 +1,9 @@
 package com.VaadinTennisTournaments.application.data.entity.ATP;
 
 import com.VaadinTennisTournaments.application.data.AbstractEntity;
-import com.VaadinTennisTournaments.application.data.entity.Interests;
-import com.VaadinTennisTournaments.application.data.entity.Rank;
-import com.VaadinTennisTournaments.application.data.entity.Stage;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
 import com.VaadinTennisTournaments.application.data.entity.User.User;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;

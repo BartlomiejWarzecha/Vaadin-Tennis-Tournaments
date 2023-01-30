@@ -1,11 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
-
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
 import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
 import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
-import com.VaadinTennisTournaments.application.data.entity.User.User;
+import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -22,42 +18,31 @@ import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
 
-public class ATPPunctationForm extends FormLayout {
-  private ATPPunctation atpPunctation;
-  TextField points = new TextField("Points");
-  ComboBox<ATP> atpTournament = new ComboBox<>("Tournament");
+public class WTAResultForm extends FormLayout {
+  private WTAResult WTAResult;
+  TextField tournament = new TextField("Tournament");
+  TextField winner = new TextField("Winner");
   ComboBox<Interests> interest = new ComboBox<>("Type");
   ComboBox<Rank> rank = new ComboBox<>("Rank");
-  ComboBox<Stage> stage = new ComboBox<>("Stage");
-  ComboBox<User> user = new ComboBox<>("User");
-  Binder<ATPPunctation> binder = new BeanValidationBinder<>(ATPPunctation.class);
+  Binder<WTAResult> binder = new BeanValidationBinder<>(WTAResult.class);
 
   Button save = new Button("Save");
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public ATPPunctationForm(
-                           List<Rank> ranks, List<Stage> stages,
-                           List<User> users, List<ATP> atpTournaments) {
-    addClassName("atpPunctation-form");
+  public WTAResultForm(List<Interests> interests, List<Rank> ranks) {
+    addClassName("WTAResult-form");
     binder.bindInstanceFields(this);
 
+    interest.setItems(interests);
+    interest.setItemLabelGenerator(Interests::getName);
     rank.setItems(ranks);
     rank.setItemLabelGenerator(Rank::getName);
-    stage.setItems(stages);
-    stage.setItemLabelGenerator(Stage::getName);
-    user.setItems(users);
-    user.setItemLabelGenerator(User::getNickname);
 
-    atpTournament.setItems(atpTournaments);
-    atpTournament.setItemLabelGenerator(ATP::getAtpTournament);
-
-    add(
-            user,
-            atpTournament,
+    add(tournament,
+          winner,
+          interest,
           rank,
-          stage,
-            points,
           createButtonsLayout());
   }
 
@@ -70,7 +55,7 @@ public class ATPPunctationForm extends FormLayout {
     close.addClickShortcut(Key.ESCAPE);
 
     save.addClickListener(event -> validateAndSave());
-    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, atpPunctation)));
+    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, WTAResult)));
     close.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
     binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
@@ -78,48 +63,49 @@ public class ATPPunctationForm extends FormLayout {
     return new HorizontalLayout(save, delete, close); 
   }
 
-  public void setATPPunctation(ATPPunctation atpPunctation) {
-    this.atpPunctation = atpPunctation;
-    binder.readBean(atpPunctation);
+  public void setWTAResult(WTAResult WTAResult) {
+    this.WTAResult = WTAResult;
+    binder.readBean(WTAResult);
   }
+
   private void validateAndSave() {
     try {
-      binder.writeBean(atpPunctation);
-      fireEvent(new SaveEvent(this, atpPunctation));
+      binder.writeBean(WTAResult);
+      fireEvent(new SaveEvent(this, WTAResult));
     } catch (ValidationException e) {
       e.printStackTrace();
     }
   }
 
   // Events
-  public static abstract class PunctationFormEvent extends ComponentEvent<ATPPunctationForm> {
-    private ATPPunctation atpPunctation;
+  public static abstract class WTAResultFormEvent extends ComponentEvent<WTAResultForm> {
+    private WTAResult WTAResult;
 
-    protected PunctationFormEvent(ATPPunctationForm source, ATPPunctation atpPunctation) {
+    protected WTAResultFormEvent(WTAResultForm source, WTAResult WTAResult) {
       super(source, false);
-      this.atpPunctation = atpPunctation;
+      this.WTAResult = WTAResult;
     }
 
-    public ATPPunctation getATPPunctation() {
-      return atpPunctation;
-    }
-  }
-
-  public static class SaveEvent extends PunctationFormEvent {
-    SaveEvent(ATPPunctationForm source, ATPPunctation atpPunctation) {
-      super(source, atpPunctation);
+    public WTAResult getWTAResult() {
+      return WTAResult;
     }
   }
 
-  public static class DeleteEvent extends PunctationFormEvent {
-    DeleteEvent(ATPPunctationForm source, ATPPunctation atpPunctation) {
-      super(source, atpPunctation);
+  public static class SaveEvent extends WTAResultFormEvent {
+    SaveEvent(WTAResultForm source, WTAResult WTAResult) {
+      super(source, WTAResult);
+    }
+  }
+
+  public static class DeleteEvent extends WTAResultFormEvent {
+    DeleteEvent(WTAResultForm source, WTAResult WTAResult) {
+      super(source, WTAResult);
     }
 
   }
 
-  public static class CloseEvent extends PunctationFormEvent {
-    CloseEvent(ATPPunctationForm source) {
+  public static class CloseEvent extends WTAResultFormEvent {
+    CloseEvent(WTAResultForm source) {
       super(source, null);
     }
   }

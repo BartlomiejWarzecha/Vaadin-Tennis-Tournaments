@@ -5,8 +5,6 @@ import com.VaadinTennisTournaments.application.views.list.*;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -53,13 +51,15 @@ public class MainLayout extends AppLayout {
         RouterLink linkUsers = new RouterLink("Users", UserView.class);
         RouterLink listWTA = new RouterLink("WTA", WTAView.class);
         RouterLink listATP = new RouterLink("ATP", ATPView.class);
-        RouterLink listResults = new RouterLink("Results", ResultsView.class);
+        RouterLink listWTAResults = new RouterLink("WTA Results", WTAResultView.class);
+        RouterLink listATPResults = new RouterLink("ATP Results", ATPResultView.class);
         RouterLink listWTAPunctation = new RouterLink("WTA Punctation", WTAPunctationView.class);
         RouterLink listATPPunctation = new RouterLink("ATP Punctation", ATPPunctationView.class);
         linkUsers.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(
-            listHowToPlay, linkUsers, listWTA, listATP, listResults, listWTAPunctation, listATPPunctation
+            listHowToPlay, linkUsers, listWTA, listWTAPunctation, listWTAResults,
+                listATP, listATPPunctation, listATPResults
         ));
     }
 }

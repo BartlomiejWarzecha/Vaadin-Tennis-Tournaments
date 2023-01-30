@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.VaadinTennisTournaments.application.data.repository.InterestsRepository;
 import com.VaadinTennisTournaments.application.data.repository.UserRepository;
-import com.VaadinTennisTournaments.application.data.entity.Interests;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
 
 import com.vaadin.flow.spring.annotation.SpringComponent;
 

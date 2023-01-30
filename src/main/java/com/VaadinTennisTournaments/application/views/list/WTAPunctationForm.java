@@ -1,9 +1,8 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.Interests;
 import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
 import com.VaadinTennisTournaments.application.data.entity.WTA.WTAPunctation;
-import com.VaadinTennisTournaments.application.data.entity.Rank;
-import com.VaadinTennisTournaments.application.data.entity.Stage;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
 import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;

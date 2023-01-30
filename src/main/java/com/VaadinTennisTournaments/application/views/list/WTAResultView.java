@@ -1,5 +1,5 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.Result.Result;
+import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
@@ -22,16 +22,16 @@ import javax.annotation.security.PermitAll;
 
 @Component
 @Scope("prototype")
-@Route(value = "Result", layout = MainLayout.class)
-@PageTitle("Results | Vaadin Tennis Tournaments")
+@Route(value = "WTA-Results", layout = MainLayout.class)
+@PageTitle("WTA Results | Vaadin Tennis Tournaments")
 @PermitAll
-public class ResultsView extends VerticalLayout {
-    Grid<Result> grid = new Grid<>(Result.class);
+public class WTAResultView extends VerticalLayout {
+    Grid<WTAResult> grid = new Grid<>(WTAResult.class);
     TextField filterText = new TextField();
-    ResultsForm form;
+    WTAResultForm form;
     MainService mainService;
 
-    public ResultsView(MainService mainService) {
+    public WTAResultView(MainService mainService) {
         this.mainService = mainService;
         addClassName("result-view");
         setSizeFull();
@@ -53,12 +53,12 @@ public class ResultsView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new ResultsForm(mainService.findAllInterests(), mainService.findAllRanks());
+    form = new WTAResultForm(mainService.findAllInterests(), mainService.findAllRanks());
     form.setWidth("25em");
     form.setHeight("40em");
-    form.addListener(ResultsForm.SaveEvent.class, this::saveResult);
-    form.addListener(ResultsForm.DeleteEvent.class, this::deleteResult);
-    form.addListener(ResultsForm.CloseEvent.class, e -> closeEditor());
+    form.addListener(WTAResultForm.SaveEvent.class, this::saveWTAResult);
+    form.addListener(WTAResultForm.DeleteEvent.class, this::deleteWTAResult);
+    form.addListener(WTAResultForm.CloseEvent.class, e -> closeEditor());
 }
 
     private void configureGrid() {
@@ -70,7 +70,7 @@ private void configureForm() {
         grid.addColumn(result-> result.getRank().getName()).setHeader("Rank");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
-            editResult(event.getValue()));
+            editWTAResult(event.getValue()));
     }
     private HorizontalLayout getToolbar() {
         filterText.setPlaceholder("Filter data...");
@@ -98,24 +98,24 @@ private void configureForm() {
 
         return paragraph;
     }
-    private void saveResult(ResultsForm.SaveEvent event) {
-        mainService.saveResult(event.getResult());
+    private void saveWTAResult(WTAResultForm.SaveEvent event) {
+        mainService.saveWTAResult(event.getWTAResult());
         updateList();
         closeEditor();
     }
 
-    private void deleteResult(ResultsForm.DeleteEvent event) {
-        mainService.deleteResult(event.getResult());
+    private void deleteWTAResult(WTAResultForm.DeleteEvent event) {
+        mainService.deleteWTAResult(event.getWTAResult());
 
         updateList();
         closeEditor();
     }
 
-    public void editResult(Result result) {
-        if (result == null) {
+    public void editWTAResult(WTAResult wtaResult) {
+        if (wtaResult == null) {
             closeEditor();
         } else {
-            form.setResult(result);
+            form.setWTAResult(wtaResult);
             form.setVisible(true);
             addClassName("editing");
         }
@@ -123,16 +123,16 @@ private void configureForm() {
 
     private void addResult() {
         grid.asSingleSelect().clear();
-        editResult(new Result());
+        editWTAResult(new WTAResult());
     }
 
     private void closeEditor() {
-        form.setResult(null);
+        form.setWTAResult(null);
         form.setVisible(false);
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(mainService.findAllResult(filterText.getValue()));
+        grid.setItems(mainService.findAllWTAResults(filterText.getValue()));
     }
 }

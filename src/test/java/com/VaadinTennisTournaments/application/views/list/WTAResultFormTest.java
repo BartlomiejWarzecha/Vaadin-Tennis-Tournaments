@@ -1,8 +1,8 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.Interests;
-import com.VaadinTennisTournaments.application.data.entity.Rank;
-import com.VaadinTennisTournaments.application.data.entity.Result.Result;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ResultsFormTest {
+public class WTAResultFormTest {
     private List<Interests> interests;
     private List<Rank> ranks;
-    private Result result;
+    private WTAResult WTAResult;
     private Interests interest1;
     private Interests interest2;
 
@@ -41,16 +41,16 @@ public class ResultsFormTest {
         ranks.add(rank1);
         ranks.add(rank2);
 
-        result = new Result();
-        result.setTournament("Test Tournament");
-        result.setWinner("Ash Barty");
-        result.setInterest(interest2);
-        result.setRank(rank2);
+        WTAResult = new WTAResult();
+        WTAResult.setTournament("Test Tournament");
+        WTAResult.setWinner("Ash Barty");
+        WTAResult.setInterest(interest2);
+        WTAResult.setRank(rank2);
     }
 @Test
 public void formFieldsPopulated() {
-    ResultsForm form = new ResultsForm(interests, ranks);
-    form.setResult(result);
+    WTAResultForm form = new WTAResultForm(interests, ranks);
+    form.setResult(WTAResult);
 
     Assert.assertEquals("Test Tournament", form.tournament.getValue());
     Assert.assertEquals("Ash Barty", form.winner.getValue());
@@ -60,26 +60,26 @@ public void formFieldsPopulated() {
 
 @Test
 public void saveEventHasCorrectValues() {
-    ResultsForm form = new ResultsForm(interests,ranks);
-    Result result = new Result();
-    form.setResult(result);
+    WTAResultForm form = new WTAResultForm(interests,ranks);
+    WTAResult WTAResult = new WTAResult();
+    form.setResult(WTAResult);
 
     form.tournament.setValue("Tournament");
     form.winner.setValue("Best Player");
     form.interest.setValue(interest1);
     form.rank.setValue(rank1);
 
-    AtomicReference<Result> savedResultRef = new AtomicReference<>(null);
-    form.addListener(ResultsForm.SaveEvent.class, e -> {
-        savedResultRef.set(e.getResult());
+    AtomicReference<WTAResult> savedResultRef = new AtomicReference<>(null);
+    form.addListener(WTAResultForm.SaveEvent.class, e -> {
+        savedResultRef.set(e.getWTAResult());
     });
     form.save.click();
-    Result savedResult = savedResultRef.get();
+    WTAResult savedWTAResult = savedResultRef.get();
 
-    Assert.assertEquals("Tournament", savedResult.getTournament());
-    Assert.assertEquals("Best Player", savedResult.getWinner());
-    Assert.assertEquals(interest1, savedResult.getInterest());
-    Assert.assertEquals(rank1, savedResult.getRank());
+    Assert.assertEquals("Tournament", savedWTAResult.getTournament());
+    Assert.assertEquals("Best Player", savedWTAResult.getWinner());
+    Assert.assertEquals(interest1, savedWTAResult.getInterest());
+    Assert.assertEquals(rank1, savedWTAResult.getRank());
 
 }
 }

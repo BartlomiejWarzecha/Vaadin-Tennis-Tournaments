@@ -1,7 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.Interests;
-import com.VaadinTennisTournaments.application.data.entity.Rank;
-import com.VaadinTennisTournaments.application.data.entity.Result.Result;
+import com.VaadinTennisTournaments.application.data.entity.ATP.ATPResult;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
+import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -18,20 +18,20 @@ import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
 
-public class ResultsForm extends FormLayout {
-  private Result result;
+public class ATPResultForm extends FormLayout {
+  private ATPResult ATPResult;
   TextField tournament = new TextField("Tournament");
   TextField winner = new TextField("Winner");
   ComboBox<Interests> interest = new ComboBox<>("Type");
   ComboBox<Rank> rank = new ComboBox<>("Rank");
-  Binder<Result> binder = new BeanValidationBinder<>(Result.class);
+  Binder<ATPResult> binder = new BeanValidationBinder<>(ATPResult.class);
 
   Button save = new Button("Save");
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public ResultsForm(List<Interests> interests, List<Rank> ranks) {
-    addClassName("result-form");
+  public ATPResultForm(List<Interests> interests, List<Rank> ranks) {
+    addClassName("ATPResult-form");
     binder.bindInstanceFields(this);
 
     interest.setItems(interests);
@@ -55,7 +55,7 @@ public class ResultsForm extends FormLayout {
     close.addClickShortcut(Key.ESCAPE);
 
     save.addClickListener(event -> validateAndSave());
-    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, result)));
+    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, ATPResult)));
     close.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
     binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
@@ -63,49 +63,49 @@ public class ResultsForm extends FormLayout {
     return new HorizontalLayout(save, delete, close); 
   }
 
-  public void setResult(Result result) {
-    this.result = result;
-    binder.readBean(result);
+  public void setATPResult(ATPResult atpResult) {
+    this.ATPResult = atpResult;
+    binder.readBean(atpResult);
   }
 
   private void validateAndSave() {
     try {
-      binder.writeBean(result);
-      fireEvent(new SaveEvent(this, result));
+      binder.writeBean(ATPResult);
+      fireEvent(new SaveEvent(this, ATPResult));
     } catch (ValidationException e) {
       e.printStackTrace();
     }
   }
 
   // Events
-  public static abstract class ResultFormEvent extends ComponentEvent<ResultsForm> {
-    private Result result;
+  public static abstract class ATPResultFormEvent extends ComponentEvent<ATPResultForm> {
+    private ATPResult ATPResult;
 
-    protected ResultFormEvent(ResultsForm source, Result result) {
+    protected ATPResultFormEvent(ATPResultForm source, ATPResult ATPResult) {
       super(source, false);
-      this.result = result;
+      this.ATPResult = ATPResult;
     }
 
-    public Result getResult() {
-      return result;
-    }
-  }
-
-  public static class SaveEvent extends ResultFormEvent {
-    SaveEvent(ResultsForm source, Result result) {
-      super(source, result);
+    public ATPResult getATPResult() {
+      return ATPResult;
     }
   }
 
-  public static class DeleteEvent extends ResultFormEvent {
-    DeleteEvent(ResultsForm source, Result result) {
-      super(source, result);
+  public static class SaveEvent extends ATPResultFormEvent {
+    SaveEvent(ATPResultForm source, ATPResult atpResult) {
+      super(source, atpResult);
+    }
+  }
+
+  public static class DeleteEvent extends ATPResultFormEvent {
+    DeleteEvent(ATPResultForm source, ATPResult ATPResult) {
+      super(source, ATPResult);
     }
 
   }
 
-  public static class CloseEvent extends ResultFormEvent {
-    CloseEvent(ResultsForm source) {
+  public static class CloseEvent extends ATPResultFormEvent {
+    CloseEvent(ATPResultForm source) {
       super(source, null);
     }
   }

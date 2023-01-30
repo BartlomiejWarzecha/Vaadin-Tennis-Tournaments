@@ -1,4 +1,4 @@
-package com.VaadinTennisTournaments.application.data.entity;
+package com.VaadinTennisTournaments.application.data.entity.Tournament;
 
 import com.VaadinTennisTournaments.application.data.AbstractEntity;
 
@@ -6,13 +6,13 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Rank extends AbstractEntity {
+public class Stage extends AbstractEntity {
     @NotBlank
     private String name;
 
-    public Rank() { }
+    public Stage() { }
 
-    public Rank(String name) {
+    public Stage(String name) {
         this.name = name;
     }
 

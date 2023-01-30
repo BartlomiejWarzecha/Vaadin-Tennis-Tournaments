@@ -1,6 +1,6 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.Result.Result;
+import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.junit.Assert;
@@ -12,24 +12,24 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ResultsViewTest {
+public class WTAResultViewTest {
 
     @Autowired
-    private ResultsView resultsView;
+    private WTAResultView WTAResultView;
 
     @Test
     public void formShownWhenResultSelected() {
-        Grid<Result> grid = resultsView.grid;
-        Result firstResult = getFirstItem(grid);
+        Grid<WTAResult> grid = WTAResultView.grid;
+        WTAResult firstWTAResult = getFirstItem(grid);
 
-        ResultsForm form = resultsView.form;
+        WTAResultForm form = WTAResultView.form;
 
         Assert.assertFalse(form.isVisible());
-        grid.asSingleSelect().setValue(firstResult);
+        grid.asSingleSelect().setValue(firstWTAResult);
         Assert.assertTrue(form.isVisible());
-        Assert.assertEquals(firstResult.getTournament(), form.tournament.getValue());
+        Assert.assertEquals(firstWTAResult.getTournament(), form.tournament.getValue());
     }
-    private Result getFirstItem(Grid<Result> grid) {
-        return( (ListDataProvider<Result>) grid.getDataProvider()).getItems().iterator().next();
+    private WTAResult getFirstItem(Grid<WTAResult> grid) {
+        return( (ListDataProvider<WTAResult>) grid.getDataProvider()).getItems().iterator().next();
     }
 }
