@@ -49,6 +49,7 @@ public class MainLayout extends AppLayout {
     private void createDrawer() {
         RouterLink listHowToPlay = new RouterLink("How To Play", HowToPlayView.class);
         RouterLink linkUsers = new RouterLink("Users", UserView.class);
+        RouterLink linkUsersRanking = new RouterLink("Users Ranking", UserRankingView.class);
         RouterLink listWTA = new RouterLink("WTA", WTAView.class);
         RouterLink listATP = new RouterLink("ATP", ATPView.class);
         RouterLink listWTAResults = new RouterLink("WTA Results", WTAResultView.class);
@@ -58,7 +59,7 @@ public class MainLayout extends AppLayout {
         linkUsers.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(
-            listHowToPlay, linkUsers, listWTA, listWTAPunctation, listWTAResults,
+            listHowToPlay, linkUsersRanking, linkUsers, listWTA, listWTAPunctation, listWTAResults,
                 listATP, listATPPunctation, listATPResults
         ));
     }

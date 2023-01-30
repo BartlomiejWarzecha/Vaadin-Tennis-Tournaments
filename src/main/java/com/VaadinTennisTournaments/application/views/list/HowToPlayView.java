@@ -127,11 +127,11 @@ public class HowToPlayView extends VerticalLayout {
                         "Punktacja = 20pkt * 3.0 = 60 pkt"
         ));
         ranking.add(generateNotEditableText(
-                        "1. Rezultaty powinny być dodawane po zakończonym turnieju przez osobę, która dodała dany turniej w swojej predykcji" +
+                        "1. " +
                         "\n"+
-                        "2. Dodany zawodnik i turniej, powinien być możliwy do identyfikacji przez wyszystkich uczestników" +
+                        "2. " +
                         "\n"+
-                        "3. Usuwaniem wyników oraz tworzeniem punktacji w widoku punktacji, zajmuje sie po danym turnieju się jedna, wyznaczona do tego zadania osoba"
+                        "3. "
         ));
 
         generalRules.add(generateEditableText("Write your own General Rules"));

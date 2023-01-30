@@ -3,6 +3,7 @@ package com.VaadinTennisTournaments.application.data.service;
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATPResult;
 import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
+import com.VaadinTennisTournaments.application.data.entity.User.UserRanking;
 import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
 import com.VaadinTennisTournaments.application.data.entity.WTA.WTAPunctation;
 import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
@@ -18,31 +19,35 @@ import java.util.List;
 public class MainService {
 
     private final UserRepository userRepository;
+    private final UserRankingRepository userRankingRepository;
     private final WTARepository wtaRepository;
-    private final ATPRepository atpRepository;
+
     private final WTAResultRepository wtaResultRepository;
-    private final ATPResultRepository atpResultRepository;
 
     private final WTAPunctationRepository wtaPunctationRepository;
+    private final ATPRepository atpRepository;
+    private final ATPResultRepository atpResultRepository;
     private final ATPPunctationRepository atpPunctationRepository;
 
     private final InterestsRepository interestsRepository;
     private final StageRepository stageRepository;
     private final RankRepository rankRepository;
-    public MainService(UserRepository userRepository, WTARepository wtaRepository, ATPRepository atpRepository, WTAResultRepository wtaResultRepository,
-                       ATPResultRepository atpResultRepository, InterestsRepository interestsRepository, StageRepository stageRepository,
-                       RankRepository rankRepository, WTAPunctationRepository wtaPunctationRepository, ATPPunctationRepository atpPunctationRepository
-    ) {
+    public MainService(UserRepository userRepository, UserRankingRepository userRankingRepository ,
+                       WTARepository wtaRepository, WTAResultRepository wtaResultRepository, WTAPunctationRepository wtaPunctationRepository,
+                       ATPRepository atpRepository, ATPResultRepository atpResultRepository, ATPPunctationRepository atpPunctationRepository,
+                       InterestsRepository interestsRepository, StageRepository stageRepository, RankRepository rankRepository
+                       ) {
         this.userRepository = userRepository;
+        this.userRankingRepository = userRankingRepository;
         this.wtaRepository = wtaRepository;
-        this.atpRepository = atpRepository;
         this.wtaResultRepository = wtaResultRepository;
+        this.wtaPunctationRepository = wtaPunctationRepository;
+        this.atpRepository = atpRepository;
         this.atpResultRepository = atpResultRepository;
+        this.atpPunctationRepository = atpPunctationRepository;
         this.interestsRepository = interestsRepository;
         this.stageRepository = stageRepository;
         this.rankRepository = rankRepository;
-        this.wtaPunctationRepository = wtaPunctationRepository;
-        this.atpPunctationRepository = atpPunctationRepository;
 
     }
     public List<User> findAllUsers(String stringFilter) {
@@ -63,15 +68,27 @@ public class MainService {
         }
         userRepository.save(user);
     }
-    public List<Interests> findAllInterests() {
-        return interestsRepository.findAll();
+
+    public List<UserRanking> findAllUserRankings(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return userRankingRepository.findAll();
+        } else {
+            return userRankingRepository.search(stringFilter);
+        }
     }
-    public List<Stage> findAllStages() {
-        return stageRepository.findAll();
+    public void deleteUserRanking(UserRanking userRanking) {
+        userRankingRepository.delete(userRanking);
     }
-    public List<Rank> findAllRanks() {
-        return rankRepository.findAll();
+
+    public void saveUserRanking(UserRanking userRanking) {
+        if (userRanking == null) {
+            System.err.println("WTA is null. Are you sure you have connected your form to the application?");
+            return;
+        }
+        userRankingRepository.save(userRanking);
     }
+
+
     public List<WTA> findAllWTA(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return wtaRepository.findAll();
@@ -181,4 +198,15 @@ public class MainService {
         }
         atpPunctationRepository.save(atpPunctation);
     }
+
+    public List<Interests> findAllInterests() {
+        return interestsRepository.findAll();
+    }
+    public List<Stage> findAllStages() {
+        return stageRepository.findAll();
+    }
+    public List<Rank> findAllRanks() {
+        return rankRepository.findAll();
+    }
+
 }
