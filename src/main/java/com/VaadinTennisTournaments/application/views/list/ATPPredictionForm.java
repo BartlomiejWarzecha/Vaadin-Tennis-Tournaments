@@ -25,7 +25,7 @@ public class ATPPredictionForm extends FormLayout {
   TextField atpTournament = new TextField("Atp Tournament");
   TextField player  = new TextField("Player");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
-  ComboBox<User> user = new ComboBox<>("Nickname");
+  ComboBox<User> user = new ComboBox<>("User");
   Binder<ATP> binder = new BeanValidationBinder<>(ATP.class);
 
   Button save = new Button("Save");
@@ -41,9 +41,10 @@ public class ATPPredictionForm extends FormLayout {
     user.setItems(users);
     user.setItemLabelGenerator(User::getNickname);
 
-    add(user,
-            atpTournament,
+    add(
             player,
+            atpTournament,
+          user,
           stage,
         createButtonsLayout()); 
   }

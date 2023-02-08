@@ -25,7 +25,7 @@ public class WTAPredictionForm extends FormLayout {
   TextField wtaTournament = new TextField("Wta Tournament");
   TextField player  = new TextField("Player");
 
-  ComboBox<User> user = new ComboBox<>("Nickname");
+  ComboBox<User> user = new ComboBox<>("User");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
 
   Binder<WTA> binder = new BeanValidationBinder<>(WTA.class);
@@ -43,10 +43,11 @@ public class WTAPredictionForm extends FormLayout {
     user.setItems(users);
     user.setItemLabelGenerator(User::getNickname);
 
-    add(  user,
-            wtaTournament,
+    add(
             player,
-          stage,
+            wtaTournament,
+            user,
+            stage,
         createButtonsLayout()); 
   }
 

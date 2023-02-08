@@ -8,6 +8,8 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -78,11 +80,14 @@ private void configureForm() {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
+        Icon resultsIcon = new Icon(VaadinIcon.ARCHIVE);
+        resultsIcon.setColor("black");
+
         Button addPredicionButton = new Button("Add result");
         addPredicionButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         addPredicionButton.addClickListener(click -> addResult());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton, resultsIcon);
         toolbar.addClassName("toolbar-ATP");
         return toolbar;
     }

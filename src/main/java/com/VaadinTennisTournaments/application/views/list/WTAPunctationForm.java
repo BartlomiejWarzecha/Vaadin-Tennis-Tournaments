@@ -27,11 +27,10 @@ public class WTAPunctationForm extends FormLayout {
   private WTAPunctation WTAPunctation;
   TextField points = new TextField("Points");
 
-  ComboBox<WTA>  wtaTournament = new ComboBox<>("Tournament");
+  ComboBox<WTA>  wtaTournament = new ComboBox<>("WTA Tournament");
   ComboBox<Rank> rank = new ComboBox<>("Rank");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
   ComboBox<User> user = new ComboBox<>("User");
-
 
   Binder<WTAPunctation> binder = new BeanValidationBinder<>(WTAPunctation.class);
 
@@ -54,11 +53,11 @@ public class WTAPunctationForm extends FormLayout {
     wtaTournament.setItems(wtaTournaments);
     wtaTournament.setItemLabelGenerator(WTA::getWtaTournament);
 
-    add(    user,
+    add(  points,
+            user,
+            stage,
             wtaTournament,
           rank,
-          stage,
-          points,
           createButtonsLayout());
   }
 

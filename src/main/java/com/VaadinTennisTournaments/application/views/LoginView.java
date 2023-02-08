@@ -12,6 +12,8 @@ import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -22,6 +24,7 @@ import com.vaadin.flow.router.*;
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 	Grid<RegisterUser> grid = new Grid<>(RegisterUser.class);
 	private final LoginForm login = new LoginForm();
+
 	RegistrationForm form;
 	MainService mainService;
 
@@ -32,13 +35,17 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 		configureGrid();
 		configureForm();
 
+		Icon outlineIcon = new Icon(VaadinIcon.MOON);
+		outlineIcon.setColor("#ffff00");
+		outlineIcon.setSize("75px");
 
-		add(new H2("Vaadin Tennis Tournaments!"), login, getToolbar(), getContent(), getHrefParagraph("WTA Tennis", "ATP Tour"));
+		login.setForgotPasswordButtonVisible(false);
+		add(outlineIcon, new H2("Vaadin Tennis Tournaments!") , login,
+				getToolbar(), getContent() );
 
 		setAlignItems(Alignment.CENTER);
 		setJustifyContentMode(JustifyContentMode.CENTER);
 		setHorizontalComponentAlignment(Alignment.CENTER);
-
 
 		login.setAction("login");
 		setHeight("1200px");

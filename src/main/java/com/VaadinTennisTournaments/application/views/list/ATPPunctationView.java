@@ -10,6 +10,8 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -68,10 +70,10 @@ private void configureForm() {
         grid.setSizeFull();
 
         grid.setColumns( "points");
-        grid.addColumn(ATPPunctation -> ATPPunctation.getAtpTournament().getAtpTournament()).setHeader("ATP Tournament");
         grid.addColumn(ATPPunctation -> ATPPunctation.getUser().getNickname()).setHeader("User");
-        grid.addColumn(ATPPunctation -> ATPPunctation.getRank().getName()).setHeader("Rank");
         grid.addColumn(ATPPunctation -> ATPPunctation.getStage().getName()).setHeader("Stage");
+        grid.addColumn(ATPPunctation -> ATPPunctation.getAtpTournament().getAtpTournament()).setHeader("ATP Tournament");
+        grid.addColumn(ATPPunctation -> ATPPunctation.getRank().getName()).setHeader("Rank");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
@@ -83,11 +85,14 @@ private void configureForm() {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
+        Icon punctationIcon = new Icon(VaadinIcon.ABACUS);
+        punctationIcon.setColor("black");
+
         Button addPredicionButton = new Button("Add user result");
         addPredicionButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         addPredicionButton.addClickListener(click -> addATPPunctation());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton, punctationIcon);
         toolbar.addClassName("toolbar-ATP-Punctation");
         return toolbar;
     }

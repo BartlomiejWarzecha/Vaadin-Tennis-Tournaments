@@ -6,6 +6,8 @@ import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -62,8 +64,9 @@ private void configureForm() {
         grid.addClassNames("user-grid");
         grid.setSizeFull();
         grid.setColumns("tournamentsNumber", "points");
-        grid.addColumn(userRanking -> userRanking.getInterest().getName()).setHeader("Interest");
+
         grid.addColumn(userRanking -> userRanking.getUser().getNickname()).setHeader("User");
+        grid.addColumn(userRanking -> userRanking.getInterest().getName()).setHeader("Interest");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editUserRanking(event.getValue()));
@@ -75,12 +78,15 @@ private void configureForm() {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
+        Icon rankingIcon = new Icon(VaadinIcon.CHART);
+        rankingIcon.setColor("black");
+
         Button addUserButton = new Button("Add ranking for user ");
         addUserButton.addClickListener(click -> addUserRanking());
         addUserButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
 
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton, rankingIcon);
         toolbar.addClassName("toolbar");
         return toolbar;
     }

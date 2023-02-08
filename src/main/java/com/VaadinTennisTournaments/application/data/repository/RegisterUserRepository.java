@@ -18,5 +18,6 @@ public interface RegisterUserRepository extends JpaRepository<RegisterUser, Long
     List<RegisterUser> search(@Param("searchTerm") String searchTerm);
     Optional<RegisterUser> findByUsername(String username);
 
+    Boolean existsByEmail(String email);
 
 }

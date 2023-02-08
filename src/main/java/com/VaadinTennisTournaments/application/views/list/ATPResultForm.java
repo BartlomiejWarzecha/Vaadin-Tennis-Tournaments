@@ -41,8 +41,8 @@ public class ATPResultForm extends FormLayout {
 
     add(tournament,
           winner,
+            rank,
           interest,
-          rank,
           createButtonsLayout());
   }
 

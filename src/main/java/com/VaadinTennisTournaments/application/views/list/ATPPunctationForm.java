@@ -25,7 +25,7 @@ import java.util.List;
 public class ATPPunctationForm extends FormLayout {
   private ATPPunctation atpPunctation;
   TextField points = new TextField("Points");
-  ComboBox<ATP> atpTournament = new ComboBox<>("Tournament");
+  ComboBox<ATP> atpTournament = new ComboBox<>("ATP Tournament");
   ComboBox<Interests> interest = new ComboBox<>("Type");
   ComboBox<Rank> rank = new ComboBox<>("Rank");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
@@ -53,11 +53,11 @@ public class ATPPunctationForm extends FormLayout {
     atpTournament.setItemLabelGenerator(ATP::getAtpTournament);
 
     add(
+            points,
             user,
+            stage,
             atpTournament,
           rank,
-          stage,
-            points,
           createButtonsLayout());
   }
 

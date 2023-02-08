@@ -6,9 +6,13 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
@@ -33,10 +37,11 @@ public class MainLayout extends AppLayout {
     private void createHeader() {
         H3 logo = new H3("Vaadin Tennis Tournaments!");
         logo.addClassNames("text-l", "m-m");
-
+        Icon outlineIcon = new Icon(VaadinIcon.MOON);
+        outlineIcon.setColor("#ffff00");
         Button logout = new Button("Log out", e -> securityService.logout());
 
-        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo, logout);
+        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo, outlineIcon, logout);
 
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.expand(logo);
@@ -47,7 +52,23 @@ public class MainLayout extends AppLayout {
     }
 
     private void createDrawer() {
-        RouterLink listHowToPlay = new RouterLink("How To Play", HowToPlayView.class);
+
+        Icon grIcon = new Icon(VaadinIcon.BOOK);
+        grIcon.setColor("black");
+        Icon profileIcon = new Icon(VaadinIcon.USER);
+        profileIcon.setColor("black");
+        Icon atpWtaIcon = new Icon(VaadinIcon.SCALE);
+        atpWtaIcon.setColor("black");
+        Icon resultsIcon = new Icon(VaadinIcon.ARCHIVE);
+        resultsIcon.setColor("black");
+        Icon punctationIcon = new Icon(VaadinIcon.ABACUS);
+        punctationIcon.setColor("black");
+        Icon rankingIcon = new Icon(VaadinIcon.CHART);
+        rankingIcon.setColor("black");
+        Icon outlineIcon = new Icon(VaadinIcon.MOON);
+        outlineIcon.setColor("#ffff00");
+
+        RouterLink listHowToPlay = new RouterLink( "How To Play", HowToPlayView.class);
         RouterLink linkUsers = new RouterLink("Users", UserView.class);
         RouterLink linkUsersRanking = new RouterLink("Users Ranking", UserRankingView.class);
         RouterLink listWTAPrediction = new RouterLink("WTA Prediction", WTAPredictionView.class);
@@ -59,8 +80,8 @@ public class MainLayout extends AppLayout {
         linkUsers.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(
-            listHowToPlay, linkUsersRanking, linkUsers, listWTAPrediction, listWTAPunctation, listWTAResults,
-                listATPPrediction, listATPPunctation, listATPResults
+           outlineIcon, grIcon, listHowToPlay, profileIcon, linkUsers, atpWtaIcon, listWTAPrediction, listATPPrediction, punctationIcon, listWTAPunctation,
+                 listATPPunctation, resultsIcon, listWTAResults, listATPResults, rankingIcon, linkUsersRanking, outlineIcon
         ));
     }
 }

@@ -17,6 +17,7 @@ public class RegisterUser extends AbstractEntity {
 
     @Email
     @NotEmpty
+    @Column(unique=true)
     private String email = "";
 
     private String roles = "User";

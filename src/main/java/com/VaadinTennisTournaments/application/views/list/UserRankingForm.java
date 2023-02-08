@@ -45,9 +45,10 @@ public class UserRankingForm extends FormLayout {
     user.setItems(users);
     user.setItemLabelGenerator(User::getNickname);
 
-    add(points,
-        tournamentsNumber,
-        user,
+    add(
+            tournamentsNumber,
+            points,
+             user,
             interest,
         createButtonsLayout()); 
   }

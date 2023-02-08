@@ -8,6 +8,8 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -64,9 +66,9 @@ private void configureForm() {
     private void configureGrid() {
         grid.addClassNames("atp-grid");
         grid.setSizeFull();
-        grid.setColumns("atpTournament", "player");
-        grid.addColumn(atp-> atp.getStage().getName()).setHeader("Stage");
+        grid.setColumns("player", "atpTournament" );
         grid.addColumn(atp-> atp.getUser().getNickname()).setHeader("User");
+        grid.addColumn(atp-> atp.getStage().getName()).setHeader("Stage");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editATP(event.getValue()));
@@ -78,11 +80,14 @@ private void configureForm() {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
+        Icon atpWtaIcon = new Icon(VaadinIcon.SCALE);
+        atpWtaIcon.setColor("black");
+
         Button addPredicionButton = new Button("Add prediction");
         addPredicionButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         addPredicionButton.addClickListener(click -> addATP());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton, atpWtaIcon);
         toolbar.addClassName("toolbar-ATP-Prediction");
         return toolbar;
     }

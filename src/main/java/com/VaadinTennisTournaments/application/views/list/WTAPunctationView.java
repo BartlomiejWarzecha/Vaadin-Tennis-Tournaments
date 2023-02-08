@@ -9,6 +9,8 @@ import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -68,10 +70,10 @@ private void configureForm() {
         grid.addClassNames("punctation-grid");
         grid.setSizeFull();
         grid.setColumns( "points");
-        grid.addColumn(WTAPunctation -> WTAPunctation.getWtaTournament().getWtaTournament()).setHeader("WTA Tournament");
         grid.addColumn(WTAPunctation -> WTAPunctation.getUser().getNickname()).setHeader("User");
-        grid.addColumn(WTAPunctation -> WTAPunctation.getRank().getName()).setHeader("Rank");
         grid.addColumn(WTAPunctation -> WTAPunctation.getStage().getName()).setHeader("Stage");
+        grid.addColumn(WTAPunctation -> WTAPunctation.getWtaTournament().getWtaTournament()).setHeader("WTA Tournament");
+        grid.addColumn(WTAPunctation -> WTAPunctation.getRank().getName()).setHeader("Rank");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
@@ -82,12 +84,13 @@ private void configureForm() {
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
-
+        Icon punctationIcon = new Icon(VaadinIcon.ABACUS);
+        punctationIcon.setColor("black");
         Button addPredicionButton = new Button("Add user result");
         addPredicionButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         addPredicionButton.addClickListener(click -> addPunctation());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton, punctationIcon);
         toolbar.addClassName("toolbar-WTA-Punctation");
         return toolbar;
     }
