@@ -59,7 +59,7 @@ public class WTAPunctationView extends VerticalLayout {
 
 private void configureForm() {
     form = new WTAPunctationForm( mainService.findAllRanks(),
-            mainService.findAllStages(), mainService.findAllUsers("") , mainService.findAllWTA(""));
+            mainService.findAllStages(), mainService.findAllUsers( "") , mainService.findAllWTA(""));
     form.setWidth("25em");
     form.setHeight("40em");
     form.addListener(WTAPunctationForm.SaveEvent.class, this::saveWTAPunctation);

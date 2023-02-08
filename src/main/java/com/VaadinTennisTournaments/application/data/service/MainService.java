@@ -1,5 +1,6 @@
 package com.VaadinTennisTournaments.application.data.service;
 
+import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPlayer;
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATPResult;
 import com.VaadinTennisTournaments.application.data.entity.Register.RegisterUser;
@@ -20,9 +21,9 @@ import java.util.List;
 @org.springframework.stereotype.Service
 public class MainService {
     PasswordEncoder passwordEncoder;
+    private final RegisterUserRepository registerUserRepository;
     private final UserRepository userRepository;
     private final UserRankingRepository userRankingRepository;
-    private final RegisterUserRepository registerUserRepository;
     private final WTARepository wtaRepository;
 
     private final WTAResultRepository wtaResultRepository;
@@ -31,48 +32,33 @@ public class MainService {
     private final ATPRepository atpRepository;
     private final ATPResultRepository atpResultRepository;
     private final ATPPunctationRepository atpPunctationRepository;
+    private final ATPPlayerRepository atpPlayerRepository;
 
     private final InterestsRepository interestsRepository;
     private final StageRepository stageRepository;
     private final RankRepository rankRepository;
-    public MainService(UserRepository userRepository, UserRankingRepository userRankingRepository , RegisterUserRepository registerUserRepository,
+    public MainService(RegisterUserRepository registerUserRepository, UserRepository userRepository, UserRankingRepository userRankingRepository ,
                        WTARepository wtaRepository, WTAResultRepository wtaResultRepository, WTAPunctationRepository wtaPunctationRepository,
                        ATPRepository atpRepository, ATPResultRepository atpResultRepository, ATPPunctationRepository atpPunctationRepository,
+                       ATPPlayerRepository atpPlayerRepository,
                        InterestsRepository interestsRepository, StageRepository stageRepository, RankRepository rankRepository,
                        PasswordEncoder passwordEncoder
                        ) {
+        this.registerUserRepository = registerUserRepository;
         this.userRepository = userRepository;
         this.userRankingRepository = userRankingRepository;
-        this.registerUserRepository = registerUserRepository;
         this.wtaRepository = wtaRepository;
         this.wtaResultRepository = wtaResultRepository;
         this.wtaPunctationRepository = wtaPunctationRepository;
         this.atpRepository = atpRepository;
         this.atpResultRepository = atpResultRepository;
         this.atpPunctationRepository = atpPunctationRepository;
+        this.atpPlayerRepository = atpPlayerRepository;
         this.interestsRepository = interestsRepository;
         this.stageRepository = stageRepository;
         this.rankRepository = rankRepository;
         this.passwordEncoder = passwordEncoder;
 
-    }
-    public List<User> findAllUsers(String stringFilter) {
-        if (stringFilter == null || stringFilter.isEmpty()) {
-            return userRepository.findAll();
-        } else {
-            return userRepository.search(stringFilter);
-        }
-    }
-    public void deleteUser(User user) {
-        userRepository.delete(user);
-    }
-
-    public void saveUser(User user) {
-        if (user == null) {
-            System.err.println("WTA is null. Are you sure you have connected your form to the application?");
-            return;
-        }
-        userRepository.save(user);
     }
     public List<RegisterUser> findAllRegisterUsers(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
@@ -94,6 +80,46 @@ public class MainService {
         user.setRoles("User");
         registerUserRepository.save(user);
     }
+
+    public List<User> findAllUsers(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty() ) {
+            return userRepository.findAll();
+        } else {
+            return userRepository.search(stringFilter);
+        }
+    }
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
+
+    public void saveUser(User user) {
+        if (user == null) {
+            System.err.println("WTA is null. Are you sure you have connected your form to the application?");
+            return;
+        }
+        userRepository.save(user);
+    }
+
+    public List<ATPPlayer> findAllATPPlayers(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return atpPlayerRepository.findAll();
+        } else {
+            return atpPlayerRepository.search(stringFilter);
+        }
+    }
+    public void deleteATPPlayer(ATPPlayer atpPlayer) {
+        atpPlayerRepository.delete(atpPlayer);
+    }
+
+    public void saveATPPlayer(ATPPlayer atpPlayer) {
+        if (atpPlayer == null) {
+            System.err.println("ATP playeris null. Are you sure you have connected your form to the application?");
+            return;
+        }
+        atpPlayerRepository.save(atpPlayer);
+    }
+
+
 
 
     public List<UserRanking> findAllUserRankings(String stringFilter) {

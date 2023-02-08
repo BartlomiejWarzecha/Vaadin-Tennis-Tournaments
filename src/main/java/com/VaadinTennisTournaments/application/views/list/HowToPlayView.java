@@ -65,7 +65,7 @@ public class HowToPlayView extends VerticalLayout {
                 "\n"+
                 "2. Jedna osoba nie moze dodac wiecej niz jednego uzytkownika" +
                 "\n"+
-                "3. Wybrane zainteresowania powinny być zbieżne ABACUSz udziałem w predykcji, w poszczególnych tabelach"
+                "3. Wybrane zainteresowania powinny być zbieżne z udziałem w predykcji, w poszczególnych tabelach"
                 ));
 
         atpWta.add(generateNotEditableText(

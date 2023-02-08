@@ -55,7 +55,7 @@ public class WTAPredictionView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new WTAPredictionForm(mainService.findAllStages(), mainService.findAllUsers(""));
+    form = new WTAPredictionForm(mainService.findAllStages(), mainService.findAllUsers( ""));
     form.setWidth("25em");
     form.setHeight("45em");
     form.addListener(WTAPredictionForm.SaveEvent.class, this::saveWTA);

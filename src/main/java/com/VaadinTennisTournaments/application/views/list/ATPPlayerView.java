@@ -1,13 +1,12 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.User.UserRanking;
+import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPlayer;
+import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -19,18 +18,19 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.security.PermitAll;
 
+
 @Component
 @Scope("prototype")
-@Route(value = "UserRanking", layout = MainLayout.class)
-@PageTitle("Users Ranking | Vaadin Tennis Tournaments")
+@Route(value = "ATPPlayer", layout = MainLayout.class)
+@PageTitle("ATP Player | Vaadin Tennis Tournaments")
 @PermitAll
-public class UserRankingView extends VerticalLayout {
-    Grid<UserRanking> grid = new Grid<>(UserRanking.class);
+public class ATPPlayerView extends VerticalLayout {
+    Grid<ATPPlayer> grid = new Grid<>(ATPPlayer.class);
     TextField filterText = new TextField();
-    UserRankingForm form;
+    ATPPlayerForm form;
     MainService mainService;
 
-    public UserRankingView(MainService mainService) {
+    public ATPPlayerView(MainService mainService) {
         this.mainService = mainService;
         addClassName("user-view");
         setSizeFull();
@@ -52,24 +52,22 @@ public class UserRankingView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new UserRankingForm(mainService.findAllInterests(), mainService.findAllUsers("" ));
+    form = new ATPPlayerForm(mainService.findAllUsers( "ATP"));
     form.setWidth("25em");
     form.setHeight("40em");
-    form.addListener(UserRankingForm.SaveEvent.class, this::saveUserRanking);
-    form.addListener(UserRankingForm.DeleteEvent.class, this::deleteUserRanking);
-    form.addListener(UserRankingForm.CloseEvent.class, e -> closeEditor());
+    form.addListener(ATPPlayerForm.SaveEvent.class, this::saveATPPlayer);
+    form.addListener(ATPPlayerForm.DeleteEvent.class, this::deleteATPPlayer);
+    form.addListener(ATPPlayerForm.CloseEvent.class, e -> closeEditor());
 }
 
     private void configureGrid() {
         grid.addClassNames("user-grid");
         grid.setSizeFull();
-        grid.setColumns("tournamentsNumber", "points");
-
-        grid.addColumn(userRanking -> userRanking.getUser().getNickname()).setHeader("User");
-        grid.addColumn(userRanking -> userRanking.getInterest().getName()).setHeader("Interest");
+        grid.setColumns("fullname", "description");
+        grid.addColumn(user -> user.getUser().getNickname()).setHeader("User");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
-            editUserRanking(event.getValue()));
+            editATPPlayer(event.getValue()));
     }
 
     private HorizontalLayout getToolbar() {
@@ -78,53 +76,50 @@ private void configureForm() {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Icon rankingIcon = new Icon(VaadinIcon.CHART);
-        rankingIcon.setColor("black");
-
-        Button addUserButton = new Button("Add ranking for user ");
-        addUserButton.addClickListener(click -> addUserRanking());
+        Button addUserButton = new Button("Add ATP Player");
+        addUserButton.addClickListener(click -> addATPPlayer());
         addUserButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
 
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton, rankingIcon);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
 
-    private void saveUserRanking(UserRankingForm.SaveEvent event) {
-        mainService.saveUserRanking(event.getUserRanking());
+    private void saveATPPlayer(ATPPlayerForm.SaveEvent event) {
+        mainService.saveATPPlayer(event.getAtpPlayer());
         updateList();
         closeEditor();
     }
 
-    private void deleteUserRanking(UserRankingForm.DeleteEvent event) {
-        mainService.deleteUserRanking(event.getUserRanking());
+    private void deleteATPPlayer(ATPPlayerForm.DeleteEvent event) {
+        mainService.deleteATPPlayer(event.getAtpPlayer());
         updateList();
         closeEditor();
     }
 
-    public void editUserRanking(UserRanking userRanking) {
-        if (userRanking == null) {
+    public void editATPPlayer(ATPPlayer atpPlayer) {
+        if (atpPlayer == null) {
             closeEditor();
         } else {
-            form.setUserRanking(userRanking);
+            form.setAtpPlayer(atpPlayer);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
-    private void addUserRanking() {
+    private void addATPPlayer() {
         grid.asSingleSelect().clear();
-        editUserRanking(new UserRanking());
+        editATPPlayer(new ATPPlayer());
     }
 
     private void closeEditor() {
-        form.setUserRanking(null);
+        form.setAtpPlayer(null);
         form.setVisible(false);
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(mainService.findAllUserRankings(filterText.getValue()));
+        grid.setItems(mainService.findAllATPPlayers(filterText.getValue()));
     }
 }
