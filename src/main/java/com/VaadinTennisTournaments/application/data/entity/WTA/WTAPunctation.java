@@ -5,12 +5,15 @@ import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
 import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
 import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 public class WTAPunctation extends AbstractEntity {
@@ -82,4 +85,6 @@ public class WTAPunctation extends AbstractEntity {
     public void setWtaTournament(WTA wtaTournament) {
         this.wtaTournament = wtaTournament;
     }
+
+
 }

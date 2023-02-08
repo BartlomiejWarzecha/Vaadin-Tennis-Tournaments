@@ -2,6 +2,7 @@ package com.VaadinTennisTournaments.application.data.service;
 
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
 import com.VaadinTennisTournaments.application.data.entity.ATP.ATPResult;
+import com.VaadinTennisTournaments.application.data.entity.Register.RegisterUser;
 import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
 import com.VaadinTennisTournaments.application.data.entity.User.UserRanking;
 import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
@@ -12,14 +13,16 @@ import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
 import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
 import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
 import com.VaadinTennisTournaments.application.data.repository.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
 @org.springframework.stereotype.Service
 public class MainService {
-
+    PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserRankingRepository userRankingRepository;
+    private final RegisterUserRepository registerUserRepository;
     private final WTARepository wtaRepository;
 
     private final WTAResultRepository wtaResultRepository;
@@ -32,13 +35,15 @@ public class MainService {
     private final InterestsRepository interestsRepository;
     private final StageRepository stageRepository;
     private final RankRepository rankRepository;
-    public MainService(UserRepository userRepository, UserRankingRepository userRankingRepository ,
+    public MainService(UserRepository userRepository, UserRankingRepository userRankingRepository , RegisterUserRepository registerUserRepository,
                        WTARepository wtaRepository, WTAResultRepository wtaResultRepository, WTAPunctationRepository wtaPunctationRepository,
                        ATPRepository atpRepository, ATPResultRepository atpResultRepository, ATPPunctationRepository atpPunctationRepository,
-                       InterestsRepository interestsRepository, StageRepository stageRepository, RankRepository rankRepository
+                       InterestsRepository interestsRepository, StageRepository stageRepository, RankRepository rankRepository,
+                       PasswordEncoder passwordEncoder
                        ) {
         this.userRepository = userRepository;
         this.userRankingRepository = userRankingRepository;
+        this.registerUserRepository = registerUserRepository;
         this.wtaRepository = wtaRepository;
         this.wtaResultRepository = wtaResultRepository;
         this.wtaPunctationRepository = wtaPunctationRepository;
@@ -48,6 +53,7 @@ public class MainService {
         this.interestsRepository = interestsRepository;
         this.stageRepository = stageRepository;
         this.rankRepository = rankRepository;
+        this.passwordEncoder = passwordEncoder;
 
     }
     public List<User> findAllUsers(String stringFilter) {
@@ -68,6 +74,27 @@ public class MainService {
         }
         userRepository.save(user);
     }
+    public List<RegisterUser> findAllRegisterUsers(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return registerUserRepository.findAll();
+        } else {
+            return registerUserRepository.search(stringFilter);
+        }
+    }
+    public void deleteRegisterUser(RegisterUser user) {
+        registerUserRepository.delete(user);
+    }
+
+    public void saveRegisterUser(RegisterUser user) {
+        if (user == null) {
+            System.err.println("WTA is null. Are you sure you have connected your form to the application?");
+            return;
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles("User");
+        registerUserRepository.save(user);
+    }
+
 
     public List<UserRanking> findAllUserRankings(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
@@ -85,6 +112,7 @@ public class MainService {
             System.err.println("WTA is null. Are you sure you have connected your form to the application?");
             return;
         }
+
         userRankingRepository.save(userRanking);
     }
 

@@ -14,18 +14,25 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 public class User extends AbstractEntity {
 
+    public User(String nickname,  String email) {
+        this.nickname = nickname;
+        this.email = email;
+    }
+    public User() {
+    }
     @NotEmpty
     private String nickname = "";
 
     @ManyToOne
     @JoinColumn(name = "interest_id")
-    @NotNull
     @JsonIgnoreProperties({"interests"})
     private Interests interests;
 
     @Email
     @NotEmpty
     private String email = "";
+
+
 
     @Override
     public String toString() {

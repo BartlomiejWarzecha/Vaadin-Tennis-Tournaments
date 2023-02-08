@@ -5,6 +5,7 @@ import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Paragraph;
@@ -18,6 +19,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.PermitAll;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Component
@@ -64,7 +67,6 @@ private void configureForm() {
     private void configureGrid() {
         grid.addClassNames("punctation-grid");
         grid.setSizeFull();
-
         grid.setColumns( "points");
         grid.addColumn(WTAPunctation -> WTAPunctation.getWtaTournament().getWtaTournament()).setHeader("WTA Tournament");
         grid.addColumn(WTAPunctation -> WTAPunctation.getUser().getNickname()).setHeader("User");

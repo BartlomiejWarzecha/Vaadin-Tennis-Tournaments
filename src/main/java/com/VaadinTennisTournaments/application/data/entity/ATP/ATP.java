@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 public class ATP extends AbstractEntity {
 
 
-
     @NotEmpty
     private String player = "";
 
