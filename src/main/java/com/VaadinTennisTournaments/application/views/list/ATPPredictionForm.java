@@ -19,7 +19,7 @@ import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
 
-public class ATPForm extends FormLayout {
+public class ATPPredictionForm extends FormLayout {
   private ATP atp;
   TextField nickname = new TextField("Nickname");
   TextField atpTournament = new TextField("Atp Tournament");
@@ -32,7 +32,7 @@ public class ATPForm extends FormLayout {
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public ATPForm(List<Stage> stages, List<User> users) {
+  public ATPPredictionForm(List<Stage> stages, List<User> users) {
     addClassName("atp-form");
     binder.bindInstanceFields(this);
     stage.setItems(stages);
@@ -80,10 +80,10 @@ public class ATPForm extends FormLayout {
   }
 
   // Events
-  public static abstract class ATPFormEvent extends ComponentEvent<ATPForm> {
+  public static abstract class ATPFormEvent extends ComponentEvent<ATPPredictionForm> {
     private ATP atp;
 
-    protected ATPFormEvent(ATPForm source, ATP atp) {
+    protected ATPFormEvent(ATPPredictionForm source, ATP atp) {
       super(source, false);
       this.atp = atp;
     }
@@ -94,20 +94,20 @@ public class ATPForm extends FormLayout {
   }
 
   public static class SaveEvent extends ATPFormEvent {
-    SaveEvent(ATPForm source, ATP atp) {
+    SaveEvent(ATPPredictionForm source, ATP atp) {
       super(source, atp);
     }
   }
 
   public static class DeleteEvent extends ATPFormEvent {
-    DeleteEvent(ATPForm source, ATP atp) {
+    DeleteEvent(ATPPredictionForm source, ATP atp) {
       super(source, atp);
     }
 
   }
 
   public static class CloseEvent extends ATPFormEvent {
-    CloseEvent(ATPForm source) {
+    CloseEvent(ATPPredictionForm source) {
       super(source, null);
     }
   }

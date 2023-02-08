@@ -50,17 +50,17 @@ public class MainLayout extends AppLayout {
         RouterLink listHowToPlay = new RouterLink("How To Play", HowToPlayView.class);
         RouterLink linkUsers = new RouterLink("Users", UserView.class);
         RouterLink linkUsersRanking = new RouterLink("Users Ranking", UserRankingView.class);
-        RouterLink listWTA = new RouterLink("WTA", WTAView.class);
-        RouterLink listATP = new RouterLink("ATP", ATPView.class);
-        RouterLink listWTAResults = new RouterLink("WTA Results", WTAResultView.class);
-        RouterLink listATPResults = new RouterLink("ATP Results", ATPResultView.class);
+        RouterLink listWTAPrediction = new RouterLink("WTA Prediction", WTAPredictionView.class);
         RouterLink listWTAPunctation = new RouterLink("WTA Punctation", WTAPunctationView.class);
+        RouterLink listWTAResults = new RouterLink("WTA Results", WTAResultView.class);
+        RouterLink listATPPrediction = new RouterLink("ATP Prediction", ATPPredictionView.class);
         RouterLink listATPPunctation = new RouterLink("ATP Punctation", ATPPunctationView.class);
+        RouterLink listATPResults = new RouterLink("ATP Results", ATPResultView.class);
         linkUsers.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(
-            listHowToPlay, linkUsersRanking, linkUsers, listWTA, listWTAPunctation, listWTAResults,
-                listATP, listATPPunctation, listATPResults
+            listHowToPlay, linkUsersRanking, linkUsers, listWTAPrediction, listWTAPunctation, listWTAResults,
+                listATPPrediction, listATPPunctation, listATPResults
         ));
     }
 }

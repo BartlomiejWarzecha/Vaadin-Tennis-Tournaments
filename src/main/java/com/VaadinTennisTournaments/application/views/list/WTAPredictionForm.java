@@ -19,7 +19,7 @@ import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
 
-public class WTAForm extends FormLayout {
+public class WTAPredictionForm extends FormLayout {
   private WTA wta;
 
   TextField wtaTournament = new TextField("Wta Tournament");
@@ -34,7 +34,7 @@ public class WTAForm extends FormLayout {
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public WTAForm(List<Stage> stages, List<User> users) {
+  public WTAPredictionForm(List<Stage> stages, List<User> users) {
     addClassName("wta-form");
     binder.bindInstanceFields(this);
 
@@ -81,10 +81,10 @@ public class WTAForm extends FormLayout {
     }
   }
 
-  public static abstract class WTAFormEvent extends ComponentEvent<WTAForm> {
+  public static abstract class WTAFormEvent extends ComponentEvent<WTAPredictionForm> {
     private WTA wta;
 
-    protected WTAFormEvent(WTAForm source, WTA wta) {
+    protected WTAFormEvent(WTAPredictionForm source, WTA wta) {
       super(source, false);
       this.wta = wta;
     }
@@ -95,20 +95,20 @@ public class WTAForm extends FormLayout {
   }
 
   public static class SaveEvent extends WTAFormEvent {
-    SaveEvent(WTAForm source, WTA wta) {
+    SaveEvent(WTAPredictionForm source, WTA wta) {
       super(source, wta);
     }
   }
 
   public static class DeleteEvent extends WTAFormEvent {
-    DeleteEvent(WTAForm source, WTA wta) {
+    DeleteEvent(WTAPredictionForm source, WTA wta) {
       super(source, wta);
     }
 
   }
 
   public static class CloseEvent extends WTAFormEvent {
-    CloseEvent(WTAForm source) {
+    CloseEvent(WTAPredictionForm source) {
       super(source, null);
     }
   }

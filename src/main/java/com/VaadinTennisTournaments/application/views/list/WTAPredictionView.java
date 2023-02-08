@@ -1,5 +1,5 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
+import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
@@ -22,23 +22,23 @@ import javax.annotation.security.PermitAll;
 
 @Component
 @Scope("prototype")
-@Route(value = "ATP", layout = MainLayout.class)
-@PageTitle("ATP | Vaadin Tennis Tournaments")
+@Route(value = "WTAPrediction", layout = MainLayout.class)
+@PageTitle("WTA Prediction | Vaadin Tennis Tournaments")
 @PermitAll
-public class ATPView extends VerticalLayout {
-    Grid<ATP> grid = new Grid<>(ATP.class);
+public class WTAPredictionView extends VerticalLayout {
+    Grid<WTA> grid = new Grid<>(WTA.class);
     TextField filterText = new TextField();
-    ATPForm form;
+    WTAPredictionForm form;
     MainService mainService;
 
-    public ATPView(MainService mainService) {
+    public WTAPredictionView(MainService mainService) {
         this.mainService = mainService;
-        addClassName("atp-view");
+        addClassName("wta-view");
         setSizeFull();
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent(), getHrefParagraph("ATP Tour", "ATP Tour"));
+        add(getToolbar(), getContent(), getHrefParagraph("wtatennis", "WTA Tour"));
         updateList();
         closeEditor();
     }
@@ -53,23 +53,23 @@ public class ATPView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new ATPForm(mainService.findAllStages(), mainService.findAllUsers(""));
+    form = new WTAPredictionForm(mainService.findAllStages(), mainService.findAllUsers(""));
     form.setWidth("25em");
-    form.setHeight("40em");
-    form.addListener(ATPForm.SaveEvent.class, this::saveATP);
-    form.addListener(ATPForm.DeleteEvent.class, this::deleteATP);
-    form.addListener(ATPForm.CloseEvent.class, e -> closeEditor());
+    form.setHeight("45em");
+    form.addListener(WTAPredictionForm.SaveEvent.class, this::saveWTA);
+    form.addListener(WTAPredictionForm.DeleteEvent.class, this::deleteWTA);
+    form.addListener(WTAPredictionForm.CloseEvent.class, e -> closeEditor());
 }
 
     private void configureGrid() {
-        grid.addClassNames("atp-grid");
+        grid.addClassNames("wta-grid");
         grid.setSizeFull();
-        grid.setColumns("atpTournament", "player");
-        grid.addColumn(atp-> atp.getStage().getName()).setHeader("Stage");
-        grid.addColumn(atp-> atp.getUser().getNickname()).setHeader("User");
+        grid.setColumns( "wtaTournament", "player");
+        grid.addColumn(wta-> wta.getStage().getName()).setHeader("Stage");
+        grid.addColumn(wta-> wta.getUser().getNickname()).setHeader("User");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
-            editATP(event.getValue()));
+            editWTA(event.getValue()));
     }
 
     private HorizontalLayout getToolbar() {
@@ -80,51 +80,12 @@ private void configureForm() {
 
         Button addPredicionButton = new Button("Add prediction");
         addPredicionButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
-        addPredicionButton.addClickListener(click -> addATP());
+        addPredicionButton.addClickListener(click -> addWTA());
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton);
-        toolbar.addClassName("toolbar-ATP");
+        toolbar.addClassName("toolbar-WTA-Prediction");
         return toolbar;
     }
-
-    private void saveATP(ATPForm.SaveEvent event) {
-        mainService.saveATP(event.getATP());
-        updateList();
-        closeEditor();
-    }
-
-    private void deleteATP(ATPForm.DeleteEvent event) {
-        mainService.deleteATP(event.getATP());
-
-        updateList();
-        closeEditor();
-    }
-
-    public void editATP(ATP atp) {
-        if (atp == null) {
-            closeEditor();
-        } else {
-            form.setATP(atp);
-            form.setVisible(true);
-            addClassName("editing");
-        }
-    }
-
-    private void addATP() {
-        grid.asSingleSelect().clear();
-        editATP(new ATP());
-    }
-
-    private void closeEditor() {
-        form.setATP(null);
-        form.setVisible(false);
-        removeClassName("editing");
-    }
-
-    private void updateList() {
-        grid.setItems(mainService.findAllATP(filterText.getValue()));
-    }
-
     private Paragraph getHrefParagraph(String hrefValue , String description){
 
         String pureHrefValue = hrefValue.replaceAll("\\s", "");// value without spaces
@@ -136,4 +97,40 @@ private void configureForm() {
         return paragraph;
     }
 
+    private void saveWTA(WTAPredictionForm.SaveEvent event) {
+        mainService.saveWTA(event.getWTA());
+        updateList();
+        closeEditor();
+    }
+
+    private void deleteWTA(WTAPredictionForm.DeleteEvent event) {
+        mainService.deleteWTA(event.getWTA());
+        updateList();
+        closeEditor();
+    }
+
+    public void editWTA(WTA wta) {
+        if (wta == null) {
+            closeEditor();
+        } else {
+            form.setWTA(wta);
+            form.setVisible(true);
+            addClassName("editing");
+        }
+    }
+
+    private void addWTA() {
+        grid.asSingleSelect().clear();
+        editWTA(new WTA());
+    }
+
+    private void closeEditor() {
+        form.setWTA(null);
+        form.setVisible(false);
+        removeClassName("editing");
+    }
+
+    private void updateList() {
+        grid.setItems(mainService.findAllWTA(filterText.getValue()));
+    }
 }
