@@ -82,7 +82,7 @@ public class RegistrationForm extends FormLayout {
         Notification notification = Notification
                 .show("Registration Completed!");
         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-        notification.setPosition(Notification.Position.BOTTOM_CENTER);
+        notification.setPosition(Notification.Position.MIDDLE);
         notification.addDetachListener(detachEvent -> save.setEnabled(true));
 
     } catch (ValidationException e) {
@@ -92,7 +92,7 @@ public class RegistrationForm extends FormLayout {
       Notification notification = Notification
               .show("Oops, something went wrong! Please follow the instructions.");
       notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-      notification.setPosition(Notification.Position.BOTTOM_CENTER);
+      notification.setPosition(Notification.Position.MIDDLE);
       notification.addDetachListener(detachEvent -> save.setEnabled(true));
 
     }catch (DataIntegrityViolationException e){
@@ -102,7 +102,7 @@ public class RegistrationForm extends FormLayout {
       Notification notification = Notification
               .show("User already exists! Please log in or try again.");
       notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-      notification.setPosition(Notification.Position.BOTTOM_CENTER);
+      notification.setPosition(Notification.Position.MIDDLE);
       notification.addDetachListener(detachEvent -> save.setEnabled(true));
 
     }
