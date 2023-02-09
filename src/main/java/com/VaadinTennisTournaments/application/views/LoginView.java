@@ -1,9 +1,11 @@
 package com.VaadinTennisTournaments.application.views;
 
 import com.VaadinTennisTournaments.application.data.entity.Register.RegisterUser;
+import com.VaadinTennisTournaments.application.data.entity.User.User;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.list.RegistrationForm;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -14,7 +16,11 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.component.login.LoginForm;
+import com.vaadin.flow.component.login.LoginI18n;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
@@ -23,13 +29,13 @@ import com.vaadin.flow.router.*;
 @PageTitle("Login | Vaadin Tennis Tournaments")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 	Grid<RegisterUser> grid = new Grid<>(RegisterUser.class);
-	private final LoginForm login = new LoginForm();
-
+	private  LoginForm login = new LoginForm();
 	RegistrationForm form;
 	MainService mainService;
-
+	Notification notification = Notification
+			.show("Welcome, Have Fun!");
 	public LoginView(MainService mainService) {
-		this.mainService = mainService;
+
 		addClassName("login-view");
 		setSizeFull();
 		configureGrid();
@@ -40,7 +46,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 		outlineIcon.setSize("75px");
 
 		login.setForgotPasswordButtonVisible(false);
-		add(outlineIcon, new H2("Vaadin Tennis Tournaments!") , login,
+
+		add(outlineIcon, new H2("Vaadin Tennis Tournaments!" ) , login,
 				getToolbar(), getContent() );
 
 		setAlignItems(Alignment.CENTER);
@@ -48,6 +55,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 		setHorizontalComponentAlignment(Alignment.CENTER);
 
 		login.setAction("login");
+
+
 		setHeight("1200px");
 		setWidth("450px");
 		setMargin(true);
@@ -63,6 +72,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 				.containsKey("error")) {
 			login.setError(true);
 		}
+
+
 	}
 
 	private HorizontalLayout getContent() {
@@ -113,6 +124,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 		if (registerUser == null) {
 			closeEditor();
 		} else {
+
 			form.setRegisterUser(registerUser);
 			form.setVisible(true);
 			addClassName("editing");
@@ -130,14 +142,4 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 	}
 
 
-	private Paragraph getHrefParagraph(String hrefValue , String description){
-
-		String pureHrefValue = hrefValue.replaceAll("\\s", "");// value without spaces
-
-		Anchor href = new Anchor("https://www."+pureHrefValue+".com/", "here");
-
-		Paragraph paragraph = new Paragraph(new Text("Click "), href, new Text(" to see official details about " + description));
-
-		return paragraph;
-	}
 }

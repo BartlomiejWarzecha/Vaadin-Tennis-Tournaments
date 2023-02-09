@@ -6,6 +6,8 @@ import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -79,7 +81,6 @@ private void configureForm() {
         addUserButton.addClickListener(click -> addContact());
         addUserButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
 
-
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton);
         toolbar.addClassName("toolbar");
         return toolbar;
@@ -87,6 +88,17 @@ private void configureForm() {
 
     private void saveContact(UserForm.SaveEvent event) {
         mainService.saveUser(event.getUser());
+
+        Button test = new Button("test");
+        test.setEnabled(true);
+
+        Notification notification = Notification
+                .show("Welcome, " + event.getUser().getNickname() +  ", Have Fun!");
+        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        notification.setPosition(Notification.Position.TOP_CENTER);
+
+        notification.addDetachListener(detachevent -> test.setEnabled(true));
+
         updateList();
         closeEditor();
     }

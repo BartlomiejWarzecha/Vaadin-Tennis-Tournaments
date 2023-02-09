@@ -16,6 +16,7 @@ import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
 import com.VaadinTennisTournaments.application.data.repository.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -25,15 +26,12 @@ public class MainService {
     private final UserRepository userRepository;
     private final UserRankingRepository userRankingRepository;
     private final WTARepository wtaRepository;
-
     private final WTAResultRepository wtaResultRepository;
-
     private final WTAPunctationRepository wtaPunctationRepository;
     private final ATPRepository atpRepository;
     private final ATPResultRepository atpResultRepository;
     private final ATPPunctationRepository atpPunctationRepository;
     private final ATPPlayerRepository atpPlayerRepository;
-
     private final InterestsRepository interestsRepository;
     private final StageRepository stageRepository;
     private final RankRepository rankRepository;
@@ -58,7 +56,6 @@ public class MainService {
         this.stageRepository = stageRepository;
         this.rankRepository = rankRepository;
         this.passwordEncoder = passwordEncoder;
-
     }
     public List<RegisterUser> findAllRegisterUsers(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
@@ -78,7 +75,7 @@ public class MainService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles("User");
-        registerUserRepository.save(user);
+            registerUserRepository.save(user);
     }
 
     public List<User> findAllUsers(String stringFilter) {

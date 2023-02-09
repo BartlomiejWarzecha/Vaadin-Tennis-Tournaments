@@ -17,7 +17,4 @@ public interface RegisterUserRepository extends JpaRepository<RegisterUser, Long
             "or lower(a.email) like lower(concat('%', :searchTerm, '%'))")
     List<RegisterUser> search(@Param("searchTerm") String searchTerm);
     Optional<RegisterUser> findByUsername(String username);
-
-    Boolean existsByEmail(String email);
-
 }

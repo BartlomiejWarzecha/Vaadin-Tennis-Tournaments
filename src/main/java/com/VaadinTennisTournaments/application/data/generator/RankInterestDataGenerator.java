@@ -17,10 +17,8 @@ import java.util.stream.Stream;
 
 @SpringComponent
 public class RankInterestDataGenerator {
-
     @Bean
-    public CommandLineRunner loadResultData(WTAResultRepository WTAResultRepository,
-                                            RankRepository rankRepository, InterestsRepository interestsRepository) {
+    public CommandLineRunner loadResultData( RankRepository rankRepository, InterestsRepository interestsRepository) {
 
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
@@ -31,14 +29,11 @@ public class RankInterestDataGenerator {
 
             int seed = 123;
 
-            List<Rank> ranks = rankRepository.saveAll(Stream.of("Grand Slam", "100", "500", "250", "Challenger")
+            List<Rank> ranks = rankRepository.saveAll(Stream.of("Grand Slam", "1000", "500", "250", "125", "Challenger")
                     .map(Rank::new).collect(Collectors.toList()));
 
             List<Interests> interests = interestsRepository.saveAll(Stream.of("ATP", "WTA", "ATP/WTA")
                     .map(Interests::new).collect(Collectors.toList()));
-
-
         };
     }
-
 }

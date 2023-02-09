@@ -11,18 +11,18 @@ import javax.validation.constraints.Size;
 @Table(name = "users")
 public class RegisterUser extends AbstractEntity {
 
-    @NotBlank
+    @NotEmpty(message = "Username can not be empty")
     @Column(unique = true)
     private String username;
 
     @Email
-    @NotEmpty
+    @NotEmpty(message = "Password can not be empty")
     @Column(unique=true)
     private String email = "";
 
     private String roles = "User";
 
-    @Size(min = 8, max = 64, message = "Password must be 8-64 char long")
+    @Size(min = 8, max = 64, message = "Password must have between 8 and 64 characters")
     private String password;
 
 

@@ -9,6 +9,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
@@ -17,7 +19,14 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.server.DefaultErrorHandler;
 import com.vaadin.flow.shared.Registration;
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import java.sql.SQLException;
 
 public class RegistrationForm extends FormLayout {
 
@@ -54,10 +63,7 @@ public class RegistrationForm extends FormLayout {
     delete.addClickListener(event -> fireEvent(new DeleteEvent(this, registerUser)));
     close.addClickListener(event -> fireEvent(new CloseEvent(this) {
 
-
     }));
-
-    binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
 
     return new HorizontalLayout(save);
   }
@@ -71,8 +77,34 @@ public class RegistrationForm extends FormLayout {
     try {
       binder.writeBean(registerUser);
       fireEvent(new SaveEvent(this, registerUser));
+
+        save.setEnabled(true);
+        Notification notification = Notification
+                .show("Registration Completed!");
+        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        notification.setPosition(Notification.Position.BOTTOM_CENTER);
+        notification.addDetachListener(detachEvent -> save.setEnabled(true));
+
     } catch (ValidationException e) {
       e.printStackTrace();
+
+      save.setEnabled(true);
+      Notification notification = Notification
+              .show("Oops, something went wrong! Please follow the instructions.");
+      notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+      notification.setPosition(Notification.Position.BOTTOM_CENTER);
+      notification.addDetachListener(detachEvent -> save.setEnabled(true));
+
+    }catch (DataIntegrityViolationException e){
+      e.printStackTrace();
+
+      save.setEnabled(true);
+      Notification notification = Notification
+              .show("User already exists! Please log in or try again.");
+      notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+      notification.setPosition(Notification.Position.BOTTOM_CENTER);
+      notification.addDetachListener(detachEvent -> save.setEnabled(true));
+
     }
   }
 
