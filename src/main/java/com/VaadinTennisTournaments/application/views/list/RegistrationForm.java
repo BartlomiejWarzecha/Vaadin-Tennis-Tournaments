@@ -57,8 +57,6 @@ public class RegistrationForm extends FormLayout {
   private HorizontalLayout createButtonsLayout() {
     save.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
 
-    save.addClickShortcut(Key.ENTER);
-
     save.addClickListener(event -> validateAndSave());
     delete.addClickListener(event -> fireEvent(new DeleteEvent(this, registerUser)));
     close.addClickListener(event -> fireEvent(new CloseEvent(this) {
