@@ -32,8 +32,6 @@ public class User extends AbstractEntity {
     @NotEmpty
     private String email = "";
 
-
-
     @Override
     public String toString() {
         return '"' + nickname + '"';
