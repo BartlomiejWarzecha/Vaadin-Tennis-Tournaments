@@ -75,7 +75,7 @@ public class MainService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles("User");
-            registerUserRepository.save(user);
+        registerUserRepository.save(user);
     }
 
     public List<User> findAllUsers(String stringFilter) {
@@ -115,9 +115,6 @@ public class MainService {
         }
         atpPlayerRepository.save(atpPlayer);
     }
-
-
-
 
     public List<UserRanking> findAllUserRankings(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
