@@ -78,32 +78,26 @@ public class RegistrationForm extends FormLayout {
       binder.writeBean(registerUser);
       fireEvent(new SaveEvent(this, registerUser));
 
-        save.setEnabled(true);
         Notification notification = Notification
                 .show("Registration Completed!");
         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         notification.setPosition(Notification.Position.MIDDLE);
-        notification.addDetachListener(detachEvent -> save.setEnabled(true));
 
     } catch (ValidationException e) {
       e.printStackTrace();
 
-      save.setEnabled(true);
       Notification notification = Notification
               .show("Oops, something went wrong! Please follow the instructions.");
       notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
       notification.setPosition(Notification.Position.MIDDLE);
-      notification.addDetachListener(detachEvent -> save.setEnabled(true));
 
     }catch (DataIntegrityViolationException e){
       e.printStackTrace();
 
-      save.setEnabled(true);
       Notification notification = Notification
               .show("User already exists! Please log in or try again.");
       notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
       notification.setPosition(Notification.Position.MIDDLE);
-      notification.addDetachListener(detachEvent -> save.setEnabled(true));
 
     }
   }
