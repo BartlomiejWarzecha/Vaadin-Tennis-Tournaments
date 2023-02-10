@@ -22,7 +22,7 @@ public class RegisterUser extends AbstractEntity {
 
     private String roles = "User";
 
-    @Size(min = 8, max = 64, message = "Password must have between 8 and 64 characters")
+    @Size(min = 8, max = 64, message = "Password have from 8 to 64 characters")
     private String password;
 
 
