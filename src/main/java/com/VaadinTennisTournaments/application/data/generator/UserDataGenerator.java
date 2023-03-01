@@ -31,9 +31,7 @@ import org.vaadin.artur.exampledata.ExampleDataGenerator;
 public class UserDataGenerator {
 
     @Bean
-    public CommandLineRunner loadUserData(UserRepository userRepository, InterestsRepository interestsRepository,
-                                          RegisterUserRepository registerUserRepository, PasswordEncoder passwordEncoder
-                                          ) {
+    public CommandLineRunner loadUserData(UserRepository userRepository, InterestsRepository interestsRepository) {
 
         return args -> {
             if (userRepository.count() != 0L) {

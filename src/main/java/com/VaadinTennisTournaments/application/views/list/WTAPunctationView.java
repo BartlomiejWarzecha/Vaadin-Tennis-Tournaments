@@ -13,6 +13,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
@@ -35,25 +36,46 @@ public class WTAPunctationView extends VerticalLayout {
     TextField filterText = new TextField();
     WTAPunctationForm form;
     MainService mainService;
+    HowToPlayView howToPlayView;
 
-    public WTAPunctationView(MainService mainService) {
+    public WTAPunctationView(MainService mainService, HowToPlayView howToPlayView) {
         this.mainService = mainService;
+        this.howToPlayView = howToPlayView;
+
         addClassName("puncation-view");
-        setSizeFull();
+        setHeight("1300px");
+        setWidthFull();
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent(), getHrefScoreParagraph("WTA Tennis", "ATP Tour"));
+        Tab tab = howToPlayView.getTabAtpWta();
+        HorizontalLayout rules = new HorizontalLayout(tab);
+
+        add(getToolbar(), getContent(), getHrefParagraph("WTA Tennis", "ATP Tour"), rules);
+
+
         updateList();
         closeEditor();
     }
+    private Paragraph getHrefParagraph(String value, String secondValue){
 
+        String pureValue =  value.replaceAll("\\s", "");// value without spaces
+        String pureSecondValue =  secondValue.replaceAll("\\s", "");// value without spaces
+
+        Anchor firstHref = new Anchor("https://www."+pureValue+".com/scores",  value);
+        Anchor secondHref = new Anchor("https://www."+pureSecondValue+".com/scores", secondValue);
+
+        Paragraph paragraph = new Paragraph(new Text("See more information about different tournament results from official sites: "), firstHref, new Text(", "), secondHref);
+
+        return paragraph;
+    }
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, form);
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
         content.addClassNames("content");
-        content.setSizeFull();
+        content.setWidthFull();
+        content.setHeight("400px");
         return content;
     }
 
@@ -61,7 +83,7 @@ private void configureForm() {
     form = new WTAPunctationForm( mainService.findAllRanks(),
             mainService.findAllStages(), mainService.findAllUsers( "") , mainService.findAllWTA(""));
     form.setWidth("25em");
-    form.setHeight("40em");
+    form.setHeight("400px");
     form.addListener(WTAPunctationForm.SaveEvent.class, this::saveWTAPunctation);
     form.addListener(WTAPunctationForm.DeleteEvent.class, this::deleteWTAPunctation);
     form.addListener(WTAPunctationForm.CloseEvent.class, e -> closeEditor());
@@ -72,7 +94,7 @@ private void configureForm() {
         grid.setColumns( "points");
         grid.addColumn(WTAPunctation -> WTAPunctation.getUser().getNickname()).setHeader("User");
         grid.addColumn(WTAPunctation -> WTAPunctation.getStage().getName()).setHeader("Stage");
-        grid.addColumn(WTAPunctation -> WTAPunctation.getWtaTournament().getWtaTournament()).setHeader("WTA Tournament");
+        grid.addColumn(WTAPunctation -> WTAPunctation.getWtaTournament()).setHeader("WTA Tournament");
         grid.addColumn(WTAPunctation -> WTAPunctation.getRank().getName()).setHeader("Rank");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));

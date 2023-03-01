@@ -14,6 +14,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
@@ -34,15 +35,22 @@ public class ATPPunctationView extends VerticalLayout {
     TextField filterText = new TextField();
     ATPPunctationForm form;
     MainService mainService;
+    HowToPlayView howToPlayView;
 
     public ATPPunctationView(MainService mainService) {
         this.mainService = mainService;
+        this.howToPlayView = new HowToPlayView(mainService);
+
         addClassName("atp-punctation-view");
-        setSizeFull();
+        setHeight("1300px");
+        setWidthFull();
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent(), getHrefScoreParagraph("WTA Tennis", "ATP Tour"));
+        Tab tab = howToPlayView.getTabPunctation();
+        HorizontalLayout rules = new HorizontalLayout(tab);
+
+        add(getToolbar(), getContent(), getHrefScoreParagraph("WTA Tennis", "ATP Tour"), rules);
         updateList();
         closeEditor();
     }
@@ -52,7 +60,8 @@ public class ATPPunctationView extends VerticalLayout {
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
         content.addClassNames("content");
-        content.setSizeFull();
+        content.setWidthFull();
+        content.setHeight("400px");
         return content;
     }
 
@@ -60,7 +69,7 @@ private void configureForm() {
     form = new ATPPunctationForm(mainService.findAllRanks(), mainService.findAllStages(),
     mainService.findAllUsers(""), mainService.findAllATP(""));
     form.setWidth("25em");
-    form.setHeight("40em");
+    form.setHeight("400px");
     form.addListener(ATPPunctationForm.SaveEvent.class, this::saveATPPunctation);
     form.addListener(ATPPunctationForm.DeleteEvent.class, this::deleteATPPunctation);
     form.addListener(ATPPunctationForm.CloseEvent.class, e -> closeEditor());
@@ -72,7 +81,7 @@ private void configureForm() {
         grid.setColumns( "points");
         grid.addColumn(ATPPunctation -> ATPPunctation.getUser().getNickname()).setHeader("User");
         grid.addColumn(ATPPunctation -> ATPPunctation.getStage().getName()).setHeader("Stage");
-        grid.addColumn(ATPPunctation -> ATPPunctation.getAtpTournament().getAtpTournament()).setHeader("ATP Tournament");
+        grid.addColumn(ATPPunctation -> ATPPunctation.getAtpTournament()).setHeader("ATP Tournament");
         grid.addColumn(ATPPunctation -> ATPPunctation.getRank().getName()).setHeader("Rank");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));

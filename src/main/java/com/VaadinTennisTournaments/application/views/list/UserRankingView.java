@@ -10,6 +10,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
@@ -29,15 +30,23 @@ public class UserRankingView extends VerticalLayout {
     TextField filterText = new TextField();
     UserRankingForm form;
     MainService mainService;
+    HowToPlayView howToPlayView;
 
     public UserRankingView(MainService mainService) {
         this.mainService = mainService;
-        addClassName("user-view");
-        setSizeFull();
+        this.howToPlayView = new HowToPlayView(mainService);
+
+        addClassName("user-ranking-view");
+        setHeight("1300px");
+        setWidthFull();
+
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent());
+        Tab tab = howToPlayView.getTabRanking();
+        HorizontalLayout rules = new HorizontalLayout(tab);
+
+        add(getToolbar(), getContent(), rules);
         updateList();
         closeEditor();
     }
@@ -47,14 +56,15 @@ public class UserRankingView extends VerticalLayout {
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
         content.addClassNames("content");
-        content.setSizeFull();
+        content.setWidthFull();
+        content.setHeight("400px");
         return content;
     }
 
 private void configureForm() {
     form = new UserRankingForm(mainService.findAllInterests(), mainService.findAllUsers("" ));
     form.setWidth("25em");
-    form.setHeight("40em");
+    form.setHeight("400px");
     form.addListener(UserRankingForm.SaveEvent.class, this::saveUserRanking);
     form.addListener(UserRankingForm.DeleteEvent.class, this::deleteUserRanking);
     form.addListener(UserRankingForm.CloseEvent.class, e -> closeEditor());
@@ -63,10 +73,10 @@ private void configureForm() {
     private void configureGrid() {
         grid.addClassNames("user-grid");
         grid.setSizeFull();
-        grid.setColumns("tournamentsNumber", "points");
-
+        grid.setColumns("tournamentsNumber");
+        grid.addColumn(userRanking -> userRanking.getPoints()).setHeader("Points");
         grid.addColumn(userRanking -> userRanking.getUser().getNickname()).setHeader("User");
-        grid.addColumn(userRanking -> userRanking.getInterest().getName()).setHeader("Interest");
+        grid.addColumn(userRanking -> userRanking.getUser().getInterest().getName()).setHeader("Interest");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editUserRanking(event.getValue()));

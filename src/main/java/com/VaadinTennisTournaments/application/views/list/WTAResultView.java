@@ -12,6 +12,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
@@ -32,15 +33,22 @@ public class WTAResultView extends VerticalLayout {
     TextField filterText = new TextField();
     WTAResultForm form;
     MainService mainService;
-
-    public WTAResultView(MainService mainService) {
+    HowToPlayView howToPlayView;
+    public WTAResultView(MainService mainService, HowToPlayView howToPlayView) {
         this.mainService = mainService;
+        this.howToPlayView = howToPlayView;
+
         addClassName("result-view");
-        setSizeFull();
+        setWidthFull();
+        setHeight("1300px");
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent(), getHrefScoreParagraph("WTA Tennis", "ATP Tour"));
+        Tab tab = howToPlayView.getTabResults();
+        HorizontalLayout rules = new HorizontalLayout(tab);
+
+        add(getToolbar(), getContent(), getHrefScoreParagraph("WTA Tennis", "ATP Tour")
+        , rules);
         updateList();
         closeEditor();
     }
@@ -50,14 +58,15 @@ public class WTAResultView extends VerticalLayout {
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
         content.addClassNames("content");
-        content.setSizeFull();
+        content.setHeight("400px");
+        content.setWidthFull();
         return content;
     }
 
 private void configureForm() {
     form = new WTAResultForm(mainService.findAllInterests(), mainService.findAllRanks());
     form.setWidth("25em");
-    form.setHeight("40em");
+    form.setHeight("400px");
     form.addListener(WTAResultForm.SaveEvent.class, this::saveWTAResult);
     form.addListener(WTAResultForm.DeleteEvent.class, this::deleteWTAResult);
     form.addListener(WTAResultForm.CloseEvent.class, e -> closeEditor());

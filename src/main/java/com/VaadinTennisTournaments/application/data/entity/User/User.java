@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class User extends AbstractEntity {
-
     public User(String nickname,  String email) {
         this.nickname = nickname;
         this.email = email;
@@ -32,6 +31,7 @@ public class User extends AbstractEntity {
     @NotEmpty
     private String email = "";
 
+    private String description;
     @Override
     public String toString() {
         return '"' + nickname + '"';
@@ -59,5 +59,13 @@ public class User extends AbstractEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

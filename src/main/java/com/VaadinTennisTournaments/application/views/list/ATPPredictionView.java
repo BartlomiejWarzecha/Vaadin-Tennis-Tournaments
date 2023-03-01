@@ -12,6 +12,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
@@ -32,13 +33,21 @@ public class ATPPredictionView extends VerticalLayout {
     TextField filterText = new TextField();
     ATPPredictionForm form;
     MainService mainService;
+    HowToPlayView howToPlayView;
 
-    public ATPPredictionView(MainService mainService) {
+    public ATPPredictionView(MainService mainService, HowToPlayView howToPlayView) {
         this.mainService = mainService;
+        this.howToPlayView = howToPlayView;
+
         addClassName("atp-view");
-        setSizeFull();
+        setHeight("1300px");
+        setWidthFull();
         configureGrid();
         configureForm();
+
+        Tab tab = howToPlayView.getTabAtpWta();
+        HorizontalLayout rules = new HorizontalLayout(tab);
+
 
         add(getToolbar(), getContent(), getHrefParagraph("ATP Tour", "ATP Tour"));
         updateList();
@@ -50,14 +59,15 @@ public class ATPPredictionView extends VerticalLayout {
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
         content.addClassNames("content");
-        content.setSizeFull();
+        content.setHeight("400px");
+        content.setWidthFull();
         return content;
     }
 
 private void configureForm() {
-    form = new ATPPredictionForm(mainService.findAllStages(), mainService.findAllUsers(""));
+    form = new ATPPredictionForm(mainService.findAllStages(), mainService.findAllAtpUsers());
     form.setWidth("25em");
-    form.setHeight("40em");
+    form.setHeight("400px");
     form.addListener(ATPPredictionForm.SaveEvent.class, this::saveATP);
     form.addListener(ATPPredictionForm.DeleteEvent.class, this::deleteATP);
     form.addListener(ATPPredictionForm.CloseEvent.class, e -> closeEditor());

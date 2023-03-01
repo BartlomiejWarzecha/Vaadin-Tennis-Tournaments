@@ -13,4 +13,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select u from User u " +
         "where lower(u.nickname) like lower(concat('%', :searchTerm, '%')) " )
     List<User> search(@Param("searchTerm") String searchTerm);
+
+    @Query("SELECT u FROM User u WHERE u.interests != '7'")
+    List<User> findAllAtpUsers();
+
+    @Query("SELECT u FROM User u WHERE u.interests != '6'")
+    List<User> findAllWtaUsers();
 }

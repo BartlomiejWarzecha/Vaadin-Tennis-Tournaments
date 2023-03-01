@@ -6,6 +6,7 @@ import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -38,7 +39,9 @@ public class UserView extends VerticalLayout {
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent());
+        Span s = new Span("*You can only add predictions for chosen interest!");
+        s.getStyle().set("font-size", "15px");
+        add(getToolbar(), getContent(), s);
         updateList();
         closeEditor();
     }
@@ -55,7 +58,7 @@ public class UserView extends VerticalLayout {
 private void configureForm() {
     form = new UserForm(mainService.findAllInterests());
     form.setWidth("25em");
-    form.setHeight("40em");
+    form.setHeight("400px");
     form.addListener(UserForm.SaveEvent.class, this::saveContact);
     form.addListener(UserForm.DeleteEvent.class, this::deleteContact);
     form.addListener(UserForm.CloseEvent.class, e -> closeEditor());
@@ -66,6 +69,7 @@ private void configureForm() {
         grid.setSizeFull();
         grid.setColumns("nickname", "email");
         grid.addColumn(user -> user.getInterest().getName()).setHeader("Interests");
+        grid.addColumn(user -> user.getDescription()).setHeader("Description");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editContact(event.getValue()));
@@ -93,7 +97,7 @@ private void configureForm() {
         test.setEnabled(true);
 
         Notification notification = Notification
-                .show("Welcome, " + event.getUser().getNickname() +  ", Have Fun!");
+                .show("Welcome, " + event.getUser().getNickname() +  "! Have Fun!");
         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         notification.setPosition(Notification.Position.TOP_CENTER);
 

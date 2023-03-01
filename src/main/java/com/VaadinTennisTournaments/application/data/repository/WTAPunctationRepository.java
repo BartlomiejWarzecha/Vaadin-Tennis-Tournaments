@@ -13,7 +13,6 @@ public interface WTAPunctationRepository extends JpaRepository<WTAPunctation, In
         " where lower(p.wtaTournament) like lower(concat('%', :searchTerm, '%')) " +
             "or lower(p.user) like lower(concat('%', :searchTerm, '%'))" +
             "or lower(p.rank) like lower(concat('%', :searchTerm, '%'))" +
-            "or lower(p.stage) like lower(concat('%', :searchTerm, '%'))" +
-            "or lower(p.wtaTournament) like lower(concat('%', :searchTerm, '%'))")
+            "or lower(p.stage) like lower(concat('%', :searchTerm, '%'))" )
     List<WTAPunctation> search(@Param("searchTerm") String searchTerm);
 }

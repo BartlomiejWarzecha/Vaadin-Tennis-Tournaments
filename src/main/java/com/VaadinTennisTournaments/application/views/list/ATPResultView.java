@@ -12,6 +12,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
@@ -32,15 +33,23 @@ public class ATPResultView extends VerticalLayout {
     TextField filterText = new TextField();
     ATPResultForm form;
     MainService mainService;
+    HowToPlayView howToPlayView;
 
-    public ATPResultView(MainService mainService) {
+    public ATPResultView(MainService mainService, HowToPlayView howToPlayView) {
         this.mainService = mainService;
+        this.howToPlayView = howToPlayView;
+
         addClassName("result-view");
-        setSizeFull();
+        setHeight("1300px");
+        setWidthFull();
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent(), getHrefScoreParagraph("WTA Tennis", "ATP Tour"));
+        Tab tab = howToPlayView.getTabResults();
+        HorizontalLayout rules = new HorizontalLayout(tab);
+
+        add(getToolbar(), getContent(), getHrefScoreParagraph("WTA Tennis", "ATP Tour"), rules);
+
         updateList();
         closeEditor();
     }
@@ -50,14 +59,15 @@ public class ATPResultView extends VerticalLayout {
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
         content.addClassNames("content");
-        content.setSizeFull();
+        content.setWidthFull();
+        content.setHeight("400px");
         return content;
     }
 
 private void configureForm() {
     form = new ATPResultForm(mainService.findAllInterests(), mainService.findAllRanks());
     form.setWidth("25em");
-    form.setHeight("40em");
+    form.setHeight("400px");
     form.addListener(ATPResultForm.SaveEvent.class, this::saveATPResult);
     form.addListener(ATPResultForm.DeleteEvent.class, this::deleteATPResult);
     form.addListener(ATPResultForm.CloseEvent.class, e -> closeEditor());

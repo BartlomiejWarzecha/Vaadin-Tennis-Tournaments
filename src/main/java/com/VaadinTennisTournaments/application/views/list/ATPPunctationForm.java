@@ -26,7 +26,6 @@ public class ATPPunctationForm extends FormLayout {
   private ATPPunctation atpPunctation;
   TextField points = new TextField("Points");
   ComboBox<ATP> atpTournament = new ComboBox<>("ATP Tournament");
-  ComboBox<Interests> interest = new ComboBox<>("Type");
   ComboBox<Rank> rank = new ComboBox<>("Rank");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
   ComboBox<User> user = new ComboBox<>("User");

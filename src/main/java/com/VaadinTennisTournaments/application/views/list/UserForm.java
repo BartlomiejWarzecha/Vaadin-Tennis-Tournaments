@@ -25,6 +25,8 @@ public class UserForm extends FormLayout {
   TextField nickname = new TextField("Nickname");
   EmailField email = new EmailField("Email");
   ComboBox<Interests> interest = new ComboBox<>("Interests");
+  TextField description = new TextField("Description");
+
   Binder<User> binder = new BeanValidationBinder<>(User.class);
 
   Button save = new Button("Save");
@@ -40,6 +42,7 @@ public class UserForm extends FormLayout {
     add(nickname,
         email,
             interest,
+        description,
         createButtonsLayout()); 
   }
 

@@ -12,6 +12,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
@@ -32,16 +33,22 @@ public class WTAPredictionView extends VerticalLayout {
     TextField filterText = new TextField();
     WTAPredictionForm form;
     MainService mainService;
+    HowToPlayView howToPlayView;
 
     public WTAPredictionView(MainService mainService) {
         this.mainService = mainService;
+        this.howToPlayView = new HowToPlayView(mainService);
+
         addClassName("wta-view");
-        setSizeFull();
+        setWidthFull();
+        setHeight("1300px");
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent(), getHrefParagraph("wtatennis", "WTA Tour"));
-        updateList();
+        Tab tab = howToPlayView.getTabAtpWta();
+        HorizontalLayout rules = new HorizontalLayout(tab);
+
+        add(getToolbar(), getContent(), getHrefParagraph("wtatennis", "WTA Tour"), rules);        updateList();
         closeEditor();
     }
 
@@ -50,14 +57,15 @@ public class WTAPredictionView extends VerticalLayout {
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
         content.addClassNames("content");
-        content.setSizeFull();
+        content.setWidthFull();
+        content.setHeight("400px");
         return content;
     }
 
 private void configureForm() {
-    form = new WTAPredictionForm(mainService.findAllStages(), mainService.findAllUsers( ""));
+    form = new WTAPredictionForm(mainService.findAllStages(), mainService.findAllWtaUsers());
     form.setWidth("25em");
-    form.setHeight("45em");
+    form.setHeight("400px");
     form.addListener(WTAPredictionForm.SaveEvent.class, this::saveWTA);
     form.addListener(WTAPredictionForm.DeleteEvent.class, this::deleteWTA);
     form.addListener(WTAPredictionForm.CloseEvent.class, e -> closeEditor());
