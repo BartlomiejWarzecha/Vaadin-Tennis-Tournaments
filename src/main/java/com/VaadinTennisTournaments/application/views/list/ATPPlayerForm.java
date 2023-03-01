@@ -23,7 +23,7 @@ import java.util.List;
 public class ATPPlayerForm extends FormLayout {
   private ATPPlayer atpPlayer;
 
-  TextField fullname = new TextField("Player Full Name");
+  TextField fullname = new TextField("ATP Player FullName");
   TextArea description = new TextArea("Description");
   ComboBox<User> user= new ComboBox<>("");
   Binder<ATPPlayer> binder = new BeanValidationBinder<>(ATPPlayer.class);
@@ -39,9 +39,9 @@ public class ATPPlayerForm extends FormLayout {
     user.setItems(users);
     user.setItemLabelGenerator(User::getNickname);
     add(fullname,
-        description,
             user,
-        createButtonsLayout()); 
+            description,
+        createButtonsLayout());
   }
 
   private HorizontalLayout createButtonsLayout() {

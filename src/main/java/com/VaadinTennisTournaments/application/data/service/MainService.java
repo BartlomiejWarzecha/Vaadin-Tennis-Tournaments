@@ -1,18 +1,13 @@
 package com.VaadinTennisTournaments.application.data.service;
 
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPlayer;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPResult;
+import com.VaadinTennisTournaments.application.data.entity.ATP.*;
 import com.VaadinTennisTournaments.application.data.entity.Register.RegisterUser;
 import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
 import com.VaadinTennisTournaments.application.data.entity.User.UserRanking;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTAPunctation;
+import com.VaadinTennisTournaments.application.data.entity.WTA.*;
 import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
 import com.VaadinTennisTournaments.application.data.entity.User.User;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
 import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
 import com.VaadinTennisTournaments.application.data.repository.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -21,26 +16,33 @@ import java.util.List;
 
 @org.springframework.stereotype.Service
 public class MainService {
-    PasswordEncoder passwordEncoder;
     private final RegisterUserRepository registerUserRepository;
     private final UserRepository userRepository;
     private final UserRankingRepository userRankingRepository;
     private final WTARepository wtaRepository;
     private final WTAResultRepository wtaResultRepository;
     private final WTAPunctationRepository wtaPunctationRepository;
+    private final WTAPlayerRepository wtaPlayerRepository;
+    private final WTATournamentRepository wtaTournamentRepository;
+
     private final ATPRepository atpRepository;
     private final ATPResultRepository atpResultRepository;
     private final ATPPunctationRepository atpPunctationRepository;
     private final ATPPlayerRepository atpPlayerRepository;
+    private final ATPTournamentRepository atpTournamentRepository;
+
     private final InterestsRepository interestsRepository;
     private final StageRepository stageRepository;
     private final RankRepository rankRepository;
-    public MainService(RegisterUserRepository registerUserRepository, UserRepository userRepository, UserRankingRepository userRankingRepository ,
+    private final PasswordEncoder passwordEncoder;
+
+    public MainService(RegisterUserRepository registerUserRepository, UserRepository userRepository, UserRankingRepository userRankingRepository,
                        WTARepository wtaRepository, WTAResultRepository wtaResultRepository, WTAPunctationRepository wtaPunctationRepository,
-                       ATPRepository atpRepository, ATPResultRepository atpResultRepository, ATPPunctationRepository atpPunctationRepository,
-                       ATPPlayerRepository atpPlayerRepository,
-                       InterestsRepository interestsRepository, StageRepository stageRepository, RankRepository rankRepository,
-                       PasswordEncoder passwordEncoder
+                       WTAPlayerRepository wtaPlayerRepository, WTATournamentRepository wtaTournamentRepository,
+                       ATPRepository atpRepository, ATPResultRepository atpResultRepository,
+                       ATPPunctationRepository atpPunctationRepository, ATPPlayerRepository atpPlayerRepository,  ATPTournamentRepository atpTournamentRepository,
+                       InterestsRepository interestsRepository,
+                       StageRepository stageRepository, RankRepository rankRepository, PasswordEncoder passwordEncoder
                        ) {
         this.registerUserRepository = registerUserRepository;
         this.userRepository = userRepository;
@@ -48,10 +50,13 @@ public class MainService {
         this.wtaRepository = wtaRepository;
         this.wtaResultRepository = wtaResultRepository;
         this.wtaPunctationRepository = wtaPunctationRepository;
+        this.wtaPlayerRepository = wtaPlayerRepository;
+        this.wtaTournamentRepository = wtaTournamentRepository;
         this.atpRepository = atpRepository;
         this.atpResultRepository = atpResultRepository;
         this.atpPunctationRepository = atpPunctationRepository;
         this.atpPlayerRepository = atpPlayerRepository;
+        this.atpTournamentRepository = atpTournamentRepository;
         this.interestsRepository = interestsRepository;
         this.stageRepository = stageRepository;
         this.rankRepository = rankRepository;
@@ -91,10 +96,25 @@ public class MainService {
 
     public void saveUser(User user) {
         if (user == null) {
-            System.err.println("WTA is null. Are you sure you have connected your form to the application?");
+            System.err.println("User is null. Are you sure you have connected your form to the application?");
             return;
         }
         userRepository.save(user);
+    }
+    public List<WTAPlayer> findAllWTAPlayers(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return wtaPlayerRepository.findAll();
+        } else {
+            return wtaPlayerRepository.search(stringFilter);
+        }
+    }
+
+    public void deleteWTAPlayer(WTAPlayer wtaPlayer) {
+        wtaPlayerRepository.delete(wtaPlayer);
+    }
+
+    public void saveWTAPlayer(WTAPlayer wtaPlayer) {
+        wtaPlayerRepository.save(wtaPlayer);
     }
 
     public List<ATPPlayer> findAllATPPlayers(String stringFilter) {
@@ -103,6 +123,25 @@ public class MainService {
         } else {
             return atpPlayerRepository.search(stringFilter);
         }
+    }
+    public List<WTATournament> findAllWTATournaments(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return wtaTournamentRepository.findAll();
+        } else {
+            return wtaTournamentRepository.search(stringFilter);
+        }
+    }
+
+    public void deleteWTATournament(WTATournament wtaTournament) {
+        wtaTournamentRepository.delete(wtaTournament);
+    }
+
+    public void saveWTATournament(WTATournament wtaTournament) {
+        if (wtaTournament == null) {
+            System.err.println("ATP player is null. Are you sure you have connected your form to the application?");
+            return;
+        }
+        wtaTournamentRepository.save(wtaTournament);
     }
     public void deleteATPPlayer(ATPPlayer atpPlayer) {
         atpPlayerRepository.delete(atpPlayer);
@@ -115,6 +154,35 @@ public class MainService {
         }
         atpPlayerRepository.save(atpPlayer);
     }
+
+    public List<ATPTournament> findAllATPTournaments(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return atpTournamentRepository.findAll();
+        } else {
+            return atpTournamentRepository.search(stringFilter);
+        }
+    }
+
+    public void deleteATPTournament(ATPTournament atpTournament) {
+        atpTournamentRepository.delete(atpTournament);
+    }
+
+    public void saveATPTournament(ATPTournament atpTournament) {
+        if (atpTournament == null) {
+            System.err.println("ATP tournament is null. Are you sure you have connected your form to the application?");
+            return;
+        }
+        atpTournamentRepository.save(atpTournament);
+    }
+    public List<User> findAllAtpUsers() {
+        return userRepository.findAllAtpUsers();
+    }
+
+    public List<User> findAllWtaUsers() {
+        return userRepository.findAllWtaUsers();
+    }
+
+
 
     public List<UserRanking> findAllUserRankings(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {

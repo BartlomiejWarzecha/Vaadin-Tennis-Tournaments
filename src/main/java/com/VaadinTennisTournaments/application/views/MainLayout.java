@@ -9,6 +9,8 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -53,6 +55,14 @@ public class MainLayout extends AppLayout {
 
     private void createDrawer() {
 
+
+        Notification notification = Notification
+                .show("Welcome, " + this.securityService.getAuthenticatedUser().getUsername()
+                        + "! Good luck and have fun!");
+        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        notification.setPosition(Notification.Position.BOTTOM_CENTER);
+
+
         Icon grIcon = new Icon(VaadinIcon.BOOK);
         grIcon.setColor("black");
         Icon profileIcon = new Icon(VaadinIcon.USER);
@@ -67,22 +77,48 @@ public class MainLayout extends AppLayout {
         rankingIcon.setColor("black");
         Icon outlineIcon = new Icon(VaadinIcon.MOON);
         outlineIcon.setColor("#ffff00");
+        Icon setupIcon = new Icon(VaadinIcon.COG);
+        setupIcon.setColor("black");
 
-        RouterLink listHowToPlay = new RouterLink( "How To Play", HowToPlayView.class);
+        RouterLink listHowToPlay = new RouterLink("How To Play", HowToPlayView.class);
         RouterLink linkUsers = new RouterLink("Users", UserView.class);
-        RouterLink linkATPPlayer = new RouterLink("ATP Player", ATPPlayerView.class);
+        RouterLink linkWTAPlayer = new RouterLink("WTA Player", WTAPlayerView.class);
+        RouterLink linkWTATournament = new RouterLink("WTA Tournament", WTATournamentView.class);
         RouterLink listWTAPrediction = new RouterLink("WTA Prediction", WTAPredictionView.class);
         RouterLink listWTAPunctation = new RouterLink("WTA Punctation", WTAPunctationView.class);
         RouterLink listWTAResults = new RouterLink("WTA Results", WTAResultView.class);
+        RouterLink linkATPPlayer = new RouterLink("ATP Player", ATPPlayerView.class);
+        RouterLink linkATPTournament = new RouterLink("ATP Tournament", ATPTournamentView.class);
         RouterLink listATPPrediction = new RouterLink("ATP Prediction", ATPPredictionView.class);
         RouterLink listATPPunctation = new RouterLink("ATP Punctation", ATPPunctationView.class);
         RouterLink listATPResults = new RouterLink("ATP Results", ATPResultView.class);
         RouterLink linkUsersRanking = new RouterLink("Users Ranking", UserRankingView.class);
+
         linkUsers.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(
-           outlineIcon, grIcon, listHowToPlay, profileIcon, linkUsers, linkATPPlayer, atpWtaIcon, listWTAPrediction, listATPPrediction, punctationIcon, listWTAPunctation,
-                 listATPPunctation, resultsIcon, listWTAResults, listATPResults, rankingIcon, linkUsersRanking, outlineIcon
+                outlineIcon,
+                grIcon,
+                listHowToPlay,
+                profileIcon,
+                linkUsers,
+                setupIcon,
+                linkWTAPlayer,
+                linkATPPlayer,
+                linkWTATournament,
+                linkATPTournament,
+                atpWtaIcon,
+                listWTAPrediction,
+                listATPPrediction,
+                punctationIcon,
+                listWTAPunctation,
+                listATPPunctation,
+                resultsIcon,
+                listWTAResults,
+                listATPResults,
+                rankingIcon,
+                linkUsersRanking,
+                outlineIcon
         ));
     }
 }
