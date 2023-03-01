@@ -37,54 +37,103 @@ public class HowToPlayView extends VerticalLayout {
     }
     private Tabs configureTabs() {
 
-        Tab generalRules = new Tab(VaadinIcon.BOOK.create(), new Span("General Rules"));
-        Tab profile = new Tab(VaadinIcon.USER.create(), new Span("Users"));
-        Tab atpWta = new Tab(VaadinIcon.SCALE.create(), new Span("ATP/WTA"));
-        Tab results = new Tab(VaadinIcon.ARCHIVE.create(), new Span("Results"));
-        Tab punctation = new Tab(VaadinIcon.ABACUS.create(), new Span("WTAPunctation"));
-        Tab ranking = new Tab(VaadinIcon.CHART.create(), new Span("Ranking"));
+        Tab generalRules = getTabGeneralRules();
+        Tab profile = getTabProfile();
+        Tab atpWta = getTabAtpWta();
+        Tab results = getTabResults();
+        Tab punctation = getTabPunctation();
+        Tab ranking = getTabRanking();
 
-        generalRules.add(generateNotEditableText("Generalne Zasady:" +
-                        "\n\n" +
-                "Zabawa polega na wybraniu zwycięzcy turnieju na możliwie najwcześniejszym etapie rozgrywek." +
-                        "\n" +
-                "W przypadku odpadnięcia kandydata przed wygraną, " +
-                        "można dokonać kolejnego wyboru poprzez modyfikacje bieżącej predykcji o odpowiednie dane, " +
-                "włącznie z wyborem nowego etapu turnieju, który określa czas jej wystąpienia." +
-                        "\n\n" +
-                        "Ilość uzyskanych punktów jest zależna od etapu na którym został wybrany zwycięzca oraz od poziomu rozgrywek. " +
-                        "\n" +
-                        "Im wcześniej wybrany zwycięzca oraz im wyższa ranga turnieju, tym więcej otrzymanych punktów." +
-                        "\n\n" +
-                        "Na koniec roku wybierane są  wyniki 10 turniejów z najwyższa liczba punktów, oddzielnie ATP/WTA, dla każdego uczestnika" +
-                        "Na tej podstawie jest wyłaniany ranking najlepszych graczy."
-                         ));
+        for (Tab tab : new Tab[]{generalRules, profile, atpWta, results, punctation, ranking}) {
+            tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
 
-        profile.add(generateNotEditableText(
-                "1. Nazwa oraz email użytkownika powinny być unikatowe, " +
-                "\n"+
-                "2. Jedna osoba nie moze dodac wiecej niz jednego uzytkownika" +
-                "\n"+
-                "3. Wybrane zainteresowania powinny być zbieżne z udziałem w predykcji, w poszczególnych tabelach"
-                ));
+        }
+        Tabs tabs = new Tabs(generalRules, profile, atpWta, results, punctation, ranking);
 
-        atpWta.add(generateNotEditableText(
-                "1. Dla jednego wyboru można wybrać jedynie jednego zawodnika oraz jeden turniej" +
-                "\n"+
-                "2. Dodany zawodnik i turniej powinien być możliwy do identyfikacji przez wyszstkich uczestników" +
-                "\n"+
-                "3. Usuwaniem wyników oraz tworzeniem punktacji, po danym tuenieju, zajmuje się jedna, wyznaczona do tego zadania osoba"
+        tabs.setMaxWidth("100%");
+        tabs.setAutoselect(true);
+        return tabs;
+    }
+    private TextArea generateNotEditableText(String text) {
+        TextArea textArea = new TextArea();
+        textArea.setWidth("400px");
+        textArea.setMinHeight("200px");
+        textArea.setMaxHeight("400px");
+        textArea.setReadOnly(true);
+        textArea.setValue(text);
+        return textArea;
+    }
+
+
+
+public Tab getTabGeneralRules() {
+        Tab tab = new Tab(VaadinIcon.BOOK.create(), new Span("General Rules"));
+
+        tab.add(generateNotEditableText("Generalne Zasady:\n\n" +
+                "Zabawa polega na wybraniu zwycięzcy turnieju na możliwie najwcześniejszym etapie rozgrywek.\n\n" +
+                "W przypadku odpadnięcia kandydata przed wygraną, można dokonać kolejnego wyboru poprzez modyfikacje bieżącej predykcji o odpowiednie dane, włącznie z wyborem nowego etapu turnieju, który określa czas jej wystąpienia.\n\n" +
+                "Ilość uzyskanych punktów jest zależna od etapu na którym został wybrany zwycięzca oraz od poziomu rozgrywek. Im wcześniej wybrany zwycięzca oraz im wyższa ranga turnieju, tym więcej otrzymanych punktów.\n\n" +
+                "Na koniec roku wybierane są wyniki 10 turniejów z najwyższą liczbą punktów, oddzielnie ATP/WTA, dla każdego uczestnika. Na tej podstawie jest wyłaniany ranking najlepszych graczy."
         ));
-        results.add(generateNotEditableText(
-                        "1. Rezultaty powinny być dodawane po zakończonym turnieju przez osobę, która dodała dany turniej w swojej predykcji" +
-                        "\n"+
+
+        tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
+        return tab;
+
+    }
+
+    public Tab getTabProfile() {
+
+        Tab tab = new Tab(VaadinIcon.USER.create(), new Span("Users"));
+
+        tab.add(generateNotEditableText(
+                "1. Nazwa oraz email użytkownika powinny być unikatowe, " +
+                        "\n" +
+                        "2. Jedna osoba nie moze dodac wiecej niz jednego uzytkownika" +
+                        "\n" +
+                        "3. Wybrane zainteresowania powinny być zbieżne z udziałem w predykcji, w poszczególnych tabelach"
+        ));
+
+        tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
+        return tab;
+    }
+
+    public Tab getTabAtpWta() {
+
+        Tab tab = new Tab(VaadinIcon.SCALE.create(), new Span("ATP/WTA"));
+
+        tab.add(generateNotEditableText(
+                "1. Dla jednego wyboru można wybrać jedynie jednego zawodnika oraz jeden turniej" +
+                        "\n" +
+                        "2. Dodany zawodnik i turniej powinien być możliwy do identyfikacji przez wyszstkich uczestników" +
+                        "\n" +
+                        "3. Usuwaniem wyników oraz tworzeniem punktacji, po danym tuenieju, zajmuje się jedna, wyznaczona do tego zadania osoba"
+        ));
+
+        tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
+        return tab;
+    }
+
+    public Tab getTabResults() {
+
+        Tab tab = new Tab(VaadinIcon.SCALE.create(), new Span("ATP/WTA"));
+
+        tab.add(generateNotEditableText(
+                "1. Rezultaty powinny być dodawane po zakończonym turnieju przez osobę, która dodała dany turniej w swojej predykcji" +
+                        "\n" +
                         "2. Dodany zawodnik i turniej, powinien być możliwy do identyfikacji przez wyszystkich uczestników" +
-                        "\n"+
+                        "\n" +
                         "3. Usuwaniem wyników oraz tworzeniem punktacji, w widoku punktajci, po danym tuenieju, zajmuje się jedna, wyznaczona do tego zadania osoba"
         ));
 
-        punctation.add(generateNotEditableText(
-                "Wzór: etap wybrania zwycięzcyy * poziom rozgrywek"+
+        tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
+        return tab;
+    }
+
+    public Tab getTabPunctation() {
+
+        Tab  tab= new Tab(VaadinIcon.ABACUS.create(), new Span("WTAPunctation"));
+        tab.add(generateNotEditableText(
+                        "Wzór: etap wybrania zwycięzcyy * poziom rozgrywek"+
                         "\n\n"+
                         "Etap: "+
                         "\n"+
@@ -124,61 +173,23 @@ public class HowToPlayView extends VerticalLayout {
                         "\n" +
                         "Zwycięzaca wybrany na etapie 1/8 Grand Slam" +
                         "\n" +
-                        "Punktacja = 20pkt * 3.0 = 60 pkt"
-        ));
-        ranking.add(generateNotEditableText(
-                        "1. " +
+                        "Punktacja = 20pkt * 3.0 = 60 pkt" ));
+        tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
+        return tab;
+    }
+
+    public Tab getTabRanking() {
+        Tab tab = new Tab(VaadinIcon.CHART.create(), new Span("Ranking"));
+        tab.add(generateNotEditableText(
+                "1. " +
                         "\n"+
                         "2. " +
                         "\n"+
                         "3. "
         ));
-
-        generalRules.add(generateEditableText("Write your own General Rules"));
-        profile.add(generateEditableText("Write your own User description"));
-        atpWta.add(generateEditableText("Write your own ATP/WTA rule explanation"));
-        results.add(generateEditableText("Write your own Results interpretation explanation"));
-        punctation.add(generateEditableText("Write your own Results interpretation explanation"));
-        ranking.add(generateEditableText("Write your own Results interpretation explanation"));
-
-// Set the icon on top
-        for (Tab tab : new Tab[] { generalRules, profile, atpWta, results, punctation, ranking }) {
-            tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
-        }
-
-        Tabs tabs = new Tabs(generalRules, profile, atpWta, results, punctation, ranking);
-
-        tabs.setMaxWidth("100%");
-        tabs.setAutoselect(true);
-        return tabs;
+        tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
+        return tab;
     }
-
-   private TextArea generateNotEditableText(String text){
-
-        TextArea textArea = new TextArea();
-        textArea.setWidth("400px");
-        textArea.setMinHeight("200px");
-        textArea.setMaxHeight("400px");
-
-        textArea.setReadOnly(true);
-
-        textArea.setValue(text);
-        return textArea;
-
-    }
-
-    private TextArea generateEditableText(String text){
-
-        TextArea textArea = new TextArea();
-        textArea.setWidth("400px");
-        textArea.setMinHeight("200px");
-        textArea.setMaxHeight("600px");
-
-        textArea.setPlaceholder(text);
-        return textArea;
-    }
-
-
 
 
 
