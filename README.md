@@ -30,7 +30,7 @@ _Main features:_
 
 Current state:
 
-
+<img width="633" alt="Rejestracja" src="https://user-images.githubusercontent.com/45916445/222727891-23274f19-14db-4403-b6e6-b3eca866201a.png">
 <img width="960" alt="How-to-play-view" src="https://user-images.githubusercontent.com/45916445/222727002-c9b2d399-81f1-413e-88c0-70d372fea582.png">
 <img width="950" alt="profiles-view" src="https://user-images.githubusercontent.com/45916445/222727017-1023a8da-300e-40c9-b609-841eccb46d48.png">
 <img width="954" alt="setup-player" src="https://user-images.githubusercontent.com/45916445/222727037-4d35f94a-8938-430f-9c48-3debe94b0412.png">
