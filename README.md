@@ -17,9 +17,10 @@
 version 1.0
 
 _Main features:_
-* Data:
-  * setup, 
-  * prediction options for both ATP and WTA
+* Possibility of creating multiple profiles
+* Data for both ATP and WTA:
+  * setup data with guidelines for tournament and player
+  * prediction options(tournament, stage, player)  for chosen user
   * single prediction result view and overall results view
 * Adjustable rules of how to play:
   *  simple guidelines and basic how to play section
