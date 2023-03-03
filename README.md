@@ -21,17 +21,14 @@ _Main features:_
   * setup, 
   * prediction options for both ATP and WTA
   * single prediction result view and overall results view
-* Adjustable rules of how to play
+* Adjustable rules of how to play:
   *  simple guidelines and basic how to play section
   *  Possibility to make own rules, based on discussion with other users, by additional grid in      each view 
 * Data secure by spring security JPA BCrypt method 
-* Additional features
+* Additional features:
   * Working PWA, Notifications (register, login, welcome messages, approvals and on catch notifications)
 
-
 Current state:
-
-
 
 
 <img width="960" alt="How-to-play-view" src="https://user-images.githubusercontent.com/45916445/222727002-c9b2d399-81f1-413e-88c0-70d372fea582.png">
