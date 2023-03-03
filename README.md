@@ -7,7 +7,7 @@
 * Spring Security
 * Spring Data JPA
 * Hibernate ORM
-* H2 Database - development and production configs
+* H2 Database
 * PWA
 * IntelliJ IDEA
 * Maven
