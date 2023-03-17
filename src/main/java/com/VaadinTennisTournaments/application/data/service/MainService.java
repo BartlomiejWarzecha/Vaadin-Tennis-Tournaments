@@ -1,17 +1,17 @@
 package com.VaadinTennisTournaments.application.data.service;
 
-import com.VaadinTennisTournaments.application.data.entity.ATP.*;
-import com.VaadinTennisTournaments.application.data.entity.Register.RegisterUser;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
-import com.VaadinTennisTournaments.application.data.entity.User.UserRanking;
-import com.VaadinTennisTournaments.application.data.entity.WTA.*;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
-import com.VaadinTennisTournaments.application.data.entity.User.User;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.atp.*;
+import com.VaadinTennisTournaments.application.data.entity.register.RegisterUser;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Interests;
+import com.VaadinTennisTournaments.application.data.entity.user.UserRanking;
+import com.VaadinTennisTournaments.application.data.entity.wta.*;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Stage;
+import com.VaadinTennisTournaments.application.data.entity.user.User;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Rank;
 import com.VaadinTennisTournaments.application.data.repository.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -24,26 +24,25 @@ public class MainService {
     private final WTAPunctationRepository wtaPunctationRepository;
     private final WTAPlayerRepository wtaPlayerRepository;
     private final WTATournamentRepository wtaTournamentRepository;
-
     private final ATPRepository atpRepository;
     private final ATPResultRepository atpResultRepository;
     private final ATPPunctationRepository atpPunctationRepository;
     private final ATPPlayerRepository atpPlayerRepository;
     private final ATPTournamentRepository atpTournamentRepository;
-
     private final InterestsRepository interestsRepository;
     private final StageRepository stageRepository;
     private final RankRepository rankRepository;
     private final PasswordEncoder passwordEncoder;
+    private final HowToPlayRepository howToPlayRepository;
 
     public MainService(RegisterUserRepository registerUserRepository, UserRepository userRepository, UserRankingRepository userRankingRepository,
                        WTARepository wtaRepository, WTAResultRepository wtaResultRepository, WTAPunctationRepository wtaPunctationRepository,
                        WTAPlayerRepository wtaPlayerRepository, WTATournamentRepository wtaTournamentRepository,
                        ATPRepository atpRepository, ATPResultRepository atpResultRepository,
-                       ATPPunctationRepository atpPunctationRepository, ATPPlayerRepository atpPlayerRepository,  ATPTournamentRepository atpTournamentRepository,
-                       InterestsRepository interestsRepository,
+                       ATPPunctationRepository atpPunctationRepository, ATPPlayerRepository atpPlayerRepository, ATPTournamentRepository atpTournamentRepository,
+                       InterestsRepository interestsRepository, HowToPlayRepository howToPlayRepository,
                        StageRepository stageRepository, RankRepository rankRepository, PasswordEncoder passwordEncoder
-                       ) {
+    ) {
         this.registerUserRepository = registerUserRepository;
         this.userRepository = userRepository;
         this.userRankingRepository = userRankingRepository;
@@ -61,7 +60,9 @@ public class MainService {
         this.stageRepository = stageRepository;
         this.rankRepository = rankRepository;
         this.passwordEncoder = passwordEncoder;
+        this.howToPlayRepository = howToPlayRepository;
     }
+
     public List<RegisterUser> findAllRegisterUsers(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return registerUserRepository.findAll();
@@ -69,13 +70,15 @@ public class MainService {
             return registerUserRepository.search(stringFilter);
         }
     }
+
     public void deleteRegisterUser(RegisterUser user) {
         registerUserRepository.delete(user);
     }
 
     public void saveRegisterUser(RegisterUser user) {
         if (user == null) {
-            System.err.println("WTA is null. Are you sure you have connected your form to the application?");
+            System.err.println("Data from register user is null. Are you sure you have connected your form to the application?");
+
             return;
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -84,12 +87,13 @@ public class MainService {
     }
 
     public List<User> findAllUsers(String stringFilter) {
-        if (stringFilter == null || stringFilter.isEmpty() ) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
             return userRepository.findAll();
         } else {
             return userRepository.search(stringFilter);
         }
     }
+
     public void deleteUser(User user) {
         userRepository.delete(user);
     }
@@ -101,6 +105,7 @@ public class MainService {
         }
         userRepository.save(user);
     }
+
     public List<WTAPlayer> findAllWTAPlayers(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return wtaPlayerRepository.findAll();
@@ -124,6 +129,7 @@ public class MainService {
             return atpPlayerRepository.search(stringFilter);
         }
     }
+
     public List<WTATournament> findAllWTATournaments(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return wtaTournamentRepository.findAll();
@@ -143,6 +149,7 @@ public class MainService {
         }
         wtaTournamentRepository.save(wtaTournament);
     }
+
     public void deleteATPPlayer(ATPPlayer atpPlayer) {
         atpPlayerRepository.delete(atpPlayer);
     }
@@ -174,6 +181,7 @@ public class MainService {
         }
         atpTournamentRepository.save(atpTournament);
     }
+
     public List<User> findAllAtpUsers() {
         return userRepository.findAllAtpUsers();
     }
@@ -183,7 +191,6 @@ public class MainService {
     }
 
 
-
     public List<UserRanking> findAllUserRankings(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return userRankingRepository.findAll();
@@ -191,6 +198,7 @@ public class MainService {
             return userRankingRepository.search(stringFilter);
         }
     }
+
     public void deleteUserRanking(UserRanking userRanking) {
         userRankingRepository.delete(userRanking);
     }
@@ -212,16 +220,19 @@ public class MainService {
             return wtaRepository.search(stringFilter);
         }
     }
-        public void deleteWTA (WTA wta){
-            wtaRepository.delete(wta);
+
+    public void deleteWTA(WTA wta) {
+        wtaRepository.delete(wta);
+    }
+
+    public void saveWTA(WTA wta) {
+        if (wta == null) {
+            System.err.println("WTA Tournament is null. Are you sure you have connected your form to the application?");
+            return;
         }
-        public void saveWTA (WTA wta){
-            if (wta == null) {
-                System.err.println("WTA Tournament is null. Are you sure you have connected your form to the application?");
-                return;
-            }
-            wtaRepository.save(wta);
-        }
+        wtaRepository.save(wta);
+    }
+
     public List<ATP> findAllATP(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return atpRepository.findAll();
@@ -229,11 +240,12 @@ public class MainService {
             return atpRepository.search(stringFilter);
         }
     }
-    public void deleteATP (ATP atp){
+
+    public void deleteATP(ATP atp) {
         atpRepository.delete(atp);
     }
 
-    public void saveATP (ATP atp){
+    public void saveATP(ATP atp) {
         if (atp == null) {
             System.err.println("ATP Tournament is null. Are you sure you have connected your form to the application?");
             return;
@@ -248,17 +260,19 @@ public class MainService {
             return wtaResultRepository.search(stringFilter);
         }
     }
-    public void deleteWTAResult(WTAResult wtaResult){
+
+    public void deleteWTAResult(WTAResult wtaResult) {
         wtaResultRepository.delete(wtaResult);
     }
 
-    public void saveWTAResult(WTAResult wtaResult){
+    public void saveWTAResult(WTAResult wtaResult) {
         if (wtaResult == null) {
             System.err.println("Results are null. Are you sure you have connected your form to the application?");
             return;
         }
         wtaResultRepository.save(wtaResult);
     }
+
     public List<ATPResult> findAllATPResults(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return atpResultRepository.findAll();
@@ -266,12 +280,13 @@ public class MainService {
             return atpResultRepository.search(stringFilter);
         }
     }
-    public void deleteATPResult(ATPResult atpResult){
+
+    public void deleteATPResult(ATPResult atpResult) {
         atpResultRepository.delete(atpResult);
     }
 
-    public void saveATPResult(ATPResult atpResult){
-        if (atpResult== null) {
+    public void saveATPResult(ATPResult atpResult) {
+        if (atpResult == null) {
             System.err.println("Results are null. Are you sure you have connected your form to the application?");
             return;
         }
@@ -285,17 +300,19 @@ public class MainService {
             return wtaPunctationRepository.search(stringFilter);
         }
     }
-    public void deleteWTAPunctation(WTAPunctation WTAPunctation){
+
+    public void deleteWTAPunctation(WTAPunctation WTAPunctation) {
         wtaPunctationRepository.delete(WTAPunctation);
     }
 
-    public void saveWTAPunctation(WTAPunctation WTAPunctation){
+    public void saveWTAPunctation(WTAPunctation WTAPunctation) {
         if (WTAPunctation == null) {
             System.err.println("Puncation are null. Are you sure you have connected your form to the application?");
             return;
         }
         wtaPunctationRepository.save(WTAPunctation);
     }
+
     public List<ATPPunctation> findAllATPPunctation(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return atpPunctationRepository.findAll();
@@ -303,11 +320,12 @@ public class MainService {
             return atpPunctationRepository.search(stringFilter);
         }
     }
-    public void deleteATPPunctation(ATPPunctation atpPunctation){
+
+    public void deleteATPPunctation(ATPPunctation atpPunctation) {
         atpPunctationRepository.delete(atpPunctation);
     }
 
-    public void saveATPPunctation(ATPPunctation atpPunctation){
+    public void saveATPPunctation(ATPPunctation atpPunctation) {
         if (atpPunctation == null) {
             System.err.println("Puncation are null. Are you sure you have connected your form to the application?");
             return;
@@ -318,11 +336,33 @@ public class MainService {
     public List<Interests> findAllInterests() {
         return interestsRepository.findAll();
     }
+
     public List<Stage> findAllStages() {
         return stageRepository.findAll();
     }
+
     public List<Rank> findAllRanks() {
         return rankRepository.findAll();
     }
 
+    public List<HowToPlay> findAllHowToPlay(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return howToPlayRepository.findAll();
+        } else {
+            return howToPlayRepository.search(stringFilter);
+        }
+    }
+
+    public void deleteHowToPlay(HowToPlay howToPlay) {
+        howToPlayRepository.delete(howToPlay);
+    }
+
+    public void saveHowToPlay(HowToPlay howToPlay) {
+        if (howToPlay == null) {
+            System.err.println("Data from how to play is null. Are you sure you have connected your form to the application?");
+            return;
+        }
+        howToPlayRepository.save(howToPlay);
+    }
 }
+

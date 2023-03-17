@@ -60,7 +60,7 @@ public class MainLayout extends AppLayout {
                 .show("Welcome, " + this.securityService.getAuthenticatedUser().getUsername()
                         + "! Good luck and have fun!");
         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-        notification.setPosition(Notification.Position.BOTTOM_CENTER);
+        notification.setPosition(Notification.Position.TOP_CENTER);
 
 
         Icon grIcon = new Icon(VaadinIcon.BOOK);
@@ -81,7 +81,7 @@ public class MainLayout extends AppLayout {
         setupIcon.setColor("black");
 
         RouterLink listHowToPlay = new RouterLink("How To Play", HowToPlayView.class);
-        RouterLink linkUsers = new RouterLink("Users", UserView.class);
+        RouterLink linkUsers = new RouterLink("Profiles", UserView.class);
         RouterLink linkWTAPlayer = new RouterLink("WTA Player", WTAPlayerView.class);
         RouterLink linkWTATournament = new RouterLink("WTA Tournament", WTATournamentView.class);
         RouterLink listWTAPrediction = new RouterLink("WTA Prediction", WTAPredictionView.class);
