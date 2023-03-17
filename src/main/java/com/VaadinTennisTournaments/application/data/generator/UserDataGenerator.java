@@ -6,24 +6,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-import com.VaadinTennisTournaments.application.data.entity.Register.RegisterUser;
-import com.VaadinTennisTournaments.application.data.entity.User.User;
-import com.VaadinTennisTournaments.application.data.entity.User.UserRanking;
+import com.VaadinTennisTournaments.application.data.entity.user.User;
 import com.VaadinTennisTournaments.application.data.repository.InterestsRepository;
-import com.VaadinTennisTournaments.application.data.repository.RegisterUserRepository;
-import com.VaadinTennisTournaments.application.data.repository.UserRankingRepository;
 import com.VaadinTennisTournaments.application.data.repository.UserRepository;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Interests;
 
 import com.vaadin.flow.spring.annotation.SpringComponent;
 
-import org.h2.pagestore.PageStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vaadin.artur.exampledata.DataType;
 import org.vaadin.artur.exampledata.ExampleDataGenerator;
 

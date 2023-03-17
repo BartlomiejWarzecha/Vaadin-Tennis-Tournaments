@@ -1,10 +1,10 @@
 package com.VaadinTennisTournaments.application.data.generator;
 
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Stage;
 import com.VaadinTennisTournaments.application.data.repository.InterestsRepository;
 import com.VaadinTennisTournaments.application.data.repository.RankRepository;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Interests;
 import com.VaadinTennisTournaments.application.data.repository.StageRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.slf4j.Logger;
