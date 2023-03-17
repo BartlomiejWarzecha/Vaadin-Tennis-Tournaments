@@ -18,6 +18,9 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 import java.util.List;
 
@@ -37,7 +40,7 @@ public class ATPPunctationForm extends FormLayout {
   public ATPPunctationForm(
                            List<Stage> stages,
                            List<User> users,
-                           List<ATP> atpTournaments) {
+                           List<ATP> predictionAtpTournaments) {
     addClassName("atpPunctation-form");
     binder.bindInstanceFields(this);
 
@@ -46,7 +49,15 @@ public class ATPPunctationForm extends FormLayout {
     user.setItems(users);
     user.setItemLabelGenerator(User::getNickname);
 
-    atpTournament.setItems(atpTournaments);
+    List<ATP> uniqueATPTournaments = predictionAtpTournaments.stream()
+               .collect(Collectors.collectingAndThen(
+                       Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(wta -> wta.getAtpTournament().getTournament()))
+            ),
+                                ArrayList::new
+                                ));
+
+    atpTournament.setItems(uniqueATPTournaments);
+
     atpTournament.setItemLabelGenerator(ATP::getAtpTournamentName);
 
     add(

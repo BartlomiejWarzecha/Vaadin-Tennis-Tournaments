@@ -17,8 +17,8 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
-
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class WTAPunctationForm extends FormLayout {
   private WTAPunctation WTAPunctation;
@@ -37,7 +37,7 @@ public class WTAPunctationForm extends FormLayout {
 
   public WTAPunctationForm(
                            List<Stage> stages, List<User> users,
-                           List<WTA> wtaTournaments) {
+                           List<WTA> predictionWtaTournaments) {
     addClassName("WTAPunctation-form");
     binder.bindInstanceFields(this);
 
@@ -45,8 +45,14 @@ public class WTAPunctationForm extends FormLayout {
     stage.setItemLabelGenerator(Stage::getName);
     user.setItems(users);
     user.setItemLabelGenerator(User::getNickname);
+        List<WTA> uniqueWTATournaments = predictionWtaTournaments.stream()
+            .collect(Collectors.collectingAndThen(
+            Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(wta -> wta.getWtaTournament().getTournament()))
+            ),
+            ArrayList::new ));
 
-    wtaTournament.setItems(wtaTournaments);
+            wtaTournament.setItems(uniqueWTATournaments);
+
     wtaTournament.setItemLabelGenerator(WTA::getWTATournamentName);
 
     add(  points,
