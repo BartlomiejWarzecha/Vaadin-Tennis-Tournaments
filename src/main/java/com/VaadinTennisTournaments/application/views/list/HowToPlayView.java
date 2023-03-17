@@ -77,9 +77,13 @@ public Tab getTabGeneralRules() {
 
         tab.add(generateNotEditableText("Generalne Zasady:\n\n" +
                 "Zabawa polega na wybraniu zwycięzcy turnieju na możliwie najwcześniejszym etapie rozgrywek.\n\n" +
-                "W przypadku odpadnięcia kandydata przed wygraną, można dokonać kolejnego wyboru poprzez modyfikacje bieżącej predykcji o odpowiednie dane, włącznie z wyborem nowego etapu turnieju, który określa czas jej wystąpienia.\n\n" +
-                "Ilość uzyskanych punktów jest zależna od etapu na którym został wybrany zwycięzca oraz od poziomu rozgrywek. Im wcześniej wybrany zwycięzca oraz im wyższa ranga turnieju, tym więcej otrzymanych punktów.\n\n" +
-                "Na koniec roku wybierane są wyniki 10 turniejów z najwyższą liczbą punktów, oddzielnie ATP/WTA, dla każdego uczestnika. Na tej podstawie jest wyłaniany ranking najlepszych graczy."
+                "W przypadku odpadnięcia kandydata przed wygraną " +
+                "można dokonać kolejnego wyboru poprzez modyfikacje bieżącej predykcji o odpowiednie dane. \n\n" +
+
+                "Ilość uzyskanych punktów jest zależna od etapu, na którym został wybrany zwycięzca oraz od poziomu rozgrywek. " +
+                " Im wcześniej wybrany zwycięzca oraz im wyższa ranga turnieju, tym więcej otrzymanych punktów.\n\n" +
+                "Na koniec roku wybierane są  wyniki 10 turniejów z najwyższa liczba punktów, oddzielnie ATP/WTA, dla każdego uczestnika." +
+                "Na tej podstawie jest wyłaniany ranking najlepszych graczy."
         ));
 
         tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
@@ -94,7 +98,7 @@ public Tab getTabGeneralRules() {
         tab.add(generateNotEditableText(
                 "1. Nazwa oraz email użytkownika, powinny być unikatowe " +
                         "\n" +
-                        "2. Jedna osoba nie moze dodac wiecej niz jednego uzytkownika" +
+                        "2. Jedna osoba nie moze dodac wiecej niż jednego uzytkownika" +
                         "\n" +
                         "3. Wybrane zainteresowania powinny być zbieżne z udziałem w predykcji"
         ));
@@ -111,9 +115,9 @@ public Tab getTabGeneralRules() {
         tab.add(generateNotEditableText(
                 "1. Dla jednego wyboru można wybrać jedynie jednego zawodnika oraz jeden turniej" +
                         "\n" +
-                        "2. Dodany zawodnik i turniej powinien być możliwy do identyfikacji przez wyszstkich uczestników" +
+                        "2. Dodany zawodnik i turniej powinien być możliwy do identyfikacji przez wszystkich uczestników" +
                         "\n" +
-                        "3. Usuwaniem wyników oraz tworzeniem punktacji, po danym tuenieju, zajmuje się jedna, wyznaczona do tego zadania osoba"
+                        "3. Usuwaniem wyników oraz tworzeniem punktacji po danym tuenieju, zajmuje się jedna, wyznaczona do tego zadania osoba"
         ));
 
         tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
@@ -140,47 +144,44 @@ public Tab getTabGeneralRules() {
 
         Tab  tab= new Tab(VaadinIcon.ABACUS.create(), new Span("punctation rules:"));
         tab.add(generateNotEditableText(
-                        "Wzór: etap wybrania zwycięzcyy * poziom rozgrywek"+
-                        "\n\n"+
-                        "Etap: "+
-                        "\n"+
-                        "1/256 - 50pkt " +
-                        "\n"+
-                        "1/128 - 45pkt " +
-                        "\n"+
-                        "1/64 - 35pkt " +
-                        "\n"+
-                        "1/32 - 30pkt " +
-                        "\n"+
-                        "1/16 - 25pkt " +
-                        "\n"+
-                        "1/8 - 20pkt " +
-                        "\n"+
-                        "QF - 15pkt " +
-                        "\n"+
-                        "SF - 10pkt " +
-                        "\n"+
-                        "F - 5pkt " +
+                "Wzór: etap wybrania zwycięzcy * poziom rozgrywek" +
+                        "\n\n" +
+                        "Etap: " +
+                        "\n" +
+                        "Runda 1 - 50 pkt " +
+                        "\n" +
+                        "Runda 2 - 45 pkt " +
+                        "\n" +
+                        "Runda 3 - 35 pkt " +
+                        "\n" +
+                        "Runda 4 - 30 pkt " +
+                        "\n" +
+                        "QuaterFinal - 15 pkt " +
+                        "\n" +
+                        "SemiFinal - 10 pkt " +
+                        "\n" +
+                        "Final - 5 pkt " +
                         "\n\n" +
                         "Poziom: " +
                         "\n" +
-                        "Chellenger - 0.1" +
+                        "Challenger - 0,1" +
                         "\n" +
-                        "100 - 0.1" +
+                        "100 - 0,1" +
                         "\n" +
-                        "250 - 0.25" +
+                        "250 - 0,25" +
                         "\n" +
-                        "500 - 0.5" +
+                        "500 - 0,5" +
                         "\n" +
-                        "1000 - 1.0" +
+                        "1000 - 1,0" +
                         "\n" +
-                        "Grand Slam - 3.0" +
+                        "Grand Slam - 3,0" +
                         "\n\n" +
                         "Przykład:" +
                         "\n" +
-                        "Zwycięzaca wybrany na etapie 1/8 Grand Slam" +
+                        "Zwycięzca wybrany na etapie-Rundy 4, turnieju o poziomie-Grand Slam" +
                         "\n" +
-                        "Punktacja = 20pkt * 3.0 = 60 pkt" ));
+                        "Punktacja = 30 pkt (Runda 4) * 3,0 (Grand Slam) = 90 pkt"
+        ));
         tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
         return tab;
     }
@@ -192,7 +193,7 @@ public Tab getTabGeneralRules() {
                         "\n"+
                 "2. Podsumowanie rankingu powinno odbywać się kwartalnie oraz rocznie, przez wyznaczoną do tego osobę" +
                         "\n"+
-                        "3. W Jedna osoba może mieć wiele wyników rankingowych, " +
+                        "3. Jedna osoba może mieć wiele wyników rankingowych, " +
                         "szczegóły poszczególnych wyników, są do ustalenia przez użytkowników "
         ));
         tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
@@ -208,7 +209,7 @@ public Tab getTabGeneralRules() {
                         "\n"+
                         "2. Zawodnicy i turnieje powinny być łatwe do odnalezienia, po wprowadzonych nazwach, na oficjalnych stronach organizacji " +
                         "\n"+
-                        "3. Usuwanie zawodików i turniejów, które są obecne w innych panelach, nie jest możliwe."
+                        "3. Usuwanie zawodników i turniejów, które są obecne w innych panelach, nie jest możliwe."
         ));
 
         tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
