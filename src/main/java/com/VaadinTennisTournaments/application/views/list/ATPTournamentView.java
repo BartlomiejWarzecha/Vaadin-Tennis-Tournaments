@@ -1,7 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPResult;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPTournament;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATPTournament;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
@@ -12,11 +12,14 @@ import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import org.springframework.dao.DataIntegrityViolationException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.context.annotation.Scope;
@@ -32,6 +35,8 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class ATPTournamentView extends VerticalLayout {
     Grid<ATPTournament> grid = new Grid<>(ATPTournament.class);
+    Grid<HowToPlay> ruleGrid = new Grid<>(HowToPlay.class);
+
     TextField filterText = new TextField();
     ATPTournamentForm form;
     MainService mainService;
@@ -44,19 +49,35 @@ public class ATPTournamentView extends VerticalLayout {
         this.howToPlayView = new HowToPlayView(mainService);
 
         addClassName("result-view");
-        setHeight("1300px");
+        setHeight("1700px");
         setWidthFull();
         configureGrid();
         configureForm();
 
-        Tab tab = howToPlayView.getTabResults();
+        Tab tab = howToPlayView.getTabSetup();
         HorizontalLayout rules = new HorizontalLayout(tab);
 
-        add(getToolbar(), getContent(), getHrefParagraph("atptour.com/en/tournaments", "ATP Tournaments")
-                , rules);
+        add(getToolbar(), getContent(),
+                getHrefParagraph("atptour.com/en/tournaments", "ATP Tournaments")
+                ,rules, generateRulesGrid() );
         updateList();
         closeEditor();
     }
+    private Grid generateRulesGrid(){
+        ruleGrid.addClassNames("atp-tournament-rule-grid");
+        ruleGrid.setSizeFull();
+        ruleGrid.setColumns();
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getUser().getNickname()).setHeader("User");
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getSetupDescription())
+                .setHeader("setup users rules:").setFlexGrow(1); // Set the flex grow value of this column to 1;
+        ruleGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+        ruleGrid.asSingleSelect().addValueChangeListener(event ->
+                howToPlayView.editHowToPlay(event.getValue()));
+        ruleGrid.setHeight("400px");
+        ruleGrid.setWidthFull();
+
+                return ruleGrid;
+        }
 
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, form);
@@ -94,14 +115,14 @@ public class ATPTournamentView extends VerticalLayout {
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
-        Icon resultsIcon = new Icon(VaadinIcon.ARCHIVE);
-        resultsIcon.setColor("black");
+        Icon setupIcon = new Icon(VaadinIcon.COG);
+        setupIcon.setColor("black");
 
         Button addATPTournamentButton = new Button("Add ATP Tournament");
         addATPTournamentButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
         addATPTournamentButton.addClickListener(click -> addATPTournament());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addATPTournamentButton, resultsIcon);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addATPTournamentButton, setupIcon);
         toolbar.addClassName("toolbar-ATP");
         return toolbar;
     }
@@ -120,7 +141,17 @@ public class ATPTournamentView extends VerticalLayout {
     }
 
     private void deleteATPTournament(ATPTournamentForm.DeleteEvent event) {
-        mainService.deleteATPTournament(event.getAtpTournament());
+                try{
+                        mainService.deleteATPTournament(event.getAtpTournament());
+                    }catch (
+                        DataIntegrityViolationException e){
+                        e.printStackTrace();
+                       Notification notification = Notification
+                                        .show("This tournament is used in another view!");
+                        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                        notification.setPosition(Notification.Position.MIDDLE);
+                    }
+
         updateList();
         closeEditor();
     }
@@ -148,6 +179,7 @@ public class ATPTournamentView extends VerticalLayout {
 
     private void updateList() {
         grid.setItems(mainService.findAllATPTournaments(filterText.getValue()));
+        ruleGrid.setItems(mainService.findAllHowToPlay(filterText.getValue()));
     }
 }
 

@@ -1,5 +1,6 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTA;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
@@ -10,6 +11,8 @@ import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -18,6 +21,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.PermitAll;
@@ -32,6 +36,7 @@ public class WTAPredictionView extends VerticalLayout {
     Grid<WTA> grid = new Grid<>(WTA.class);
     TextField filterText = new TextField();
     WTAPredictionForm form;
+    Grid<HowToPlay> ruleGrid = new Grid<>(HowToPlay.class);
     MainService mainService;
     HowToPlayView howToPlayView;
 
@@ -41,15 +46,30 @@ public class WTAPredictionView extends VerticalLayout {
 
         addClassName("wta-view");
         setWidthFull();
-        setHeight("1300px");
+        setHeight("1700px");
         configureGrid();
         configureForm();
 
-        Tab tab = howToPlayView.getTabAtpWta();
+        Tab tab = howToPlayView.getTabPrediction();
         HorizontalLayout rules = new HorizontalLayout(tab);
 
-        add(getToolbar(), getContent(), getHrefParagraph("wtatennis", "WTA Tour"), rules);        updateList();
+        add(getToolbar(), getContent(),
+                getHrefParagraph("wtatennis", "WTA Tour"),
+                rules, generateRulesGrid());        updateList();
         closeEditor();
+    }
+    private Grid generateRulesGrid() {
+        ruleGrid.addClassNames("atp-punctation-grid");
+        ruleGrid.setSizeFull();
+        ruleGrid.setColumns();
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getUser().getNickname()).setHeader("User");
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getPredictionDescription()).setHeader("prediction users rules:").setFlexGrow(1);
+        ruleGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+        ruleGrid.asSingleSelect().addValueChangeListener(event -> howToPlayView.editHowToPlay(event.getValue()));
+        ruleGrid.setHeight("400px");
+        ruleGrid.setWidthFull();
+
+        return ruleGrid;
     }
 
     private HorizontalLayout getContent() {
@@ -63,7 +83,9 @@ public class WTAPredictionView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new WTAPredictionForm(mainService.findAllStages(), mainService.findAllWtaUsers());
+    form = new WTAPredictionForm(mainService.findAllStages(), mainService.findAllWtaUsers(),
+                                mainService.findAllWTATournaments(""),
+                                mainService.findAllWTAPlayers(""));
     form.setWidth("25em");
     form.setHeight("400px");
     form.addListener(WTAPredictionForm.SaveEvent.class, this::saveWTA);
@@ -74,9 +96,14 @@ private void configureForm() {
     private void configureGrid() {
         grid.addClassNames("wta-grid");
         grid.setSizeFull();
-        grid.setColumns( "player", "wtaTournament" );
-        grid.addColumn(wta-> wta.getUser().getNickname()).setHeader("User");
+        grid.setColumns();
+        grid.addColumn(wta -> wta.getUser().getNickname()).setHeader("User");
+        grid.addColumn(wta-> wta.getPlayer().getFullname()).setHeader("Player");
+        grid.addColumn(wta-> wta.getWtaTournament().getTournament()).setHeader("Tournament");
         grid.addColumn(wta-> wta.getStage().getName()).setHeader("Stage");
+        grid.addColumn(atp-> atp.getPlayer().getDescription()).setHeader("Player Description");
+        grid.addColumn(atp-> atp.getWtaTournament().getRank().getName()).setHeader("Tournament Rank");
+        grid.addColumn(atp-> atp.getWtaTournament().getDescription()).setHeader("Tournament Description");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editWTA(event.getValue()));
@@ -115,7 +142,14 @@ private void configureForm() {
     }
 
     private void deleteWTA(WTAPredictionForm.DeleteEvent event) {
-        mainService.deleteWTA(event.getWTA());
+        try{
+            mainService.deleteWTA(event.getWTA());
+        }catch (DataIntegrityViolationException e){
+            e.printStackTrace();
+            Notification notification = Notification.show("This prediction is used in punctation view, delete punctation first");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setPosition(Notification.Position.MIDDLE);
+        }
         updateList();
         closeEditor();
     }
@@ -143,5 +177,7 @@ private void configureForm() {
 
     private void updateList() {
         grid.setItems(mainService.findAllWTA(filterText.getValue()));
+        ruleGrid.setItems(mainService.findAllHowToPlay(filterText.getValue()));
+
     }
 }

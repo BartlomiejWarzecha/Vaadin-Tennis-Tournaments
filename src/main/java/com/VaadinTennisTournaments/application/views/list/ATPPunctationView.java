@@ -1,7 +1,6 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATPPunctation;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
@@ -36,13 +35,14 @@ public class ATPPunctationView extends VerticalLayout {
     ATPPunctationForm form;
     MainService mainService;
     HowToPlayView howToPlayView;
+    Grid<HowToPlay> ruleGrid = new Grid<>(HowToPlay.class);
 
     public ATPPunctationView(MainService mainService) {
         this.mainService = mainService;
         this.howToPlayView = new HowToPlayView(mainService);
 
         addClassName("atp-punctation-view");
-        setHeight("1300px");
+        setHeight("1700px");
         setWidthFull();
         configureGrid();
         configureForm();
@@ -50,10 +50,27 @@ public class ATPPunctationView extends VerticalLayout {
         Tab tab = howToPlayView.getTabPunctation();
         HorizontalLayout rules = new HorizontalLayout(tab);
 
-        add(getToolbar(), getContent(), getHrefScoreParagraph("WTA Tennis", "ATP Tour"), rules);
+        add(getToolbar(), getContent(),
+                getHrefScoreParagraph("WTA Tennis", "ATP Tour"),
+                rules, generateRulesGrid() );
         updateList();
         closeEditor();
     }
+    private Grid generateRulesGrid(){
+               ruleGrid.addClassNames("atp-punctation-grid");
+                ruleGrid.setSizeFull();
+                ruleGrid.setColumns();
+                ruleGrid.addColumn(HowToPlay -> HowToPlay.getUser().getNickname()).setHeader("User");
+                ruleGrid.addColumn(HowToPlay -> HowToPlay.getPunctationDescription()).
+                        setHeader("punctation users rules:").setFlexGrow(1); // Set the flex grow value of this column to 1;
+                ruleGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+                ruleGrid.asSingleSelect().addValueChangeListener(event ->
+                                howToPlayView.editHowToPlay(event.getValue()));
+                ruleGrid.setHeight("400px");
+                ruleGrid.setWidthFull();
+
+                        return ruleGrid;
+            }
 
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, form);
@@ -66,7 +83,7 @@ public class ATPPunctationView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new ATPPunctationForm(mainService.findAllRanks(), mainService.findAllStages(),
+    form = new ATPPunctationForm( mainService.findAllStages(),
     mainService.findAllUsers(""), mainService.findAllATP(""));
     form.setWidth("25em");
     form.setHeight("400px");
@@ -81,8 +98,12 @@ private void configureForm() {
         grid.setColumns( "points");
         grid.addColumn(ATPPunctation -> ATPPunctation.getUser().getNickname()).setHeader("User");
         grid.addColumn(ATPPunctation -> ATPPunctation.getStage().getName()).setHeader("Stage");
-        grid.addColumn(ATPPunctation -> ATPPunctation.getAtpTournament()).setHeader("ATP Tournament");
-        grid.addColumn(ATPPunctation -> ATPPunctation.getRank().getName()).setHeader("Rank");
+        grid.addColumn(ATPPunctation -> ATPPunctation.getAtpTournament().getAtpTournamentName()).setHeader("ATP Tournament");
+        grid.addColumn(ATPPunctation -> ATPPunctation.getAtpTournament().getAtpTournament().getRank().getName()).setHeader("Tournament Rank"
+        );
+        grid.addColumn(ATPPunctation -> ATPPunctation.getAtpTournament().getAtpTournament().getDescription())
+                .setHeader("Tournament Description");
+
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
@@ -153,5 +174,6 @@ private void configureForm() {
 
     private void updateList() {
         grid.setItems(mainService.findAllATPPunctation(filterText.getValue()));
+        ruleGrid.setItems(mainService.findAllHowToPlay(filterText.getValue()));
     }
 }

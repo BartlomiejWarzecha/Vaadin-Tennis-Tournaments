@@ -1,7 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPTournament;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTATournament;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTATournament;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
@@ -12,6 +12,8 @@ import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -20,9 +22,12 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.PermitAll;
+
+import static com.vaadin.flow.component.notification.Notification.show;
 
 @Component
 @Scope("prototype")
@@ -31,6 +36,7 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class WTATournamentView extends VerticalLayout {
 Grid<WTATournament> grid = new Grid<>(WTATournament.class);
+Grid<HowToPlay> ruleGrid = new Grid<>(HowToPlay.class);
 TextField filterText = new TextField();
 WTATournamentForm form;
 MainService mainService;
@@ -42,20 +48,35 @@ HowToPlayView howToPlayView;
         this.howToPlayView = new HowToPlayView(mainService);
 
         addClassName("WTA-Tournament-view");
-        setHeight("1300px");
+        setHeight("1700px");
         setWidthFull();
         configureGrid();
         configureForm();
 
-        Tab tab = howToPlayView.getTabResults();
+        Tab tab = howToPlayView.getTabSetup();
         HorizontalLayout rules = new HorizontalLayout(tab);
 
         add(getToolbar(), getContent(),
                 getHrefParagraph("wtatennis.com/tournaments", "WTA Tournaments")
-                , rules);
+                , rules, generateRulesGrid());
+        ;
         updateList();
         closeEditor();
     }
+    private Grid generateRulesGrid(){
+        ruleGrid.addClassNames("wta-tournament-rule-grid");
+        ruleGrid.setSizeFull();
+        ruleGrid.setColumns();
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getUser().getNickname()).setHeader("User");
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getSetupDescription()).setHeader("setup users rules:").setFlexGrow(1); // Set the flex grow value of this column to 1;
+        ruleGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+        ruleGrid.asSingleSelect().addValueChangeListener(event ->
+                howToPlayView.editHowToPlay(event.getValue()));
+        ruleGrid.setHeight("400px");
+        ruleGrid.setWidthFull();
+
+                return ruleGrid;
+        }
 
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, form);
@@ -93,14 +114,14 @@ HowToPlayView howToPlayView;
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Icon resultsIcon = new Icon(VaadinIcon.ARCHIVE);
-        resultsIcon.setColor("black");
+        Icon setupIcon = new Icon(VaadinIcon.COG);
+        setupIcon.setColor("black");
 
         Button addPredicionButton = new Button("Add WTA Tournament");
         addPredicionButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         addPredicionButton.addClickListener(click -> addWTATournament());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton, resultsIcon);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPredicionButton, setupIcon);
         toolbar.addClassName("toolbar-WTA");
         return toolbar;
     }
@@ -116,7 +137,16 @@ HowToPlayView howToPlayView;
         closeEditor();
     }
     private void deleteWTATournament(WTATournamentForm.DeleteEvent event) {
-        mainService.deleteWTATournament(event.getWtaTournament());
+                try{
+                       mainService.deleteWTATournament(event.getWtaTournament());
+                    }catch (
+                        DataIntegrityViolationException e){
+                        e.printStackTrace();
+                        Notification notification = Notification
+                                        .show("This tournament is used in another view!");
+                        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                        notification.setPosition(Notification.Position.MIDDLE);
+                    }
         updateList();
         closeEditor();
     }
@@ -140,5 +170,6 @@ HowToPlayView howToPlayView;
     }
     private void updateList() {
         grid.setItems(mainService.findAllWTATournaments(filterText.getValue()));
+        ruleGrid.setItems(mainService.findAllHowToPlay(filterText.getValue()));
     }
 }

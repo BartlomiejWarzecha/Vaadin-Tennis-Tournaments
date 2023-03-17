@@ -1,5 +1,6 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPResult;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATPResult;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
@@ -30,6 +31,8 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class ATPResultView extends VerticalLayout {
     Grid<ATPResult> grid = new Grid<>(ATPResult.class);
+    Grid<HowToPlay> ruleGrid = new Grid<>(HowToPlay.class);
+
     TextField filterText = new TextField();
     ATPResultForm form;
     MainService mainService;
@@ -39,8 +42,8 @@ public class ATPResultView extends VerticalLayout {
         this.mainService = mainService;
         this.howToPlayView = howToPlayView;
 
-        addClassName("result-view");
-        setHeight("1300px");
+        addClassName("atp-result-view");
+        setHeight("1700px");
         setWidthFull();
         configureGrid();
         configureForm();
@@ -48,25 +51,43 @@ public class ATPResultView extends VerticalLayout {
         Tab tab = howToPlayView.getTabResults();
         HorizontalLayout rules = new HorizontalLayout(tab);
 
-        add(getToolbar(), getContent(), getHrefScoreParagraph("WTA Tennis", "ATP Tour"), rules);
+        add(getToolbar(), getContent(),
+                getHrefScoreParagraph("WTA Tennis", "ATP Tour"),
+        rules,  generateRulesGrid());
 
         updateList();
         closeEditor();
     }
+    private Grid generateRulesGrid(){
+                ruleGrid.addClassNames("rule-grid");
+                ruleGrid.setSizeFull();
+                ruleGrid.setColumns();
+                ruleGrid.addColumn(HowToPlay -> HowToPlay.getUser().getNickname()).setHeader("User");
+                ruleGrid.addColumn(HowToPlay -> HowToPlay.getResultsDescription()).setHeader("results users rules:").setFlexGrow(1); // Set the flexgrow value of this column to 1;
+
+                ruleGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+                ruleGrid.asSingleSelect().addValueChangeListener(event ->
+                                howToPlayView.editHowToPlay(event.getValue()));
+                ruleGrid.setHeight("400px");
+                ruleGrid.setWidthFull();
+
+                        return ruleGrid;
+            }
 
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, form);
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
         content.addClassNames("content");
-        content.setWidthFull();
         content.setHeight("400px");
+        content.setWidthFull();
+
         return content;
     }
 
 private void configureForm() {
-    form = new ATPResultForm(mainService.findAllInterests(), mainService.findAllRanks());
-    form.setWidth("25em");
+    form = new ATPResultForm(
+            mainService.findAllATPPlayers(""), mainService.findAllATPTournaments(""));    form.setWidth("25em");
     form.setHeight("400px");
     form.addListener(ATPResultForm.SaveEvent.class, this::saveATPResult);
     form.addListener(ATPResultForm.DeleteEvent.class, this::deleteATPResult);
@@ -77,9 +98,13 @@ private void configureForm() {
         grid.addClassNames("result-grid");
         grid.setSizeFull();
 
-        grid.setColumns("tournament", "winner");
-        grid.addColumn(result-> result.getRank().getName()).setHeader("Rank");
-        grid.addColumn(result-> result.getInterest().getName()).setHeader("Type");
+        grid.setColumns();
+        grid.addColumn(result-> result.getWinner().getFullname()).setHeader("Winner");
+        grid.addColumn(result-> result.getTournament().getTournament()).setHeader("Tournament");
+        grid.addColumn(result-> result.getTournament().getRank().getName()).setHeader("Rank");
+        grid.addColumn(result-> result.getTournament().getDescription()).setHeader("Tournament Description");
+        grid.addColumn(result-> result.getWinner().getDescription()).setHeader("Player Description");
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editATPResult(event.getValue()));
@@ -149,5 +174,7 @@ private void configureForm() {
 
     private void updateList() {
         grid.setItems(mainService.findAllATPResults(filterText.getValue()));
+        ruleGrid.setItems(mainService.findAllHowToPlay(filterText.getValue()));
+
     }
 }

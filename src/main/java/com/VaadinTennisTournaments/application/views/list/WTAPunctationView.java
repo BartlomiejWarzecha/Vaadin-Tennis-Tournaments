@@ -1,11 +1,11 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTAPunctation;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTAPunctation;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Paragraph;
@@ -22,8 +22,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.PermitAll;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 @Component
@@ -37,26 +35,45 @@ public class WTAPunctationView extends VerticalLayout {
     WTAPunctationForm form;
     MainService mainService;
     HowToPlayView howToPlayView;
+    Grid<HowToPlay> ruleGrid = new Grid<>(HowToPlay.class);
+
 
     public WTAPunctationView(MainService mainService, HowToPlayView howToPlayView) {
         this.mainService = mainService;
         this.howToPlayView = howToPlayView;
 
         addClassName("puncation-view");
-        setHeight("1300px");
+        setHeight("1700px");
         setWidthFull();
         configureGrid();
         configureForm();
 
-        Tab tab = howToPlayView.getTabAtpWta();
+        Tab tab = howToPlayView.getTabPunctation();
         HorizontalLayout rules = new HorizontalLayout(tab);
 
-        add(getToolbar(), getContent(), getHrefParagraph("WTA Tennis", "ATP Tour"), rules);
-
+        add(getToolbar(), getContent(),
+                getHrefParagraph("WTA Tennis", "ATP Tour"),
+                rules, generateRulesGrid());
 
         updateList();
         closeEditor();
     }
+        private Grid generateRulesGrid(){
+                ruleGrid.addClassNames("wta-punctation-grid");
+                ruleGrid.setSizeFull();
+                ruleGrid.setColumns();
+                ruleGrid.addColumn(HowToPlay -> HowToPlay.getUser().getNickname()).setHeader("User");
+                ruleGrid.addColumn(HowToPlay -> HowToPlay.getPunctationDescription()).setHeader("punctation users rules:").
+                        setFlexGrow(1); // Set the flex grow value of this column to 1;
+                ruleGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+                ruleGrid.asSingleSelect().addValueChangeListener(event ->
+                                howToPlayView.editHowToPlay(event.getValue()));
+                ruleGrid.setHeight("400px");
+                ruleGrid.setWidthFull();
+
+                        return ruleGrid;
+            }
+
     private Paragraph getHrefParagraph(String value, String secondValue){
 
         String pureValue =  value.replaceAll("\\s", "");// value without spaces
@@ -80,7 +97,7 @@ public class WTAPunctationView extends VerticalLayout {
     }
 
 private void configureForm() {
-    form = new WTAPunctationForm( mainService.findAllRanks(),
+    form = new WTAPunctationForm(
             mainService.findAllStages(), mainService.findAllUsers( "") , mainService.findAllWTA(""));
     form.setWidth("25em");
     form.setHeight("400px");
@@ -94,8 +111,11 @@ private void configureForm() {
         grid.setColumns( "points");
         grid.addColumn(WTAPunctation -> WTAPunctation.getUser().getNickname()).setHeader("User");
         grid.addColumn(WTAPunctation -> WTAPunctation.getStage().getName()).setHeader("Stage");
-        grid.addColumn(WTAPunctation -> WTAPunctation.getWtaTournament()).setHeader("WTA Tournament");
-        grid.addColumn(WTAPunctation -> WTAPunctation.getRank().getName()).setHeader("Rank");
+        grid.addColumn(WTAPunctation -> WTAPunctation.getWtaTournament().getWTATournamentName()).setHeader("WTA Tournament");
+        grid.addColumn(WTAPunctation -> WTAPunctation.getWtaTournament().getWtaTournament().getRank().getName()).setHeader("Tournament Rank"
+        );
+        grid.addColumn(WTAPunctation -> WTAPunctation.getWtaTournament().getWtaTournament().getDescription())
+                .setHeader("Tournament Description");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
@@ -164,5 +184,6 @@ private void configureForm() {
 
     private void updateList() {
         grid.setItems(mainService.findAllWTAPunctation(filterText.getValue()));
+        ruleGrid.setItems(mainService.findAllHowToPlay(filterText.getValue()));
     }
 }

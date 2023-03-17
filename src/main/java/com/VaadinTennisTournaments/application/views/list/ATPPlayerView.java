@@ -1,12 +1,16 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPlayer;
-import com.VaadinTennisTournaments.application.data.repository.UserRepository;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATPPlayer;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Paragraph;
@@ -18,6 +22,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.PermitAll;
@@ -30,6 +35,7 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class ATPPlayerView extends VerticalLayout {
     Grid<ATPPlayer> grid = new Grid<>(ATPPlayer.class);
+    Grid<HowToPlay> ruleGrid = new Grid<>(HowToPlay.class);
     TextField filterText = new TextField();
     ATPPlayerForm form;
     MainService mainService;
@@ -41,20 +47,38 @@ public class ATPPlayerView extends VerticalLayout {
 
         addClassName("user-view");
         setWidthFull();
-        setHeight("1300px");
+        setHeight("1700px");
 
         configureGrid();
         configureForm();
 
-        Tab tab = howToPlayView.getTabProfile();
+        Tab tab = howToPlayView.getTabSetup();
         HorizontalLayout rules = new HorizontalLayout(tab);
 
         add(getToolbar(), getContent(),
-                createClickableDetailsParagraph("atptour.com/en/rankings", "ATP ranking"), tab);
+                createClickableDetailsParagraph("atptour.com/en/rankings", "ATP ranking"),
+                rules,  generateRulesGrid());
 
         updateList();
         closeEditor();
     }
+
+    private Grid generateRulesGrid(){
+        ruleGrid.addClassNames("wta-player-rule-grid");
+        ruleGrid.setSizeFull();
+        ruleGrid.setColumns();
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getUser().getNickname()).setHeader("User");
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getSetupDescription())
+                .setHeader("setup users rules:").setFlexGrow(1); // Set the flex grow value of this column to 1;
+        ruleGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+        ruleGrid.asSingleSelect().addValueChangeListener(event ->
+                howToPlayView.editHowToPlay(event.getValue()));
+        ruleGrid.setHeight("400px");
+        ruleGrid.setWidthFull();
+
+                return ruleGrid;
+        }
+
     private Paragraph createClickableDetailsParagraph(String website, String productDescription) {
 
         String pureWebsite = removeSpaces(website); // Remove spaces from website URL
@@ -87,6 +111,9 @@ private void configureForm() {
     form.addListener(ATPPlayerForm.SaveEvent.class, this::saveATPPlayer);
     form.addListener(ATPPlayerForm.DeleteEvent.class, this::deleteATPPlayer);
     form.addListener(ATPPlayerForm.CloseEvent.class, e -> closeEditor());
+
+
+
 }
 
     private void configureGrid() {
@@ -109,9 +136,10 @@ private void configureForm() {
         Button addUserButton = new Button("Add ATP Player");
         addUserButton.addClickListener(click -> addATPPlayer());
         addUserButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+        Icon setupIcon = new Icon(VaadinIcon.COG);
+        setupIcon.setColor("black");
 
-
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton, setupIcon);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -123,7 +151,16 @@ private void configureForm() {
     }
 
     private void deleteATPPlayer(ATPPlayerForm.DeleteEvent event) {
-        mainService.deleteATPPlayer(event.getAtpPlayer());
+        try{
+                        mainService.deleteATPPlayer(event.getAtpPlayer());
+                   }catch (
+                DataIntegrityViolationException e){
+            e.printStackTrace();
+            Notification notification = Notification
+                    .show("This player is used in another view!");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setPosition(Notification.Position.MIDDLE);
+        }
         updateList();
         closeEditor();
     }
@@ -151,6 +188,7 @@ private void configureForm() {
 
     private void updateList() {
         grid.setItems(mainService.findAllATPPlayers(filterText.getValue()));
+        ruleGrid.setItems(mainService.findAllHowToPlay(filterText.getValue()));
     }
 
 }

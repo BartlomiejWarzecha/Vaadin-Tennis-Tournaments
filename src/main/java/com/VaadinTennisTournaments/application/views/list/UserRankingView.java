@@ -1,6 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.User.UserRanking;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.user.UserRanking;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
@@ -31,13 +32,14 @@ public class UserRankingView extends VerticalLayout {
     UserRankingForm form;
     MainService mainService;
     HowToPlayView howToPlayView;
+    Grid<HowToPlay> ruleGrid = new Grid<>(HowToPlay.class);
 
     public UserRankingView(MainService mainService) {
         this.mainService = mainService;
         this.howToPlayView = new HowToPlayView(mainService);
 
         addClassName("user-ranking-view");
-        setHeight("1300px");
+        setHeight("1700px");
         setWidthFull();
 
         configureGrid();
@@ -46,7 +48,7 @@ public class UserRankingView extends VerticalLayout {
         Tab tab = howToPlayView.getTabRanking();
         HorizontalLayout rules = new HorizontalLayout(tab);
 
-        add(getToolbar(), getContent(), rules);
+        add(getToolbar(), getContent(), rules, generateRulesGrid());
         updateList();
         closeEditor();
     }
@@ -60,6 +62,21 @@ public class UserRankingView extends VerticalLayout {
         content.setHeight("400px");
         return content;
     }
+    private Grid generateRulesGrid(){
+                ruleGrid.addClassNames("rule-grid");
+                ruleGrid.setSizeFull();
+                ruleGrid.setColumns();
+                ruleGrid.addColumn(HowToPlay -> HowToPlay.getUser().getNickname()).setHeader("User");
+                ruleGrid.addColumn(HowToPlay -> HowToPlay.getRankingDescription())
+                        .setHeader("ranking users rules:").setFlexGrow(1); // Set the flexgrow value of this column to 1;
+                ruleGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+                ruleGrid.asSingleSelect().addValueChangeListener(event ->
+                                howToPlayView.editHowToPlay(event.getValue()));
+                ruleGrid.setHeight("400px");
+                ruleGrid.setWidthFull();
+
+                        return ruleGrid;
+        }
 
 private void configureForm() {
     form = new UserRankingForm(mainService.findAllInterests(), mainService.findAllUsers("" ));
@@ -136,5 +153,6 @@ private void configureForm() {
 
     private void updateList() {
         grid.setItems(mainService.findAllUserRankings(filterText.getValue()));
+        ruleGrid.setItems(mainService.findAllHowToPlay(filterText.getValue()));
     }
 }

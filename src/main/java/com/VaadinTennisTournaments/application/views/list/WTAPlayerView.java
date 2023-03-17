@@ -1,9 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPlayer;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTAPlayer;
-import com.VaadinTennisTournaments.application.data.repository.UserRepository;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTAPlayer;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
@@ -11,7 +9,12 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -20,9 +23,12 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.PermitAll;
+
+import static com.vaadin.flow.component.notification.Notification.show;
 
 @Component
 @Scope("prototype")
@@ -31,6 +37,8 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class WTAPlayerView extends VerticalLayout {
     Grid<WTAPlayer> grid = new Grid<>(WTAPlayer.class);
+    Grid<HowToPlay> ruleGrid = new Grid<>(HowToPlay.class);
+
     TextField filterText = new TextField();
     WTAPlayerForm form;
     MainService mainService;
@@ -40,20 +48,35 @@ public class WTAPlayerView extends VerticalLayout {
         this.howToPlayView = new HowToPlayView(mainService);
 
         addClassName("WTA-Player-view");
-        setHeight("1300px");
+        setHeight("1700px");
         setWidthFull();
         configureGrid();
         configureForm();
 
-        Tab tab = howToPlayView.getTabAtpWta();
+        Tab tab = howToPlayView.getTabSetup();
         HorizontalLayout rules = new HorizontalLayout(tab);
 
         add(getToolbar(), getContent(),
                 getHrefParagraph("wtatennis.com/rankings/singles", "WTA ranking"),
-                rules);
+                rules, generateRulesGrid());
         updateList();
         closeEditor();
     }
+    private Grid generateRulesGrid(){
+        ruleGrid.addClassNames("wta-player-rule-grid");
+        ruleGrid.setSizeFull();
+        ruleGrid.setColumns();
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getUser().getNickname()).setHeader("User");
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getSetupDescription()).setHeader("setup users rules:").setFlexGrow(1); // Set the flex grow value of this column to 1;
+        ruleGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+        ruleGrid.asSingleSelect().addValueChangeListener(event ->
+                howToPlayView.editHowToPlay(event.getValue()));
+        ruleGrid.setHeight("400px");
+        ruleGrid.setWidthFull();
+
+                return ruleGrid;
+        }
+
 
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, form);
@@ -91,11 +114,14 @@ public class WTAPlayerView extends VerticalLayout {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
+        Icon setupIcon = new Icon(VaadinIcon.COG);
+        setupIcon.setColor("black");
+
         Button addUserButton = new Button("Add WTA Player");
         addUserButton.addClickListener(click -> addWTAPlayer());
         addUserButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton, setupIcon);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -107,7 +133,16 @@ public class WTAPlayerView extends VerticalLayout {
     }
 
     private void deleteWTAPlayer(WTAPlayerForm.DeleteEvent event) {
-        mainService.deleteWTAPlayer(event.getWTAPlayer());
+                try{
+                        mainService.deleteWTAPlayer(event.getWTAPlayer());
+                   }catch (
+                        DataIntegrityViolationException e){
+                        e.printStackTrace();
+                        Notification notification = Notification
+                                        .show("This player is used in another view!");
+                        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                        notification.setPosition(Notification.Position.MIDDLE);
+                   }
         updateList();
         closeEditor();
     }
@@ -135,6 +170,7 @@ public class WTAPlayerView extends VerticalLayout {
 
     private void updateList() {
         grid.setItems(mainService.findAllWTAPlayers(filterText.getValue()));
+        ruleGrid.setItems(mainService.findAllHowToPlay(filterText.getValue()));
     }
 
     private Paragraph getHrefParagraph(String hrefValue, String description) {

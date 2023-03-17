@@ -1,5 +1,6 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTAResult;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
@@ -30,6 +31,8 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class WTAResultView extends VerticalLayout {
     Grid<WTAResult> grid = new Grid<>(WTAResult.class);
+    Grid<HowToPlay> ruleGrid = new Grid<>(HowToPlay.class);
+
     TextField filterText = new TextField();
     WTAResultForm form;
     MainService mainService;
@@ -37,21 +40,39 @@ public class WTAResultView extends VerticalLayout {
     public WTAResultView(MainService mainService, HowToPlayView howToPlayView) {
         this.mainService = mainService;
         this.howToPlayView = howToPlayView;
-
-        addClassName("result-view");
+        this.howToPlayView = new HowToPlayView(mainService);
+        addClassName("wta-result-view");
+        setHeight("1700px");
         setWidthFull();
-        setHeight("1300px");
         configureGrid();
         configureForm();
 
         Tab tab = howToPlayView.getTabResults();
         HorizontalLayout rules = new HorizontalLayout(tab);
 
-        add(getToolbar(), getContent(), getHrefScoreParagraph("WTA Tennis", "ATP Tour")
-        , rules);
+        add(getToolbar(), getContent(),
+                getHrefScoreParagraph("WTA Tennis", "ATP Tour"),
+                rules, generateRulesGrid());
+
         updateList();
         closeEditor();
     }
+
+        private Grid generateRulesGrid(){
+        ruleGrid.addClassNames("rule-grid");
+        ruleGrid.setSizeFull();
+        ruleGrid.setColumns();
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getUser().getNickname()).setHeader("User");
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getResultsDescription()).setHeader("results users rules:")
+                .setFlexGrow(1); // Set the flexgrow value of this column to 1;
+        ruleGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+        ruleGrid.asSingleSelect().addValueChangeListener(event ->
+                howToPlayView.editHowToPlay(event.getValue()));
+        ruleGrid.setHeight("400px");
+        ruleGrid.setWidthFull();
+
+                return ruleGrid;
+        }
 
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, form);
@@ -60,11 +81,12 @@ public class WTAResultView extends VerticalLayout {
         content.addClassNames("content");
         content.setHeight("400px");
         content.setWidthFull();
+
         return content;
     }
 
 private void configureForm() {
-    form = new WTAResultForm(mainService.findAllInterests(), mainService.findAllRanks());
+    form = new WTAResultForm(mainService.findAllWTAPlayers(""), mainService.findAllWTATournaments(""));
     form.setWidth("25em");
     form.setHeight("400px");
     form.addListener(WTAResultForm.SaveEvent.class, this::saveWTAResult);
@@ -77,8 +99,13 @@ private void configureForm() {
         grid.setSizeFull();
 
         grid.setColumns("tournament", "winner");
-        grid.addColumn(result-> result.getInterest().getName()).setHeader("Type");
-        grid.addColumn(result-> result.getRank().getName()).setHeader("Rank");
+        grid.setColumns();
+        grid.addColumn(result-> result.getWinner().getFullname()).setHeader("Winner");
+        grid.addColumn(result-> result.getTournament().getTournament()).setHeader("Tournament");
+        grid.addColumn(result-> result.getTournament().getRank().getName()).setHeader("Rank");
+        grid.addColumn(result-> result.getTournament().getDescription()).setHeader("Tournament Description");
+        grid.addColumn(result-> result.getWinner().getDescription()).setHeader("Player Description");
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
             editWTAResult(event.getValue()));
@@ -148,5 +175,6 @@ private void configureForm() {
 
     private void updateList() {
         grid.setItems(mainService.findAllWTAResults(filterText.getValue()));
+        ruleGrid.setItems(mainService.findAllHowToPlay(filterText.getValue()));
     }
 }

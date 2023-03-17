@@ -1,6 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.User.User;
+import com.VaadinTennisTournaments.application.data.entity.HowToPlay;
+import com.VaadinTennisTournaments.application.data.entity.user.User;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
@@ -11,7 +12,10 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -28,30 +32,54 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class UserView extends VerticalLayout {
     Grid<User> grid = new Grid<>(User.class);
+    Grid<HowToPlay> ruleGrid = new Grid<>(HowToPlay.class);
+
     TextField filterText = new TextField();
     UserForm form;
     MainService mainService;
+    HowToPlayView howToPlayView;
 
     public UserView(MainService mainService) {
         this.mainService = mainService;
+        this.howToPlayView = new HowToPlayView(mainService);
         addClassName("user-view");
-        setSizeFull();
+        setHeight("1700px");
+        setWidthFull();
         configureGrid();
         configureForm();
 
+        Tab tab = howToPlayView.getTabPrediction();
+        HorizontalLayout rules = new HorizontalLayout(tab);
+
         Span s = new Span("*You can only add predictions for chosen interest!");
         s.getStyle().set("font-size", "15px");
-        add(getToolbar(), getContent(), s);
+
+        add(getToolbar(), getContent(), s, rules, generateRulesGrid());
         updateList();
         closeEditor();
     }
+    private Grid generateRulesGrid(){
+        ruleGrid.addClassNames("rule-grid");
+        ruleGrid.setSizeFull();
+        ruleGrid.setColumns();
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getUser().getNickname()).setHeader("User");
+        ruleGrid.addColumn(HowToPlay -> HowToPlay.getUsersDescription()).setHeader("profiles users rules:").setFlexGrow(1); // Set the flexgrow value of this column to 1;
+        ruleGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+        ruleGrid.asSingleSelect().addValueChangeListener(event ->
+                howToPlayView.editHowToPlay(event.getValue()));
+        ruleGrid.setHeight("400px");
+        ruleGrid.setWidthFull();
+
+                return ruleGrid;
+        }
 
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, form);
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
         content.addClassNames("content");
-        content.setSizeFull();
+        content.setHeight("400px");
+        content.setWidthFull();
         return content;
     }
 
@@ -63,6 +91,7 @@ private void configureForm() {
     form.addListener(UserForm.DeleteEvent.class, this::deleteContact);
     form.addListener(UserForm.CloseEvent.class, e -> closeEditor());
 }
+
 
     private void configureGrid() {
         grid.addClassNames("user-grid");
@@ -80,12 +109,15 @@ private void configureForm() {
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
+        Icon profileIcon = new Icon(VaadinIcon.USER);
+                profileIcon.setColor("black");
 
-        Button addUserButton = new Button("Add user");
+
+        Button addUserButton = new Button("Add profile");
         addUserButton.addClickListener(click -> addContact());
         addUserButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addUserButton, profileIcon);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -136,5 +168,6 @@ private void configureForm() {
 
     private void updateList() {
         grid.setItems(mainService.findAllUsers(filterText.getValue()));
+        ruleGrid.setItems(mainService.findAllHowToPlay(filterText.getValue()));
     }
 }
