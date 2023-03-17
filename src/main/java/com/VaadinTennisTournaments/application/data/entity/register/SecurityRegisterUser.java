@@ -1,4 +1,4 @@
-package com.VaadinTennisTournaments.application.data.entity.Register;
+package com.VaadinTennisTournaments.application.data.entity.register;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

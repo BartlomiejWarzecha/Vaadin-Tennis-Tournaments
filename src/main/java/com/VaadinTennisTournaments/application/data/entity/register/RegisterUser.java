@@ -1,14 +1,13 @@
-package com.VaadinTennisTournaments.application.data.entity.Register;
+package com.VaadinTennisTournaments.application.data.entity.register;
 
 import com.VaadinTennisTournaments.application.data.AbstractEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 @Entity
-@Table(name = "users")
+@Table(name = "registerUsers")
 public class RegisterUser extends AbstractEntity {
 
     @NotEmpty(message = "Username can not be empty")
