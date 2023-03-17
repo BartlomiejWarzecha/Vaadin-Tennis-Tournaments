@@ -1,6 +1,6 @@
 package com.VaadinTennisTournaments.application.views;
 
-import com.VaadinTennisTournaments.application.data.entity.Register.RegisterUser;
+import com.VaadinTennisTournaments.application.data.entity.register.RegisterUser;
 import com.VaadinTennisTournaments.application.data.service.MainService;
 import com.VaadinTennisTournaments.application.views.list.RegistrationForm;
 import com.vaadin.flow.component.button.Button;
@@ -10,7 +10,6 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.login.LoginForm;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;

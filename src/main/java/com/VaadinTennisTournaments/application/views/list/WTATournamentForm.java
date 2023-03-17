@@ -1,7 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTATournament;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTATournament;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;

@@ -1,11 +1,10 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPPunctation;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
-import com.VaadinTennisTournaments.application.data.entity.User.User;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATP;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATPPunctation;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Stage;
+import com.VaadinTennisTournaments.application.data.entity.user.User;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -25,7 +24,7 @@ import java.util.List;
 public class ATPPunctationForm extends FormLayout {
   private ATPPunctation atpPunctation;
   TextField points = new TextField("Points");
-  ComboBox<ATP> atpTournament = new ComboBox<>("ATP Tournament");
+  ComboBox<ATP> atpTournament = new ComboBox<ATP>("ATP Tournament");
   ComboBox<Rank> rank = new ComboBox<>("Rank");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
   ComboBox<User> user = new ComboBox<>("User");
@@ -36,27 +35,25 @@ public class ATPPunctationForm extends FormLayout {
   Button close = new Button("Cancel");
 
   public ATPPunctationForm(
-                           List<Rank> ranks, List<Stage> stages,
-                           List<User> users, List<ATP> atpTournaments) {
+                           List<Stage> stages,
+                           List<User> users,
+                           List<ATP> atpTournaments) {
     addClassName("atpPunctation-form");
     binder.bindInstanceFields(this);
 
-    rank.setItems(ranks);
-    rank.setItemLabelGenerator(Rank::getName);
     stage.setItems(stages);
     stage.setItemLabelGenerator(Stage::getName);
     user.setItems(users);
     user.setItemLabelGenerator(User::getNickname);
 
     atpTournament.setItems(atpTournaments);
-    atpTournament.setItemLabelGenerator(ATP::getAtpTournament);
+    atpTournament.setItemLabelGenerator(ATP::getAtpTournamentName);
 
     add(
             points,
             user,
             stage,
             atpTournament,
-          rank,
           createButtonsLayout());
   }
 

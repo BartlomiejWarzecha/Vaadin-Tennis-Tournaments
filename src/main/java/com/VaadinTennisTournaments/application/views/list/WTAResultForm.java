@@ -1,7 +1,9 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Interests;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTAPlayer;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTAResult;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTATournament;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -20,29 +22,26 @@ import java.util.List;
 
 public class WTAResultForm extends FormLayout {
   private WTAResult WTAResult;
-  TextField tournament = new TextField("Tournament");
-  TextField winner = new TextField("Winner");
-  ComboBox<Interests> interest = new ComboBox<>("Type");
-  ComboBox<Rank> rank = new ComboBox<>("Rank");
+  ComboBox<WTAPlayer> winner = new ComboBox<WTAPlayer>("Winner");
+  ComboBox<WTATournament> tournament = new ComboBox<WTATournament>("Tournament");
+
   Binder<WTAResult> binder = new BeanValidationBinder<>(WTAResult.class);
 
   Button save = new Button("Save");
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public WTAResultForm(List<Interests> interests, List<Rank> ranks) {
+    public WTAResultForm(List<WTAPlayer> wtaPlayers, List<WTATournament> wtaTournaments) {
     addClassName("WTAResult-form");
     binder.bindInstanceFields(this);
 
-    interest.setItems(interests);
-    interest.setItemLabelGenerator(Interests::getName);
-    rank.setItems(ranks);
-    rank.setItemLabelGenerator(Rank::getName);
+      winner.setItems(wtaPlayers);
+      winner.setItemLabelGenerator(WTAPlayer::getFullname);
+      tournament.setItems(wtaTournaments);
+      tournament.setItemLabelGenerator(WTATournament::getTournament);
 
     add(tournament,
           winner,
-          interest,
-          rank,
           createButtonsLayout());
   }
 

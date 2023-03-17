@@ -1,8 +1,10 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
-import com.VaadinTennisTournaments.application.data.entity.User.User;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATP;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATPPlayer;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATPTournament;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Stage;
+import com.VaadinTennisTournaments.application.data.entity.user.User;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -22,8 +24,8 @@ import java.util.List;
 public class ATPPredictionForm extends FormLayout {
   private ATP atp;
   TextField nickname = new TextField("Nickname");
-  TextField atpTournament = new TextField("Atp Tournament");
-  TextField player  = new TextField("Player");
+  ComboBox<ATPTournament> atpTournament = new ComboBox<ATPTournament>("ATP Tournament");
+  ComboBox<ATPPlayer> player = new ComboBox<ATPPlayer>("Player");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
   ComboBox<User> user = new ComboBox<>("User");
   Binder<ATP> binder = new BeanValidationBinder<>(ATP.class);
@@ -32,7 +34,9 @@ public class ATPPredictionForm extends FormLayout {
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public ATPPredictionForm(List<Stage> stages, List<User> users) {
+  public ATPPredictionForm(List<Stage> stages, List<User> users,
+                            List<ATPTournament> atpTournaments,
+                            List<ATPPlayer> atpPlayers) {
     addClassName("atp-form");
     binder.bindInstanceFields(this);
     stage.setItems(stages);
@@ -41,10 +45,15 @@ public class ATPPredictionForm extends FormLayout {
     user.setItems(users);
     user.setItemLabelGenerator(User::getNickname);
 
-    add(
-            player,
+    atpTournament.setItems(atpTournaments);
+    atpTournament.setItemLabelGenerator(ATPTournament::getTournament);
+
+    player.setItems(atpPlayers);
+    player.setItemLabelGenerator(ATPPlayer::getFullname);
+
+    add(user,
             atpTournament,
-          user,
+            player,
           stage,
         createButtonsLayout()); 
   }

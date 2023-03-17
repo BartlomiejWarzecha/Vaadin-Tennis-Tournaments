@@ -1,8 +1,10 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
-import com.VaadinTennisTournaments.application.data.entity.User.User;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Stage;
+import com.VaadinTennisTournaments.application.data.entity.user.User;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTA;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTAPlayer;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTATournament;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -11,7 +13,6 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
@@ -22,9 +23,8 @@ import java.util.List;
 public class WTAPredictionForm extends FormLayout {
   private WTA wta;
 
-  TextField wtaTournament = new TextField("Wta Tournament");
-  TextField player  = new TextField("Player");
-
+  ComboBox<WTATournament> wtaTournament = new ComboBox<WTATournament>("WTA Tournament");
+  ComboBox<WTAPlayer> player = new ComboBox<WTAPlayer>("Player");
   ComboBox<User> user = new ComboBox<>("User");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
 
@@ -34,7 +34,9 @@ public class WTAPredictionForm extends FormLayout {
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public WTAPredictionForm(List<Stage> stages, List<User> users) {
+  public WTAPredictionForm(List<Stage> stages, List<User> users,
+                           List<WTATournament> wtaTournaments, List<WTAPlayer> wtaPlayers) {
+
     addClassName("wta-form");
     binder.bindInstanceFields(this);
 
@@ -42,6 +44,11 @@ public class WTAPredictionForm extends FormLayout {
     stage.setItemLabelGenerator(Stage::getName);
     user.setItems(users);
     user.setItemLabelGenerator(User::getNickname);
+    wtaTournament.setItems(wtaTournaments);
+    wtaTournament.setItemLabelGenerator(WTATournament::getTournament);
+
+    player.setItems(wtaPlayers);
+    player.setItemLabelGenerator(WTAPlayer::getFullname);
 
     add(
             player,

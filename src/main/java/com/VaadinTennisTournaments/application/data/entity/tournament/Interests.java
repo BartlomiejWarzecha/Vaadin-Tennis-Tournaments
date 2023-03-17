@@ -1,4 +1,4 @@
-package com.VaadinTennisTournaments.application.data.entity.Tournament;
+package com.VaadinTennisTournaments.application.data.entity.tournament;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;

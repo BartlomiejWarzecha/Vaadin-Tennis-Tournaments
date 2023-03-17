@@ -1,33 +1,30 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTA;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTAPunctation;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
-import com.VaadinTennisTournaments.application.data.entity.User.User;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTA;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTAPunctation;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Stage;
+import com.VaadinTennisTournaments.application.data.entity.user.User;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.renderer.LocalDateTimeRenderer;
 import com.vaadin.flow.shared.Registration;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class WTAPunctationForm extends FormLayout {
   private WTAPunctation WTAPunctation;
   TextField points = new TextField("Points");
 
-  ComboBox<WTA>  wtaTournament = new ComboBox<>("WTA Tournament");
+  ComboBox<WTA>  wtaTournament = new ComboBox<WTA>("WTA Tournament");
   ComboBox<Rank> rank = new ComboBox<>("Rank");
   ComboBox<Stage> stage = new ComboBox<>("Stage");
   ComboBox<User> user = new ComboBox<>("User");
@@ -38,26 +35,24 @@ public class WTAPunctationForm extends FormLayout {
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public WTAPunctationForm(List<Rank> ranks,
-                           List<Stage> stages, List<User> users, List<WTA> wtaTournaments) {
+  public WTAPunctationForm(
+                           List<Stage> stages, List<User> users,
+                           List<WTA> wtaTournaments) {
     addClassName("WTAPunctation-form");
     binder.bindInstanceFields(this);
 
-    rank.setItems(ranks);
-    rank.setItemLabelGenerator(Rank::getName);
     stage.setItems(stages);
     stage.setItemLabelGenerator(Stage::getName);
     user.setItems(users);
     user.setItemLabelGenerator(User::getNickname);
 
     wtaTournament.setItems(wtaTournaments);
-    wtaTournament.setItemLabelGenerator(WTA::getWtaTournament);
+    wtaTournament.setItemLabelGenerator(WTA::getWTATournamentName);
 
     add(  points,
             user,
             stage,
             wtaTournament,
-          rank,
           createButtonsLayout());
   }
 

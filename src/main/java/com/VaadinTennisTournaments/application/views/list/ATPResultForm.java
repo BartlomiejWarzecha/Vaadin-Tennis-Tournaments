@@ -1,7 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPResult;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATPResult;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Interests;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Rank;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -15,34 +15,34 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
-
+import com.VaadinTennisTournaments.application.data.entity.atp.ATPPlayer;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATPTournament;
 import java.util.List;
 
 public class ATPResultForm extends FormLayout {
   private ATPResult ATPResult;
-  TextField tournament = new TextField("Tournament");
-  TextField winner = new TextField("Winner");
-  ComboBox<Interests> interest = new ComboBox<>("Type");
-  ComboBox<Rank> rank = new ComboBox<>("Rank");
+  ComboBox<ATPPlayer> winner = new ComboBox<ATPPlayer>("Winner");
+  ComboBox<ATPTournament> tournament = new ComboBox<ATPTournament>("Tournament");
+
   Binder<ATPResult> binder = new BeanValidationBinder<>(ATPResult.class);
 
   Button save = new Button("Save");
   Button delete = new Button("Delete");
   Button close = new Button("Cancel");
 
-  public ATPResultForm(List<Interests> interests, List<Rank> ranks) {
+  public ATPResultForm(
+                       List<ATPPlayer> winners, List<ATPTournament> atpTournaments) {
+
     addClassName("ATPResult-form");
     binder.bindInstanceFields(this);
+    winner.setItems(winners);
+    winner.setItemLabelGenerator(ATPPlayer::getFullname);
+    tournament.setItems(atpTournaments);
+    tournament.setItemLabelGenerator(ATPTournament::getTournament);
 
-    interest.setItems(interests);
-    interest.setItemLabelGenerator(Interests::getName);
-    rank.setItems(ranks);
-    rank.setItemLabelGenerator(Rank::getName);
 
     add(tournament,
           winner,
-            rank,
-          interest,
           createButtonsLayout());
   }
 

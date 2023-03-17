@@ -1,7 +1,7 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.User.User;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTAPlayer;
+import com.VaadinTennisTournaments.application.data.entity.user.User;
+import com.VaadinTennisTournaments.application.data.entity.wta.WTAPlayer;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;

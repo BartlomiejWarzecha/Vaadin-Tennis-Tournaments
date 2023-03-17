@@ -1,17 +1,13 @@
-package com.VaadinTennisTournaments.application.data.entity.User;
+package com.VaadinTennisTournaments.application.data.entity.user;
 
 import com.VaadinTennisTournaments.application.data.AbstractEntity;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Interests;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Interests;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.vaadin.flow.component.datepicker.DatePicker;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity

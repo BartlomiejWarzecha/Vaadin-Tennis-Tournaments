@@ -1,7 +1,6 @@
 package com.VaadinTennisTournaments.application.data.repository;
 
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATPTournament;
-import com.VaadinTennisTournaments.application.data.entity.WTA.WTAResult;
+import com.VaadinTennisTournaments.application.data.entity.atp.ATPTournament;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
