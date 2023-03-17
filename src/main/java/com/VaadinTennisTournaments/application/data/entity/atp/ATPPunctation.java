@@ -1,8 +1,9 @@
-package com.VaadinTennisTournaments.application.data.entity.WTA;
+package com.VaadinTennisTournaments.application.data.entity.atp;
 
 import com.VaadinTennisTournaments.application.data.AbstractEntity;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
-import com.VaadinTennisTournaments.application.data.entity.User.User;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Stage;
+import com.VaadinTennisTournaments.application.data.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
@@ -12,14 +13,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class WTA extends AbstractEntity {
+public class ATPPunctation extends AbstractEntity {
+
 
     @NotEmpty
-    private String player = "";
-
-    @NotEmpty
-    private String wtaTournament;
-
+    private String points;
     @ManyToOne
     @JoinColumn(name = "stage_id")
     @NotNull
@@ -32,14 +30,12 @@ public class WTA extends AbstractEntity {
     @JsonIgnoreProperties({"users"})
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "atpTournament_id")
+    @NotNull
+    @JsonIgnoreProperties({"atpTournament"})
+    private ATP atpTournament;
 
-    public String getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(String player) {
-        this.player = player;
-    }
 
     public Stage getStage() {
         return stage;
@@ -49,12 +45,12 @@ public class WTA extends AbstractEntity {
         this.stage = stage;
     }
 
-    public String getWtaTournament() {
-        return wtaTournament;
+    public String getPoints() {
+        return points;
     }
 
-    public void setWtaTournament(String WTATournament) {
-        this.wtaTournament = WTATournament;
+    public void setPoints(String points) {
+        this.points = points;
     }
 
     public User getUser() {
@@ -63,5 +59,13 @@ public class WTA extends AbstractEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public ATP getAtpTournament() {
+        return atpTournament;
+    }
+
+    public void setAtpTournament(ATP atpTournament) {
+        this.atpTournament = atpTournament;
     }
 }

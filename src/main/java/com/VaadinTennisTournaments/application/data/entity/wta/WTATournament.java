@@ -1,7 +1,7 @@
-package com.VaadinTennisTournaments.application.data.entity.ATP;
+package com.VaadinTennisTournaments.application.data.entity.wta;
 
 import com.VaadinTennisTournaments.application.data.AbstractEntity;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Rank;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class ATPTournament extends AbstractEntity {
+public class WTATournament extends AbstractEntity {
     @NotEmpty
     private String tournament = "";
     @ManyToOne

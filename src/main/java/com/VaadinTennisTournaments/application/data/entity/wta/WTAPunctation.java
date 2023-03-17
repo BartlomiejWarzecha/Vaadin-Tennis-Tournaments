@@ -1,9 +1,9 @@
-package com.VaadinTennisTournaments.application.data.entity.ATP;
+package com.VaadinTennisTournaments.application.data.entity.wta;
 
 import com.VaadinTennisTournaments.application.data.AbstractEntity;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Rank;
-import com.VaadinTennisTournaments.application.data.entity.Tournament.Stage;
-import com.VaadinTennisTournaments.application.data.entity.User.User;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Rank;
+import com.VaadinTennisTournaments.application.data.entity.tournament.Stage;
+import com.VaadinTennisTournaments.application.data.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
@@ -13,17 +13,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class ATPPunctation extends AbstractEntity {
-
+public class WTAPunctation extends AbstractEntity {
 
     @NotEmpty
     private String points;
-
-    @ManyToOne
-    @JoinColumn(name = "rank_id")
-    @NotNull
-    @JsonIgnoreProperties({"ranks"})
-    private Rank rank;
 
     @ManyToOne
     @JoinColumn(name = "stage_id")
@@ -38,19 +31,12 @@ public class ATPPunctation extends AbstractEntity {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "atpTournament_id")
+    @JoinColumn(name = "wtaTournament_id")
     @NotNull
-    @JsonIgnoreProperties({"atpTournament"})
-    private ATP atpTournament;
+    @JsonIgnoreProperties({"wtaTournament"})
+    private WTA wtaTournament;
 
 
-    public Rank getRank() {
-        return rank;
-    }
-
-    public void setRank(Rank rank) {
-        this.rank = rank;
-    }
 
     public Stage getStage() {
         return stage;
@@ -76,11 +62,13 @@ public class ATPPunctation extends AbstractEntity {
         this.user = user;
     }
 
-    public ATP getAtpTournament() {
-        return atpTournament;
+    public WTA getWtaTournament() {
+        return wtaTournament;
     }
 
-    public void setAtpTournament(ATP atpTournament) {
-        this.atpTournament = atpTournament;
+    public void setWtaTournament(WTA wtaTournament) {
+        this.wtaTournament = wtaTournament;
     }
+
+
 }
