@@ -1,17 +1,13 @@
 package com.VaadinTennisTournaments.application.views.list;
 
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
-import com.VaadinTennisTournaments.application.data.entity.Register.RegisterUser;
+import com.VaadinTennisTournaments.application.data.entity.register.RegisterUser;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -19,14 +15,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.server.DefaultErrorHandler;
 import com.vaadin.flow.shared.Registration;
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.dao.DataIntegrityViolationException;
-
-import java.sql.SQLException;
 
 public class RegistrationForm extends FormLayout {
 

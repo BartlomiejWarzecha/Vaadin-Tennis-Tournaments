@@ -1,11 +1,9 @@
 package com.VaadinTennisTournaments.application.data.repository;
 
-import com.VaadinTennisTournaments.application.data.entity.ATP.ATP;
-import com.VaadinTennisTournaments.application.data.entity.Register.RegisterUser;
+import com.VaadinTennisTournaments.application.data.entity.register.RegisterUser;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
